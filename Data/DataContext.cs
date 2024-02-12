@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using TiendaAPI.Models;
 
 namespace TiendaAPI.Server.Data;
 
@@ -10,7 +11,6 @@ public partial class DataContext : DbContext
     {
 
     }
-
 
     public virtual DbSet<Cliente> Clientes { get; set; }
 
