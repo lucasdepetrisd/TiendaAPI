@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TiendaAPI.Models;
 
 public partial class Tienda
 {
+    [Key]
+    public int IdTienda { get; set; }
+
     public int Cuit { get; set; }
 
     public int IdCondicionTributaria { get; set; }

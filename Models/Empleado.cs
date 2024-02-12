@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TiendaAPI.Models;
 
 public partial class Empleado
 {
-    public int LegajoEmpleado { get; set; }
+    [Key]
+    public int IdEmpleado { get; set; }
 
+    public int Legajo { get; set; }
     public string Nombre { get; set; } = null!;
-
-    public string Usuario { get; set; } = null!;
-
-    public string Contraseña { get; set; } = null!;
+    public string Apellido { get; set; } = null!;
+    public string? Email { get; set; }
+    public string? Domicilio { get; set; }
 
     public int IdSucursal { get; set; }
+    [ForeignKey("IdSucursal")]
+    public virtual Sucursal Sucursal { get; set; } = null!;
 
-    public virtual Sucursal IdSucursalNavigation { get; set; } = null!;
+    public virtual Usuario? Usuario { get; set; }
 
-    public virtual ICollection<Usuario> UsuarioNavigation { get; set; } = new List<Usuario>();
-
-    public virtual ICollection<Venta> Venta { get; set; } = new List<Venta>();
+    //public virtual ICollection<Venta> Ventas { get; set; } = new List<Venta>();
 }
