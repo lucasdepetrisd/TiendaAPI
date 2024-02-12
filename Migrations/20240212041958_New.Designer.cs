@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TiendaAPI.Data;
 
@@ -11,9 +12,11 @@ using TiendaAPI.Data;
 namespace TiendaAPI.Migrations
 {
     [DbContext(typeof(TiendaContext))]
-    partial class TiendaContextModelSnapshot : ModelSnapshot
+    [Migration("20240212041958_New")]
+    partial class New
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -277,11 +280,17 @@ namespace TiendaAPI.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int?>("VentaIdVenta")
+                        .HasColumnType("int");
+
                     b.HasKey("IdLineaDeVenta");
 
                     b.HasIndex("IdInventario");
 
-                    b.HasIndex("IdVenta");
+                    b.HasIndex("IdVenta")
+                        .IsUnique();
+
+                    b.HasIndex("VentaIdVenta");
 
                     b.ToTable("LineaDeVenta", "Venta");
                 });
@@ -584,16 +593,28 @@ namespace TiendaAPI.Migrations
                     b.Property<string>("Observaciones")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PuntoDeVentaIdPuntoDeVenta")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TipoDeComprobanteIdTipoDeComprobante")
+                        .HasColumnType("int");
+
                     b.HasKey("IdVenta");
 
                     b.HasIndex("IdCliente");
 
-                    b.HasIndex("IdPuntoVenta");
+                    b.HasIndex("IdPuntoVenta")
+                        .IsUnique();
 
-                    b.HasIndex("IdTipoDeComprobante");
+                    b.HasIndex("IdTipoDeComprobante")
+                        .IsUnique();
 
                     b.HasIndex("IdUsuario")
                         .IsUnique();
+
+                    b.HasIndex("PuntoDeVentaIdPuntoDeVenta");
+
+                    b.HasIndex("TipoDeComprobanteIdTipoDeComprobante");
 
                     b.ToTable("Venta", "Venta");
                 });
@@ -713,10 +734,14 @@ namespace TiendaAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("TiendaAPI.Models.Venta", "Venta")
-                        .WithMany("LineaDeVenta")
-                        .HasForeignKey("IdVenta")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne()
+                        .HasForeignKey("TiendaAPI.Models.LineaDeVenta", "IdVenta")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("TiendaAPI.Models.Venta", null)
+                        .WithMany("LineaDeVenta")
+                        .HasForeignKey("VentaIdVenta");
 
                     b.Navigation("Inventario");
 
@@ -825,15 +850,15 @@ namespace TiendaAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("TiendaAPI.Models.PuntoDeVenta", "PuntoDeVenta")
-                        .WithMany("Ventas")
-                        .HasForeignKey("IdPuntoVenta")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne()
+                        .HasForeignKey("TiendaAPI.Models.Venta", "IdPuntoVenta")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("TiendaAPI.Models.TipoDeComprobante", "TipoDeComprobante")
-                        .WithMany("Ventas")
-                        .HasForeignKey("IdTipoDeComprobante")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne()
+                        .HasForeignKey("TiendaAPI.Models.Venta", "IdTipoDeComprobante")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("TiendaAPI.Models.Usuario", "Usuario")
@@ -841,6 +866,14 @@ namespace TiendaAPI.Migrations
                         .HasForeignKey("TiendaAPI.Models.Venta", "IdUsuario")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("TiendaAPI.Models.PuntoDeVenta", null)
+                        .WithMany("Ventas")
+                        .HasForeignKey("PuntoDeVentaIdPuntoDeVenta");
+
+                    b.HasOne("TiendaAPI.Models.TipoDeComprobante", null)
+                        .WithMany("Ventas")
+                        .HasForeignKey("TipoDeComprobanteIdTipoDeComprobante");
 
                     b.Navigation("Cliente");
 

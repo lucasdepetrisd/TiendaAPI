@@ -12,9 +12,7 @@ public partial class CondicionTributaria
 
     public string Descripcion { get; set; } = null!;
 
-    public int IdTienda { get; set; }
-    [ForeignKey("IdTienda")]
-    public virtual Tienda Tienda { get; set; } = null!;
+    public virtual Tienda? Tienda { get; set; }
 
     public int IdTipoDeComprobante { get; set; }
     [ForeignKey("IdTipoDeComprobante")]

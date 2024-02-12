@@ -22,6 +22,7 @@ public partial class LineaDeVenta
         }
     }
 
+    [Precision(18, 2)]
     public decimal PorcentajeIVA { get; set; }
     
     [Precision(18, 2)]
@@ -48,5 +49,5 @@ public partial class LineaDeVenta
 
     public int IdVenta { get; set; }
     [ForeignKey("IdVenta")]
-    public virtual Venta Venta { get; set; } = null!;
+    public Venta Venta { get; set; } = null!;
 }

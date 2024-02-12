@@ -29,15 +29,15 @@ public partial class Venta
 
     public int IdTipoDeComprobante { get; set; }
     [ForeignKey("IdTipoDeComprobante")]
-    public virtual TipoDeComprobante TipoDeComprobante { get; set; } = null!;
+    public TipoDeComprobante TipoDeComprobante { get; set; } = null!;
 
     public int IdUsuario { get; set; }
     [ForeignKey("IdUsuario")]
-    public virtual Usuario Usuario { get; set; } = null!;
+    public virtual Usuario? Usuario { get; set; }
 
     public int IdPuntoVenta { get; set; }
     [ForeignKey("IdPuntoVenta")]
-    public virtual PuntoDeVenta PuntoDeVenta { get; set; } = null!;
+    public PuntoDeVenta PuntoDeVenta { get; set; } = null!;
 
-    public virtual ICollection<LineaDeVenta> LineaDeVenta { get; set; } = new List<LineaDeVenta>();
+    public ICollection<LineaDeVenta> LineaDeVenta { get; set; } = new List<LineaDeVenta>();
 }

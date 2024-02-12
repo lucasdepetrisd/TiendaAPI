@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TiendaAPI.Models;
 
@@ -12,8 +13,8 @@ public partial class Tienda
     public int Cuit { get; set; }
 
     public int IdCondicionTributaria { get; set; }
-
-    public virtual CondicionTributaria IdCondicionTributariaNavigation { get; set; } = null!;
+    [ForeignKey("IdCondicionTributaria")]
+    public virtual CondicionTributaria CondicionTributaria { get; set; } = null!;
 
     public virtual ICollection<Sucursal> Sucursal { get; set; } = new List<Sucursal>();
 }

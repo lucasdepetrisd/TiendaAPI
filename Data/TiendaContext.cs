@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Reflection.Metadata;
 using Microsoft.EntityFrameworkCore;
 using TiendaAPI.Models;
@@ -63,6 +64,36 @@ public partial class TiendaContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        var sesionConfig = modelBuilder.Entity<Sesion>();
+        sesionConfig.HasOne(s => s.Usuario).WithOne(u => u.Sesion).OnDelete(DeleteBehavior.NoAction);
+        //sesionConfig.HasOne(s => s.PuntoDeVenta).WithMany(p => p.Sesiones).OnDelete(DeleteBehavior.oAction);
+
+        var ventaConfig = modelBuilder.Entity<Venta>();
+        //ventaConfig.HasOne(v => v.TipoDeComprobante)
+        //    .WithOne()
+        //    .HasForeignKey<Venta>(i => i.IdTipoDeComprobante) // Assuming IdTalle is the foreign key property in Inventario
+        //    .OnDelete(DeleteBehavior.NoAction);
+        ventaConfig.HasOne(v => v.Usuario)
+            .WithOne()
+            .HasForeignKey<Venta>(i => i.IdUsuario) // Assuming IdTalle is the foreign key property in Inventario
+            .OnDelete(DeleteBehavior.NoAction);
+        //ventaConfig.HasOne(v => v.PuntoDeVenta)
+        //    .WithOne()
+        //    .HasForeignKey<Venta>(i => i.IdPuntoVenta) // Assuming IdTalle is the foreign key property in Inventario
+        //    .OnDelete(DeleteBehavior.NoAction);
+
+        //var linvenConfig = modelBuilder.Entity<LineaDeVenta>();
+        //linvenConfig.HasOne(i => i.Venta)
+        //    .WithOne()
+        //    .HasForeignKey<LineaDeVenta>(i => i.IdVenta) // Assuming IdTalle is the foreign key property in Inventario
+        //    .OnDelete(DeleteBehavior.NoAction);
+
+        var invConfig = modelBuilder.Entity<Inventario>();
+        invConfig.HasOne(i => i.Talle)
+            .WithOne()
+            .HasForeignKey<Inventario>(i => i.IdTalle) // Assuming IdTalle is the foreign key property in Inventario
+            .OnDelete(DeleteBehavior.NoAction);
+
         // Define a list of entity types
         var entityVenta = new List<Type>
         {
@@ -100,21 +131,21 @@ public partial class TiendaContext : DbContext
         // Configure table schema for each entity type
         foreach (var entityType in entityVenta)
         {
-            Console.WriteLine(entityType.Name + " : Venta");
+            //Console.WriteLine(entityType.Name + " : Venta");
             modelBuilder.Entity(entityType).ToTable(entityType.Name, "Venta");
         }
 
         // Configure table schema for each entity type
         foreach (var entityType in entityArticulo)
         {
-            Console.WriteLine(entityType.Name + " : Articulo");
+            //Console.WriteLine(entityType.Name + " : Articulo");
             modelBuilder.Entity(entityType).ToTable(entityType.Name, "Articulo");
         }
 
         // Configure table schema for each entity type
         foreach (var entityType in entityAdmin)
         {
-            Console.WriteLine(entityType.Name + " : Admin");
+            //Console.WriteLine(entityType.Name + " : Admin");
             modelBuilder.Entity(entityType).ToTable(entityType.Name, "Admin");
         }
     }

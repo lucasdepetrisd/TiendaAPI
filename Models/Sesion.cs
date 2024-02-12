@@ -7,15 +7,16 @@ namespace TiendaAPI.Models;
 
 public partial class Sesion
 {
-    public int Id { get; set; }
+    [Key]
+    public int IdSesion { get; set; }
     public DateTime FechaInicio { get; set; }
     public DateTime? FechaFin { get; set; }
 
     public int IdUsuario { get; set; }
     [ForeignKey("IdUsuario")]
-    public Usuario Usuario { get; set; } = null!;
+    public virtual Usuario? Usuario { get; set; }
 
     public int IdPuntoDeVenta { get; set; }
     [ForeignKey("IdPuntoDeVenta")]
-    public PuntoDeVenta PuntoDeVenta { get; set; } = null!;
+    public virtual PuntoDeVenta? PuntoDeVenta { get; set; }
 }

@@ -14,7 +14,7 @@ public partial class Talle
 
     public int IdTipoTalle { get; set; }
     [ForeignKey("IdTipoTalle")]
-    public virtual TipoTalle TipoTalle { get; set; } = null!;
+    public virtual TipoTalle? TipoTalle { get; set; }
 
     //public virtual ICollection<Inventario> Inventarios { get; set; } = new List<Inventario>();
 }

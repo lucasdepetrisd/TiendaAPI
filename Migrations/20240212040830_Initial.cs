@@ -15,6 +15,9 @@ namespace TiendaAPI.Migrations
                 name: "Articulo");
 
             migrationBuilder.EnsureSchema(
+                name: "Admin");
+
+            migrationBuilder.EnsureSchema(
                 name: "Venta");
 
             migrationBuilder.CreateTable(
@@ -46,20 +49,6 @@ namespace TiendaAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CondicionTributaria",
-                schema: "Venta",
-                columns: table => new
-                {
-                    IdCondicionTributaria = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CondicionTributaria", x => x.IdCondicionTributaria);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Marca",
                 schema: "Articulo",
                 columns: table => new
@@ -75,7 +64,7 @@ namespace TiendaAPI.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Rol",
-                schema: "Venta",
+                schema: "Admin",
                 columns: table => new
                 {
                     IdRol = table.Column<int>(type: "int", nullable: false)
@@ -85,6 +74,20 @@ namespace TiendaAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Rol", x => x.IdRol);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TipoDeComprobante",
+                schema: "Venta",
+                columns: table => new
+                {
+                    IdTipoDeComprobante = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TipoDeComprobante", x => x.IdTipoDeComprobante);
                 });
 
             migrationBuilder.CreateTable(
@@ -102,77 +105,24 @@ namespace TiendaAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cliente",
-                schema: "Venta",
+                name: "CondicionTributaria",
+                schema: "Admin",
                 columns: table => new
                 {
-                    IdCliente = table.Column<int>(type: "int", nullable: false)
+                    IdCondicionTributaria = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Dni = table.Column<int>(type: "int", nullable: false),
-                    Cuil = table.Column<int>(type: "int", nullable: false),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Apellidos = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Telefono = table.Column<int>(type: "int", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Domicilio = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdCondicionTributaria = table.Column<int>(type: "int", nullable: false),
-                    IdCondicionTributariaNavigationIdCondicionTributaria = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cliente", x => x.IdCliente);
-                    table.ForeignKey(
-                        name: "FK_Cliente_CondicionTributaria_IdCondicionTributariaNavigationIdCondicionTributaria",
-                        column: x => x.IdCondicionTributariaNavigationIdCondicionTributaria,
-                        principalSchema: "Venta",
-                        principalTable: "CondicionTributaria",
-                        principalColumn: "IdCondicionTributaria",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Tienda",
-                schema: "Venta",
-                columns: table => new
-                {
-                    IdTienda = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Cuit = table.Column<int>(type: "int", nullable: false),
-                    IdCondicionTributaria = table.Column<int>(type: "int", nullable: false),
-                    IdCondicionTributariaNavigationIdCondicionTributaria = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tienda", x => x.IdTienda);
-                    table.ForeignKey(
-                        name: "FK_Tienda_CondicionTributaria_IdCondicionTributariaNavigationIdCondicionTributaria",
-                        column: x => x.IdCondicionTributariaNavigationIdCondicionTributaria,
-                        principalSchema: "Venta",
-                        principalTable: "CondicionTributaria",
-                        principalColumn: "IdCondicionTributaria",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TipoDeComprobante",
-                schema: "Venta",
-                columns: table => new
-                {
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdTipoDeComprobante = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IdCondicionTributaria = table.Column<int>(type: "int", nullable: false),
-                    NombreTipo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdCondicionTributariaNavigationIdCondicionTributaria = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TipoDeComprobante", x => x.IdTipoDeComprobante);
+                    table.PrimaryKey("PK_CondicionTributaria", x => x.IdCondicionTributaria);
                     table.ForeignKey(
-                        name: "FK_TipoDeComprobante_CondicionTributaria_IdCondicionTributariaNavigationIdCondicionTributaria",
-                        column: x => x.IdCondicionTributariaNavigationIdCondicionTributaria,
+                        name: "FK_CondicionTributaria_TipoDeComprobante_IdTipoDeComprobante",
+                        column: x => x.IdTipoDeComprobante,
                         principalSchema: "Venta",
-                        principalTable: "CondicionTributaria",
-                        principalColumn: "IdCondicionTributaria",
+                        principalTable: "TipoDeComprobante",
+                        principalColumn: "IdTipoDeComprobante",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -186,35 +136,32 @@ namespace TiendaAPI.Migrations
                     Codigo = table.Column<int>(type: "int", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Costo = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    Iva = table.Column<int>(type: "int", nullable: false),
+                    PorcentajeIVA = table.Column<int>(type: "int", nullable: false),
                     MargenGanancia = table.Column<int>(type: "int", nullable: false),
                     IdCategoria = table.Column<int>(type: "int", nullable: false),
                     IdMarca = table.Column<int>(type: "int", nullable: false),
-                    IdTipoTalle = table.Column<int>(type: "int", nullable: false),
-                    IdCategoriaNavigationIdCategoria = table.Column<int>(type: "int", nullable: false),
-                    IdMarcaNavigationIdMarca = table.Column<int>(type: "int", nullable: false),
-                    IdTipoTalleNavigationIdTipoTalle = table.Column<int>(type: "int", nullable: false)
+                    IdTipoTalle = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Articulo", x => x.IdArticulo);
                     table.ForeignKey(
-                        name: "FK_Articulo_Categoria_IdCategoriaNavigationIdCategoria",
-                        column: x => x.IdCategoriaNavigationIdCategoria,
+                        name: "FK_Articulo_Categoria_IdCategoria",
+                        column: x => x.IdCategoria,
                         principalSchema: "Articulo",
                         principalTable: "Categoria",
                         principalColumn: "IdCategoria",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Articulo_Marca_IdMarcaNavigationIdMarca",
-                        column: x => x.IdMarcaNavigationIdMarca,
+                        name: "FK_Articulo_Marca_IdMarca",
+                        column: x => x.IdMarca,
                         principalSchema: "Articulo",
                         principalTable: "Marca",
                         principalColumn: "IdMarca",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Articulo_TipoTalle_IdTipoTalleNavigationIdTipoTalle",
-                        column: x => x.IdTipoTalleNavigationIdTipoTalle,
+                        name: "FK_Articulo_TipoTalle_IdTipoTalle",
+                        column: x => x.IdTipoTalle,
                         principalSchema: "Articulo",
                         principalTable: "TipoTalle",
                         principalColumn: "IdTipoTalle",
@@ -229,15 +176,14 @@ namespace TiendaAPI.Migrations
                     IdTalle = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Medida = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IdTipoTalle = table.Column<int>(type: "int", nullable: false),
-                    IdTipoTalleNavigationIdTipoTalle = table.Column<int>(type: "int", nullable: false)
+                    IdTipoTalle = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Talle", x => x.IdTalle);
                     table.ForeignKey(
-                        name: "FK_Talle_TipoTalle_IdTipoTalleNavigationIdTipoTalle",
-                        column: x => x.IdTipoTalleNavigationIdTipoTalle,
+                        name: "FK_Talle_TipoTalle_IdTipoTalle",
+                        column: x => x.IdTipoTalle,
                         principalSchema: "Articulo",
                         principalTable: "TipoTalle",
                         principalColumn: "IdTipoTalle",
@@ -245,27 +191,76 @@ namespace TiendaAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Cliente",
+                schema: "Admin",
+                columns: table => new
+                {
+                    IdCliente = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Dni = table.Column<int>(type: "int", nullable: false),
+                    Cuil = table.Column<int>(type: "int", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Apellidos = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Telefono = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Domicilio = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IdCondicionTributaria = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cliente", x => x.IdCliente);
+                    table.ForeignKey(
+                        name: "FK_Cliente_CondicionTributaria_IdCondicionTributaria",
+                        column: x => x.IdCondicionTributaria,
+                        principalSchema: "Admin",
+                        principalTable: "CondicionTributaria",
+                        principalColumn: "IdCondicionTributaria",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tienda",
+                schema: "Admin",
+                columns: table => new
+                {
+                    IdTienda = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Cuit = table.Column<int>(type: "int", nullable: false),
+                    IdCondicionTributaria = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tienda", x => x.IdTienda);
+                    table.ForeignKey(
+                        name: "FK_Tienda_CondicionTributaria_IdCondicionTributaria",
+                        column: x => x.IdCondicionTributaria,
+                        principalSchema: "Admin",
+                        principalTable: "CondicionTributaria",
+                        principalColumn: "IdCondicionTributaria",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Sucursal",
-                schema: "Venta",
+                schema: "Admin",
                 columns: table => new
                 {
                     IdSucursal = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Telefono = table.Column<int>(type: "int", nullable: false),
+                    Telefono = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Domicilio = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Ciudad = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Cuit = table.Column<int>(type: "int", nullable: false),
-                    CuitNavigationIdTienda = table.Column<int>(type: "int", nullable: false)
+                    IdTienda = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sucursal", x => x.IdSucursal);
                     table.ForeignKey(
-                        name: "FK_Sucursal_Tienda_CuitNavigationIdTienda",
-                        column: x => x.CuitNavigationIdTienda,
-                        principalSchema: "Venta",
+                        name: "FK_Sucursal_Tienda_IdTienda",
+                        column: x => x.IdTienda,
+                        principalSchema: "Admin",
                         principalTable: "Tienda",
                         principalColumn: "IdTienda",
                         onDelete: ReferentialAction.Cascade);
@@ -273,25 +268,25 @@ namespace TiendaAPI.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Empleado",
-                schema: "Venta",
+                schema: "Admin",
                 columns: table => new
                 {
                     IdEmpleado = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    LegajoEmpleado = table.Column<int>(type: "int", nullable: false),
+                    Legajo = table.Column<int>(type: "int", nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Usuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdSucursal = table.Column<int>(type: "int", nullable: false),
-                    IdSucursalNavigationIdSucursal = table.Column<int>(type: "int", nullable: false)
+                    Apellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Domicilio = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IdSucursal = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Empleado", x => x.IdEmpleado);
                     table.ForeignKey(
-                        name: "FK_Empleado_Sucursal_IdSucursalNavigationIdSucursal",
-                        column: x => x.IdSucursalNavigationIdSucursal,
-                        principalSchema: "Venta",
+                        name: "FK_Empleado_Sucursal_IdSucursal",
+                        column: x => x.IdSucursal,
+                        principalSchema: "Admin",
                         principalTable: "Sucursal",
                         principalColumn: "IdSucursal",
                         onDelete: ReferentialAction.Cascade);
@@ -302,45 +297,41 @@ namespace TiendaAPI.Migrations
                 schema: "Articulo",
                 columns: table => new
                 {
-                    IdInventarioArticulo = table.Column<int>(type: "int", nullable: false)
+                    IdInventario = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Cantidad = table.Column<int>(type: "int", nullable: false),
                     IdSucursal = table.Column<int>(type: "int", nullable: false),
-                    Codigo = table.Column<int>(type: "int", nullable: false),
                     IdColor = table.Column<int>(type: "int", nullable: false),
-                    IdMedida = table.Column<int>(type: "int", nullable: false),
-                    CodigoNavigationIdArticulo = table.Column<int>(type: "int", nullable: false),
-                    IdColorNavigationIdColor = table.Column<int>(type: "int", nullable: false),
-                    IdTalleNavigationIdTalle = table.Column<int>(type: "int", nullable: true),
-                    IdSucursalNavigationIdSucursal = table.Column<int>(type: "int", nullable: false)
+                    IdTalle = table.Column<int>(type: "int", nullable: false),
+                    IdArticulo = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Inventario", x => x.IdInventarioArticulo);
+                    table.PrimaryKey("PK_Inventario", x => x.IdInventario);
                     table.ForeignKey(
-                        name: "FK_Inventario_Articulo_CodigoNavigationIdArticulo",
-                        column: x => x.CodigoNavigationIdArticulo,
+                        name: "FK_Inventario_Articulo_IdArticulo",
+                        column: x => x.IdArticulo,
                         principalSchema: "Articulo",
                         principalTable: "Articulo",
                         principalColumn: "IdArticulo",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Inventario_Color_IdColorNavigationIdColor",
-                        column: x => x.IdColorNavigationIdColor,
+                        name: "FK_Inventario_Color_IdColor",
+                        column: x => x.IdColor,
                         principalSchema: "Articulo",
                         principalTable: "Color",
                         principalColumn: "IdColor",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Inventario_Sucursal_IdSucursalNavigationIdSucursal",
-                        column: x => x.IdSucursalNavigationIdSucursal,
-                        principalSchema: "Venta",
+                        name: "FK_Inventario_Sucursal_IdSucursal",
+                        column: x => x.IdSucursal,
+                        principalSchema: "Admin",
                         principalTable: "Sucursal",
                         principalColumn: "IdSucursal",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Inventario_Talle_IdTalleNavigationIdTalle",
-                        column: x => x.IdTalleNavigationIdTalle,
+                        name: "FK_Inventario_Talle_IdTalle",
+                        column: x => x.IdTalle,
                         principalSchema: "Articulo",
                         principalTable: "Talle",
                         principalColumn: "IdTalle");
@@ -348,22 +339,22 @@ namespace TiendaAPI.Migrations
 
             migrationBuilder.CreateTable(
                 name: "PuntoDeVenta",
-                schema: "Venta",
+                schema: "Admin",
                 columns: table => new
                 {
                     IdPuntoDeVenta = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NumeroPtoVenta = table.Column<int>(type: "int", nullable: false),
-                    IdSucursal = table.Column<int>(type: "int", nullable: false),
-                    IdSucursalNavigationIdSucursal = table.Column<int>(type: "int", nullable: false)
+                    Habilitado = table.Column<bool>(type: "bit", nullable: false),
+                    IdSucursal = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PuntoDeVenta", x => x.IdPuntoDeVenta);
                     table.ForeignKey(
-                        name: "FK_PuntoDeVenta_Sucursal_IdSucursalNavigationIdSucursal",
-                        column: x => x.IdSucursalNavigationIdSucursal,
-                        principalSchema: "Venta",
+                        name: "FK_PuntoDeVenta_Sucursal_IdSucursal",
+                        column: x => x.IdSucursal,
+                        principalSchema: "Admin",
                         principalTable: "Sucursal",
                         principalColumn: "IdSucursal",
                         onDelete: ReferentialAction.Cascade);
@@ -371,33 +362,63 @@ namespace TiendaAPI.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Usuario",
-                schema: "Venta",
+                schema: "Admin",
                 columns: table => new
                 {
                     IdUsuario = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    LegajoEmpleado = table.Column<int>(type: "int", nullable: false),
+                    NombreUsuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdRol = table.Column<int>(type: "int", nullable: false),
-                    IdRolNavigationIdRol = table.Column<int>(type: "int", nullable: false),
-                    LegajoEmpleadoNavigationIdEmpleado = table.Column<int>(type: "int", nullable: false)
+                    IdEmpleado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuario", x => x.IdUsuario);
                     table.ForeignKey(
-                        name: "FK_Usuario_Empleado_LegajoEmpleadoNavigationIdEmpleado",
-                        column: x => x.LegajoEmpleadoNavigationIdEmpleado,
-                        principalSchema: "Venta",
+                        name: "FK_Usuario_Empleado_IdEmpleado",
+                        column: x => x.IdEmpleado,
+                        principalSchema: "Admin",
                         principalTable: "Empleado",
                         principalColumn: "IdEmpleado",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Usuario_Rol_IdRolNavigationIdRol",
-                        column: x => x.IdRolNavigationIdRol,
-                        principalSchema: "Venta",
+                        name: "FK_Usuario_Rol_IdRol",
+                        column: x => x.IdRol,
+                        principalSchema: "Admin",
                         principalTable: "Rol",
                         principalColumn: "IdRol",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sesion",
+                schema: "Admin",
+                columns: table => new
+                {
+                    IdSesion = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FechaFin = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IdUsuario = table.Column<int>(type: "int", nullable: false),
+                    IdPuntoDeVenta = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sesion", x => x.IdSesion);
+                    table.ForeignKey(
+                        name: "FK_Sesion_PuntoDeVenta_IdPuntoDeVenta",
+                        column: x => x.IdPuntoDeVenta,
+                        principalSchema: "Admin",
+                        principalTable: "PuntoDeVenta",
+                        principalColumn: "IdPuntoDeVenta",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Sesion_Usuario_IdUsuario",
+                        column: x => x.IdUsuario,
+                        principalSchema: "Admin",
+                        principalTable: "Usuario",
+                        principalColumn: "IdUsuario");
                 });
 
             migrationBuilder.CreateTable(
@@ -411,43 +432,53 @@ namespace TiendaAPI.Migrations
                     Monto = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Estado = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Observaciones = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NumeroPtoVenta = table.Column<int>(type: "int", nullable: false),
-                    DniCliente = table.Column<int>(type: "int", nullable: false),
-                    LegajoEmpleado = table.Column<int>(type: "int", nullable: false),
+                    IdCliente = table.Column<int>(type: "int", nullable: false),
                     IdTipoDeComprobante = table.Column<int>(type: "int", nullable: false),
-                    DniClienteNavigationIdCliente = table.Column<int>(type: "int", nullable: false),
-                    IdTipoDeComprobanteNavigationIdTipoDeComprobante = table.Column<int>(type: "int", nullable: true),
-                    IdEmpleadoNavigationIdEmpleado = table.Column<int>(type: "int", nullable: true),
-                    IdPuntoDeVentaNavigationIdPuntoDeVenta = table.Column<int>(type: "int", nullable: true)
+                    IdUsuario = table.Column<int>(type: "int", nullable: false),
+                    IdPuntoVenta = table.Column<int>(type: "int", nullable: false),
+                    PuntoDeVentaIdPuntoDeVenta = table.Column<int>(type: "int", nullable: true),
+                    TipoDeComprobanteIdTipoDeComprobante = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Venta", x => x.IdVenta);
                     table.ForeignKey(
-                        name: "FK_Venta_Cliente_DniClienteNavigationIdCliente",
-                        column: x => x.DniClienteNavigationIdCliente,
-                        principalSchema: "Venta",
+                        name: "FK_Venta_Cliente_IdCliente",
+                        column: x => x.IdCliente,
+                        principalSchema: "Admin",
                         principalTable: "Cliente",
                         principalColumn: "IdCliente",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Venta_Empleado_IdEmpleadoNavigationIdEmpleado",
-                        column: x => x.IdEmpleadoNavigationIdEmpleado,
-                        principalSchema: "Venta",
-                        principalTable: "Empleado",
-                        principalColumn: "IdEmpleado");
-                    table.ForeignKey(
-                        name: "FK_Venta_PuntoDeVenta_IdPuntoDeVentaNavigationIdPuntoDeVenta",
-                        column: x => x.IdPuntoDeVentaNavigationIdPuntoDeVenta,
-                        principalSchema: "Venta",
+                        name: "FK_Venta_PuntoDeVenta_IdPuntoVenta",
+                        column: x => x.IdPuntoVenta,
+                        principalSchema: "Admin",
                         principalTable: "PuntoDeVenta",
                         principalColumn: "IdPuntoDeVenta");
                     table.ForeignKey(
-                        name: "FK_Venta_TipoDeComprobante_IdTipoDeComprobanteNavigationIdTipoDeComprobante",
-                        column: x => x.IdTipoDeComprobanteNavigationIdTipoDeComprobante,
+                        name: "FK_Venta_PuntoDeVenta_PuntoDeVentaIdPuntoDeVenta",
+                        column: x => x.PuntoDeVentaIdPuntoDeVenta,
+                        principalSchema: "Admin",
+                        principalTable: "PuntoDeVenta",
+                        principalColumn: "IdPuntoDeVenta");
+                    table.ForeignKey(
+                        name: "FK_Venta_TipoDeComprobante_IdTipoDeComprobante",
+                        column: x => x.IdTipoDeComprobante,
                         principalSchema: "Venta",
                         principalTable: "TipoDeComprobante",
                         principalColumn: "IdTipoDeComprobante");
+                    table.ForeignKey(
+                        name: "FK_Venta_TipoDeComprobante_TipoDeComprobanteIdTipoDeComprobante",
+                        column: x => x.TipoDeComprobanteIdTipoDeComprobante,
+                        principalSchema: "Venta",
+                        principalTable: "TipoDeComprobante",
+                        principalColumn: "IdTipoDeComprobante");
+                    table.ForeignKey(
+                        name: "FK_Venta_Usuario_IdUsuario",
+                        column: x => x.IdUsuario,
+                        principalSchema: "Admin",
+                        principalTable: "Usuario",
+                        principalColumn: "IdUsuario");
                 });
 
             migrationBuilder.CreateTable(
@@ -457,15 +488,14 @@ namespace TiendaAPI.Migrations
                 {
                     IdComprobante = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdVenta = table.Column<int>(type: "int", nullable: false),
-                    IdVentaNavigationIdVenta = table.Column<int>(type: "int", nullable: false)
+                    IdVenta = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comprobante", x => x.IdComprobante);
                     table.ForeignKey(
-                        name: "FK_Comprobante_Venta_IdVentaNavigationIdVenta",
-                        column: x => x.IdVentaNavigationIdVenta,
+                        name: "FK_Comprobante_Venta_IdVenta",
+                        column: x => x.IdVenta,
                         principalSchema: "Venta",
                         principalTable: "Venta",
                         principalColumn: "IdVenta",
@@ -480,28 +510,30 @@ namespace TiendaAPI.Migrations
                     IdLineaDeVenta = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Cantidad = table.Column<int>(type: "int", nullable: false),
-                    NetoGravado = table.Column<int>(type: "int", nullable: false),
-                    PorcentajeIva = table.Column<int>(type: "int", nullable: false),
-                    MontoIva = table.Column<int>(type: "int", nullable: false),
-                    Subtotal = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    PorcentajeIVA = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    IdInventario = table.Column<int>(type: "int", nullable: false),
                     IdVenta = table.Column<int>(type: "int", nullable: false),
-                    IdInventarioArticulo = table.Column<int>(type: "int", nullable: false),
-                    IdInventarioArticuloNavigationIdInventarioArticulo = table.Column<int>(type: "int", nullable: false),
-                    IdVentaNavigationIdVenta = table.Column<int>(type: "int", nullable: true)
+                    VentaIdVenta = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LineaDeVenta", x => x.IdLineaDeVenta);
                     table.ForeignKey(
-                        name: "FK_LineaDeVenta_Inventario_IdInventarioArticuloNavigationIdInventarioArticulo",
-                        column: x => x.IdInventarioArticuloNavigationIdInventarioArticulo,
+                        name: "FK_LineaDeVenta_Inventario_IdInventario",
+                        column: x => x.IdInventario,
                         principalSchema: "Articulo",
                         principalTable: "Inventario",
-                        principalColumn: "IdInventarioArticulo",
+                        principalColumn: "IdInventario",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_LineaDeVenta_Venta_IdVentaNavigationIdVenta",
-                        column: x => x.IdVentaNavigationIdVenta,
+                        name: "FK_LineaDeVenta_Venta_IdVenta",
+                        column: x => x.IdVenta,
+                        principalSchema: "Venta",
+                        principalTable: "Venta",
+                        principalColumn: "IdVenta");
+                    table.ForeignKey(
+                        name: "FK_LineaDeVenta_Venta_VentaIdVenta",
+                        column: x => x.VentaIdVenta,
                         principalSchema: "Venta",
                         principalTable: "Venta",
                         principalColumn: "IdVenta");
@@ -515,19 +547,17 @@ namespace TiendaAPI.Migrations
                     IdPago = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Fecha = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Monto = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Ticket = table.Column<int>(type: "int", nullable: false),
-                    Estado = table.Column<bool>(type: "bit", nullable: false),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Observaciones = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IdVenta = table.Column<int>(type: "int", nullable: false),
-                    IdVentaNavigationIdVenta = table.Column<int>(type: "int", nullable: false)
+                    IdVenta = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pago", x => x.IdPago);
                     table.ForeignKey(
-                        name: "FK_Pago_Venta_IdVentaNavigationIdVenta",
-                        column: x => x.IdVentaNavigationIdVenta,
+                        name: "FK_Pago_Venta_IdVenta",
+                        column: x => x.IdVenta,
                         principalSchema: "Venta",
                         principalTable: "Venta",
                         principalColumn: "IdVenta",
@@ -535,148 +565,188 @@ namespace TiendaAPI.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Articulo_IdCategoriaNavigationIdCategoria",
+                name: "IX_Articulo_IdCategoria",
                 schema: "Articulo",
                 table: "Articulo",
-                column: "IdCategoriaNavigationIdCategoria");
+                column: "IdCategoria");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Articulo_IdMarcaNavigationIdMarca",
+                name: "IX_Articulo_IdMarca",
                 schema: "Articulo",
                 table: "Articulo",
-                column: "IdMarcaNavigationIdMarca");
+                column: "IdMarca");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Articulo_IdTipoTalleNavigationIdTipoTalle",
+                name: "IX_Articulo_IdTipoTalle",
                 schema: "Articulo",
                 table: "Articulo",
-                column: "IdTipoTalleNavigationIdTipoTalle");
+                column: "IdTipoTalle");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cliente_IdCondicionTributariaNavigationIdCondicionTributaria",
-                schema: "Venta",
+                name: "IX_Cliente_IdCondicionTributaria",
+                schema: "Admin",
                 table: "Cliente",
-                column: "IdCondicionTributariaNavigationIdCondicionTributaria");
+                column: "IdCondicionTributaria");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Comprobante_IdVentaNavigationIdVenta",
+                name: "IX_Comprobante_IdVenta",
                 schema: "Venta",
                 table: "Comprobante",
-                column: "IdVentaNavigationIdVenta");
+                column: "IdVenta",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Empleado_IdSucursalNavigationIdSucursal",
-                schema: "Venta",
+                name: "IX_CondicionTributaria_IdTipoDeComprobante",
+                schema: "Admin",
+                table: "CondicionTributaria",
+                column: "IdTipoDeComprobante");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Empleado_IdSucursal",
+                schema: "Admin",
                 table: "Empleado",
-                column: "IdSucursalNavigationIdSucursal");
+                column: "IdSucursal");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Inventario_CodigoNavigationIdArticulo",
+                name: "IX_Inventario_IdArticulo",
                 schema: "Articulo",
                 table: "Inventario",
-                column: "CodigoNavigationIdArticulo");
+                column: "IdArticulo");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Inventario_IdColorNavigationIdColor",
+                name: "IX_Inventario_IdColor",
                 schema: "Articulo",
                 table: "Inventario",
-                column: "IdColorNavigationIdColor");
+                column: "IdColor");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Inventario_IdSucursalNavigationIdSucursal",
+                name: "IX_Inventario_IdSucursal",
                 schema: "Articulo",
                 table: "Inventario",
-                column: "IdSucursalNavigationIdSucursal");
+                column: "IdSucursal");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Inventario_IdTalleNavigationIdTalle",
+                name: "IX_Inventario_IdTalle",
                 schema: "Articulo",
                 table: "Inventario",
-                column: "IdTalleNavigationIdTalle");
+                column: "IdTalle",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_LineaDeVenta_IdInventarioArticuloNavigationIdInventarioArticulo",
+                name: "IX_LineaDeVenta_IdInventario",
                 schema: "Venta",
                 table: "LineaDeVenta",
-                column: "IdInventarioArticuloNavigationIdInventarioArticulo");
+                column: "IdInventario");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LineaDeVenta_IdVentaNavigationIdVenta",
+                name: "IX_LineaDeVenta_IdVenta",
                 schema: "Venta",
                 table: "LineaDeVenta",
-                column: "IdVentaNavigationIdVenta");
+                column: "IdVenta",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Pago_IdVentaNavigationIdVenta",
+                name: "IX_LineaDeVenta_VentaIdVenta",
+                schema: "Venta",
+                table: "LineaDeVenta",
+                column: "VentaIdVenta");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pago_IdVenta",
                 schema: "Venta",
                 table: "Pago",
-                column: "IdVentaNavigationIdVenta");
+                column: "IdVenta",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_PuntoDeVenta_IdSucursalNavigationIdSucursal",
-                schema: "Venta",
+                name: "IX_PuntoDeVenta_IdSucursal",
+                schema: "Admin",
                 table: "PuntoDeVenta",
-                column: "IdSucursalNavigationIdSucursal");
+                column: "IdSucursal");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sucursal_CuitNavigationIdTienda",
-                schema: "Venta",
+                name: "IX_Sesion_IdPuntoDeVenta",
+                schema: "Admin",
+                table: "Sesion",
+                column: "IdPuntoDeVenta");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sesion_IdUsuario",
+                schema: "Admin",
+                table: "Sesion",
+                column: "IdUsuario",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sucursal_IdTienda",
+                schema: "Admin",
                 table: "Sucursal",
-                column: "CuitNavigationIdTienda");
+                column: "IdTienda");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Talle_IdTipoTalleNavigationIdTipoTalle",
+                name: "IX_Talle_IdTipoTalle",
                 schema: "Articulo",
                 table: "Talle",
-                column: "IdTipoTalleNavigationIdTipoTalle");
+                column: "IdTipoTalle");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tienda_IdCondicionTributariaNavigationIdCondicionTributaria",
-                schema: "Venta",
+                name: "IX_Tienda_IdCondicionTributaria",
+                schema: "Admin",
                 table: "Tienda",
-                column: "IdCondicionTributariaNavigationIdCondicionTributaria");
+                column: "IdCondicionTributaria",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_TipoDeComprobante_IdCondicionTributariaNavigationIdCondicionTributaria",
-                schema: "Venta",
-                table: "TipoDeComprobante",
-                column: "IdCondicionTributariaNavigationIdCondicionTributaria");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Usuario_IdRolNavigationIdRol",
-                schema: "Venta",
+                name: "IX_Usuario_IdEmpleado",
+                schema: "Admin",
                 table: "Usuario",
-                column: "IdRolNavigationIdRol");
+                column: "IdEmpleado",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Usuario_LegajoEmpleadoNavigationIdEmpleado",
-                schema: "Venta",
+                name: "IX_Usuario_IdRol",
+                schema: "Admin",
                 table: "Usuario",
-                column: "LegajoEmpleadoNavigationIdEmpleado");
+                column: "IdRol");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Venta_DniClienteNavigationIdCliente",
+                name: "IX_Venta_IdCliente",
                 schema: "Venta",
                 table: "Venta",
-                column: "DniClienteNavigationIdCliente");
+                column: "IdCliente");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Venta_IdEmpleadoNavigationIdEmpleado",
+                name: "IX_Venta_IdPuntoVenta",
                 schema: "Venta",
                 table: "Venta",
-                column: "IdEmpleadoNavigationIdEmpleado");
+                column: "IdPuntoVenta",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Venta_IdPuntoDeVentaNavigationIdPuntoDeVenta",
+                name: "IX_Venta_IdTipoDeComprobante",
                 schema: "Venta",
                 table: "Venta",
-                column: "IdPuntoDeVentaNavigationIdPuntoDeVenta");
+                column: "IdTipoDeComprobante",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Venta_IdTipoDeComprobanteNavigationIdTipoDeComprobante",
+                name: "IX_Venta_IdUsuario",
                 schema: "Venta",
                 table: "Venta",
-                column: "IdTipoDeComprobanteNavigationIdTipoDeComprobante");
+                column: "IdUsuario",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Venta_PuntoDeVentaIdPuntoDeVenta",
+                schema: "Venta",
+                table: "Venta",
+                column: "PuntoDeVentaIdPuntoDeVenta");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Venta_TipoDeComprobanteIdTipoDeComprobante",
+                schema: "Venta",
+                table: "Venta",
+                column: "TipoDeComprobanteIdTipoDeComprobante");
         }
 
         /// <inheritdoc />
@@ -695,8 +765,8 @@ namespace TiendaAPI.Migrations
                 schema: "Venta");
 
             migrationBuilder.DropTable(
-                name: "Usuario",
-                schema: "Venta");
+                name: "Sesion",
+                schema: "Admin");
 
             migrationBuilder.DropTable(
                 name: "Inventario",
@@ -704,10 +774,6 @@ namespace TiendaAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Venta",
-                schema: "Venta");
-
-            migrationBuilder.DropTable(
-                name: "Rol",
                 schema: "Venta");
 
             migrationBuilder.DropTable(
@@ -724,19 +790,15 @@ namespace TiendaAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Cliente",
-                schema: "Venta");
-
-            migrationBuilder.DropTable(
-                name: "Empleado",
-                schema: "Venta");
+                schema: "Admin");
 
             migrationBuilder.DropTable(
                 name: "PuntoDeVenta",
-                schema: "Venta");
+                schema: "Admin");
 
             migrationBuilder.DropTable(
-                name: "TipoDeComprobante",
-                schema: "Venta");
+                name: "Usuario",
+                schema: "Admin");
 
             migrationBuilder.DropTable(
                 name: "Categoria",
@@ -751,15 +813,27 @@ namespace TiendaAPI.Migrations
                 schema: "Articulo");
 
             migrationBuilder.DropTable(
+                name: "Empleado",
+                schema: "Admin");
+
+            migrationBuilder.DropTable(
+                name: "Rol",
+                schema: "Admin");
+
+            migrationBuilder.DropTable(
                 name: "Sucursal",
-                schema: "Venta");
+                schema: "Admin");
 
             migrationBuilder.DropTable(
                 name: "Tienda",
-                schema: "Venta");
+                schema: "Admin");
 
             migrationBuilder.DropTable(
                 name: "CondicionTributaria",
+                schema: "Admin");
+
+            migrationBuilder.DropTable(
+                name: "TipoDeComprobante",
                 schema: "Venta");
         }
     }
