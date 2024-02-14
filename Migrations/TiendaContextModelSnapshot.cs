@@ -41,13 +41,13 @@ namespace TiendaAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IdCategoria")
+                    b.Property<int?>("IdCategoria")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdMarca")
+                    b.Property<int?>("IdMarca")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdTipoTalle")
+                    b.Property<int?>("IdTipoTalle")
                         .HasColumnType("int");
 
                     b.Property<int>("MargenGanancia")
@@ -109,7 +109,7 @@ namespace TiendaAPI.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IdCondicionTributaria")
+                    b.Property<int?>("IdCondicionTributaria")
                         .HasColumnType("int");
 
                     b.Property<string>("Nombre")
@@ -159,7 +159,7 @@ namespace TiendaAPI.Migrations
                     b.HasIndex("IdVenta")
                         .IsUnique();
 
-                    b.ToTable("Comprobante", "Venta");
+                    b.ToTable("Comprobante", "Ventas");
                 });
 
             modelBuilder.Entity("TiendaAPI.Models.CondicionTributaria", b =>
@@ -250,8 +250,7 @@ namespace TiendaAPI.Migrations
 
                     b.HasIndex("IdSucursal");
 
-                    b.HasIndex("IdTalle")
-                        .IsUnique();
+                    b.HasIndex("IdTalle");
 
                     b.ToTable("Inventario", "Articulo");
                 });
@@ -283,7 +282,7 @@ namespace TiendaAPI.Migrations
 
                     b.HasIndex("IdVenta");
 
-                    b.ToTable("LineaDeVenta", "Venta");
+                    b.ToTable("LineaDeVenta", "Ventas");
                 });
 
             modelBuilder.Entity("TiendaAPI.Models.Marca", b =>
@@ -331,7 +330,7 @@ namespace TiendaAPI.Migrations
                     b.HasIndex("IdVenta")
                         .IsUnique();
 
-                    b.ToTable("Pago", "Venta");
+                    b.ToTable("Pago", "Ventas");
                 });
 
             modelBuilder.Entity("TiendaAPI.Models.PuntoDeVenta", b =>
@@ -388,7 +387,7 @@ namespace TiendaAPI.Migrations
                     b.Property<DateTime>("FechaInicio")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdPuntoDeVenta")
+                    b.Property<int?>("IdPuntoDeVenta")
                         .HasColumnType("int");
 
                     b.Property<int>("IdUsuario")
@@ -449,7 +448,7 @@ namespace TiendaAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTalle"));
 
-                    b.Property<int>("IdTipoTalle")
+                    b.Property<int?>("IdTipoTalle")
                         .HasColumnType("int");
 
                     b.Property<string>("Medida")
@@ -498,7 +497,7 @@ namespace TiendaAPI.Migrations
 
                     b.HasKey("IdTipoDeComprobante");
 
-                    b.ToTable("TipoDeComprobante", "Venta");
+                    b.ToTable("TipoDeComprobante", "Ventas");
                 });
 
             modelBuilder.Entity("TiendaAPI.Models.TipoTalle", b =>
@@ -533,7 +532,7 @@ namespace TiendaAPI.Migrations
                     b.Property<int>("IdEmpleado")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdRol")
+                    b.Property<int?>("IdRol")
                         .HasColumnType("int");
 
                     b.Property<string>("NombreUsuario")
@@ -592,31 +591,24 @@ namespace TiendaAPI.Migrations
 
                     b.HasIndex("IdTipoDeComprobante");
 
-                    b.HasIndex("IdUsuario")
-                        .IsUnique();
+                    b.HasIndex("IdUsuario");
 
-                    b.ToTable("Venta", "Venta");
+                    b.ToTable("Venta", "Ventas");
                 });
 
             modelBuilder.Entity("TiendaAPI.Models.Articulo", b =>
                 {
                     b.HasOne("TiendaAPI.Models.Categoria", "Categoria")
                         .WithMany("Articulos")
-                        .HasForeignKey("IdCategoria")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdCategoria");
 
                     b.HasOne("TiendaAPI.Models.Marca", "Marca")
                         .WithMany("Articulos")
-                        .HasForeignKey("IdMarca")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdMarca");
 
                     b.HasOne("TiendaAPI.Models.TipoTalle", "TipoTalle")
                         .WithMany("Articulos")
-                        .HasForeignKey("IdTipoTalle")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdTipoTalle");
 
                     b.Navigation("Categoria");
 
@@ -629,9 +621,7 @@ namespace TiendaAPI.Migrations
                 {
                     b.HasOne("TiendaAPI.Models.CondicionTributaria", "CondicionTributaria")
                         .WithMany("Clientes")
-                        .HasForeignKey("IdCondicionTributaria")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdCondicionTributaria");
 
                     b.Navigation("CondicionTributaria");
                 });
@@ -650,7 +640,7 @@ namespace TiendaAPI.Migrations
             modelBuilder.Entity("TiendaAPI.Models.CondicionTributaria", b =>
                 {
                     b.HasOne("TiendaAPI.Models.TipoDeComprobante", "TipoDeComprobante")
-                        .WithMany("CondicionTributarias")
+                        .WithMany("CondicionesTributarias")
                         .HasForeignKey("IdTipoDeComprobante")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -678,7 +668,7 @@ namespace TiendaAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("TiendaAPI.Models.Color", "Color")
-                        .WithMany("Inventario")
+                        .WithMany("Inventarios")
                         .HasForeignKey("IdColor")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -690,9 +680,9 @@ namespace TiendaAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("TiendaAPI.Models.Talle", "Talle")
-                        .WithOne()
-                        .HasForeignKey("TiendaAPI.Models.Inventario", "IdTalle")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany("Inventarios")
+                        .HasForeignKey("IdTalle")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Articulo");
@@ -707,15 +697,15 @@ namespace TiendaAPI.Migrations
             modelBuilder.Entity("TiendaAPI.Models.LineaDeVenta", b =>
                 {
                     b.HasOne("TiendaAPI.Models.Inventario", "Inventario")
-                        .WithMany("LineaDeVenta")
+                        .WithMany("LineasDeVentas")
                         .HasForeignKey("IdInventario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TiendaAPI.Models.Venta", "Venta")
-                        .WithMany("LineaDeVenta")
+                        .WithMany("LineasDeVentas")
                         .HasForeignKey("IdVenta")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Inventario");
@@ -749,14 +739,12 @@ namespace TiendaAPI.Migrations
                 {
                     b.HasOne("TiendaAPI.Models.PuntoDeVenta", "PuntoDeVenta")
                         .WithMany("Sesiones")
-                        .HasForeignKey("IdPuntoDeVenta")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdPuntoDeVenta");
 
                     b.HasOne("TiendaAPI.Models.Usuario", "Usuario")
                         .WithOne("Sesion")
                         .HasForeignKey("TiendaAPI.Models.Sesion", "IdUsuario")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PuntoDeVenta");
@@ -767,7 +755,7 @@ namespace TiendaAPI.Migrations
             modelBuilder.Entity("TiendaAPI.Models.Sucursal", b =>
                 {
                     b.HasOne("TiendaAPI.Models.Tienda", "Tienda")
-                        .WithMany("Sucursal")
+                        .WithMany("Sucursales")
                         .HasForeignKey("IdTienda")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -779,9 +767,7 @@ namespace TiendaAPI.Migrations
                 {
                     b.HasOne("TiendaAPI.Models.TipoTalle", "TipoTalle")
                         .WithMany("Talles")
-                        .HasForeignKey("IdTipoTalle")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdTipoTalle");
 
                     b.Navigation("TipoTalle");
                 });
@@ -806,10 +792,8 @@ namespace TiendaAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("TiendaAPI.Models.Rol", "Rol")
-                        .WithMany("Usuario")
-                        .HasForeignKey("IdRol")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Usuarios")
+                        .HasForeignKey("IdRol");
 
                     b.Navigation("Empleado");
 
@@ -819,7 +803,7 @@ namespace TiendaAPI.Migrations
             modelBuilder.Entity("TiendaAPI.Models.Venta", b =>
                 {
                     b.HasOne("TiendaAPI.Models.Cliente", "Cliente")
-                        .WithMany("Venta")
+                        .WithMany("Ventas")
                         .HasForeignKey("IdCliente")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -833,13 +817,13 @@ namespace TiendaAPI.Migrations
                     b.HasOne("TiendaAPI.Models.TipoDeComprobante", "TipoDeComprobante")
                         .WithMany("Ventas")
                         .HasForeignKey("IdTipoDeComprobante")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TiendaAPI.Models.Usuario", "Usuario")
-                        .WithOne()
-                        .HasForeignKey("TiendaAPI.Models.Venta", "IdUsuario")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany("Ventas")
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Cliente");
@@ -863,12 +847,12 @@ namespace TiendaAPI.Migrations
 
             modelBuilder.Entity("TiendaAPI.Models.Cliente", b =>
                 {
-                    b.Navigation("Venta");
+                    b.Navigation("Ventas");
                 });
 
             modelBuilder.Entity("TiendaAPI.Models.Color", b =>
                 {
-                    b.Navigation("Inventario");
+                    b.Navigation("Inventarios");
                 });
 
             modelBuilder.Entity("TiendaAPI.Models.CondicionTributaria", b =>
@@ -885,7 +869,7 @@ namespace TiendaAPI.Migrations
 
             modelBuilder.Entity("TiendaAPI.Models.Inventario", b =>
                 {
-                    b.Navigation("LineaDeVenta");
+                    b.Navigation("LineasDeVentas");
                 });
 
             modelBuilder.Entity("TiendaAPI.Models.Marca", b =>
@@ -902,7 +886,7 @@ namespace TiendaAPI.Migrations
 
             modelBuilder.Entity("TiendaAPI.Models.Rol", b =>
                 {
-                    b.Navigation("Usuario");
+                    b.Navigation("Usuarios");
                 });
 
             modelBuilder.Entity("TiendaAPI.Models.Sucursal", b =>
@@ -914,14 +898,19 @@ namespace TiendaAPI.Migrations
                     b.Navigation("PuntosDeVentas");
                 });
 
+            modelBuilder.Entity("TiendaAPI.Models.Talle", b =>
+                {
+                    b.Navigation("Inventarios");
+                });
+
             modelBuilder.Entity("TiendaAPI.Models.Tienda", b =>
                 {
-                    b.Navigation("Sucursal");
+                    b.Navigation("Sucursales");
                 });
 
             modelBuilder.Entity("TiendaAPI.Models.TipoDeComprobante", b =>
                 {
-                    b.Navigation("CondicionTributarias");
+                    b.Navigation("CondicionesTributarias");
 
                     b.Navigation("Ventas");
                 });
@@ -936,13 +925,15 @@ namespace TiendaAPI.Migrations
             modelBuilder.Entity("TiendaAPI.Models.Usuario", b =>
                 {
                     b.Navigation("Sesion");
+
+                    b.Navigation("Ventas");
                 });
 
             modelBuilder.Entity("TiendaAPI.Models.Venta", b =>
                 {
                     b.Navigation("Comprobante");
 
-                    b.Navigation("LineaDeVenta");
+                    b.Navigation("LineasDeVentas");
 
                     b.Navigation("Pago");
                 });

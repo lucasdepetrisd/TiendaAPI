@@ -16,5 +16,5 @@ public partial class Tienda
     [ForeignKey("IdCondicionTributaria")]
     public virtual CondicionTributaria CondicionTributaria { get; set; } = null!;
 
-    public virtual ICollection<Sucursal> Sucursal { get; set; } = new List<Sucursal>();
+    public virtual ICollection<Sucursal> Sucursales { get; set; } = new List<Sucursal>();
 }

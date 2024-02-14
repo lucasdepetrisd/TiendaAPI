@@ -28,5 +28,5 @@ public partial class Inventario
     [ForeignKey("IdArticulo")]
     public virtual Articulo Articulo { get; set; } = null!;
 
-    public virtual ICollection<LineaDeVenta> LineaDeVenta { get; set; } = new List<LineaDeVenta>();
+    public virtual ICollection<LineaDeVenta> LineasDeVentas { get; set; } = new List<LineaDeVenta>();
 }

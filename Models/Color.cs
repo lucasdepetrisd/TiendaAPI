@@ -11,5 +11,5 @@ public partial class Color
 
     public string Nombre { get; set; } = null!;
 
-    public virtual ICollection<Inventario> Inventario { get; set; } = new List<Inventario>();
+    public virtual ICollection<Inventario> Inventarios { get; set; } = new List<Inventario>();
 }

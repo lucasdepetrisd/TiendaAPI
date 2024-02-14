@@ -17,9 +17,9 @@ public partial class Cliente
     public string? Email { get; set; }
     public string Domicilio { get; set; } = null!;
 
-    public int IdCondicionTributaria { get; set; }
+    public int? IdCondicionTributaria { get; set; }
     [ForeignKey("IdCondicionTributaria")]
-    public virtual CondicionTributaria CondicionTributaria { get; set; } = null!;
+    public virtual CondicionTributaria? CondicionTributaria { get; set; }
 
-    public virtual ICollection<Venta> Venta { get; set; } = new List<Venta>();
+    public virtual ICollection<Venta> Ventas { get; set; } = new List<Venta>();
 }

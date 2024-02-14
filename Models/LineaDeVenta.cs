@@ -49,5 +49,5 @@ public partial class LineaDeVenta
 
     public int IdVenta { get; set; }
     [ForeignKey("IdVenta")]
-    public Venta Venta { get; set; } = null!;
+    public virtual Venta Venta { get; set; } = null!;
 }

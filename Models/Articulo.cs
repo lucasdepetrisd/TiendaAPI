@@ -17,15 +17,15 @@ public partial class Articulo
     public int PorcentajeIVA { get; set; }
     public int MargenGanancia { get; set; }
     
-    public int IdCategoria { get; set; }
+    public int? IdCategoria { get; set; }
     [ForeignKey("IdCategoria")]
     public virtual Categoria? Categoria { get; set; }
 
-    public int IdMarca { get; set; }
+    public int? IdMarca { get; set; }
     [ForeignKey("IdMarca")]
     public virtual Marca? Marca { get; set; }
 
-    public int IdTipoTalle { get; set; }
+    public int? IdTipoTalle { get; set; }
     [ForeignKey("IdTipoTalle")]
     public virtual TipoTalle? TipoTalle { get; set; }
 

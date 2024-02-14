@@ -20,24 +20,24 @@ public partial class Venta
 
     public string? Observaciones { get; set; }
 
+    public virtual Pago? Pago { get; set; }
+    public virtual Comprobante? Comprobante { get; set; }
+
     public int IdCliente { get; set; }
     [ForeignKey("IdCliente")]
     public virtual Cliente Cliente { get; set; } = null!;
 
-    public virtual Pago? Pago { get; set; }
-    public virtual Comprobante? Comprobante { get; set; }
-
     public int IdTipoDeComprobante { get; set; }
     [ForeignKey("IdTipoDeComprobante")]
-    public TipoDeComprobante TipoDeComprobante { get; set; } = null!;
+    public virtual TipoDeComprobante TipoDeComprobante { get; set; } = null!;
 
     public int IdUsuario { get; set; }
     [ForeignKey("IdUsuario")]
-    public virtual Usuario? Usuario { get; set; }
+    public virtual Usuario Usuario { get; set; } = null!;
 
     public int IdPuntoVenta { get; set; }
     [ForeignKey("IdPuntoVenta")]
-    public PuntoDeVenta PuntoDeVenta { get; set; } = null!;
+    public virtual PuntoDeVenta PuntoDeVenta { get; set; } = null!;
 
-    public ICollection<LineaDeVenta> LineaDeVenta { get; set; } = new List<LineaDeVenta>();
+    public virtual ICollection<LineaDeVenta> LineasDeVentas { get; set; } = new List<LineaDeVenta>();
 }

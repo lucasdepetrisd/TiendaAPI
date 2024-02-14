@@ -12,9 +12,9 @@ public partial class Talle
 
     public string? Medida { get; set; }
 
-    public int IdTipoTalle { get; set; }
+    public int? IdTipoTalle { get; set; }
     [ForeignKey("IdTipoTalle")]
     public virtual TipoTalle? TipoTalle { get; set; }
 
-    //public virtual ICollection<Inventario> Inventarios { get; set; } = new List<Inventario>();
+    public virtual ICollection<Inventario> Inventarios { get; set; } = new List<Inventario>();
 }

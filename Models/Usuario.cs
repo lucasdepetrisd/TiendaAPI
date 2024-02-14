@@ -16,11 +16,13 @@ public partial class Usuario
 
     public Sesion? Sesion { get; set; }
 
-    public int IdRol { get; set; }
+    public int? IdRol { get; set; }
     [ForeignKey("IdRol")]
     public virtual Rol? Rol { get; set; }
 
     public int IdEmpleado { get; set; }
     [ForeignKey("IdEmpleado")]
     public virtual Empleado Empleado { get; set; } = null!;
+
+    public virtual ICollection<Venta> Ventas { get; set; } = new List<Venta>();
 }

@@ -18,7 +18,7 @@ namespace TiendaAPI.Migrations
                 name: "Admin");
 
             migrationBuilder.EnsureSchema(
-                name: "Venta");
+                name: "Ventas");
 
             migrationBuilder.CreateTable(
                 name: "Categoria",
@@ -78,7 +78,7 @@ namespace TiendaAPI.Migrations
 
             migrationBuilder.CreateTable(
                 name: "TipoDeComprobante",
-                schema: "Venta",
+                schema: "Ventas",
                 columns: table => new
                 {
                     IdTipoDeComprobante = table.Column<int>(type: "int", nullable: false)
@@ -120,7 +120,7 @@ namespace TiendaAPI.Migrations
                     table.ForeignKey(
                         name: "FK_CondicionTributaria_TipoDeComprobante_IdTipoDeComprobante",
                         column: x => x.IdTipoDeComprobante,
-                        principalSchema: "Venta",
+                        principalSchema: "Ventas",
                         principalTable: "TipoDeComprobante",
                         principalColumn: "IdTipoDeComprobante",
                         onDelete: ReferentialAction.Cascade);
@@ -138,9 +138,9 @@ namespace TiendaAPI.Migrations
                     Costo = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     PorcentajeIVA = table.Column<int>(type: "int", nullable: false),
                     MargenGanancia = table.Column<int>(type: "int", nullable: false),
-                    IdCategoria = table.Column<int>(type: "int", nullable: false),
-                    IdMarca = table.Column<int>(type: "int", nullable: false),
-                    IdTipoTalle = table.Column<int>(type: "int", nullable: false)
+                    IdCategoria = table.Column<int>(type: "int", nullable: true),
+                    IdMarca = table.Column<int>(type: "int", nullable: true),
+                    IdTipoTalle = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -150,22 +150,19 @@ namespace TiendaAPI.Migrations
                         column: x => x.IdCategoria,
                         principalSchema: "Articulo",
                         principalTable: "Categoria",
-                        principalColumn: "IdCategoria",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdCategoria");
                     table.ForeignKey(
                         name: "FK_Articulo_Marca_IdMarca",
                         column: x => x.IdMarca,
                         principalSchema: "Articulo",
                         principalTable: "Marca",
-                        principalColumn: "IdMarca",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdMarca");
                     table.ForeignKey(
                         name: "FK_Articulo_TipoTalle_IdTipoTalle",
                         column: x => x.IdTipoTalle,
                         principalSchema: "Articulo",
                         principalTable: "TipoTalle",
-                        principalColumn: "IdTipoTalle",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdTipoTalle");
                 });
 
             migrationBuilder.CreateTable(
@@ -176,7 +173,7 @@ namespace TiendaAPI.Migrations
                     IdTalle = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Medida = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IdTipoTalle = table.Column<int>(type: "int", nullable: false)
+                    IdTipoTalle = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -186,8 +183,7 @@ namespace TiendaAPI.Migrations
                         column: x => x.IdTipoTalle,
                         principalSchema: "Articulo",
                         principalTable: "TipoTalle",
-                        principalColumn: "IdTipoTalle",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdTipoTalle");
                 });
 
             migrationBuilder.CreateTable(
@@ -204,7 +200,7 @@ namespace TiendaAPI.Migrations
                     Telefono = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Domicilio = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdCondicionTributaria = table.Column<int>(type: "int", nullable: false)
+                    IdCondicionTributaria = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -214,8 +210,7 @@ namespace TiendaAPI.Migrations
                         column: x => x.IdCondicionTributaria,
                         principalSchema: "Admin",
                         principalTable: "CondicionTributaria",
-                        principalColumn: "IdCondicionTributaria",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdCondicionTributaria");
                 });
 
             migrationBuilder.CreateTable(
@@ -334,7 +329,8 @@ namespace TiendaAPI.Migrations
                         column: x => x.IdTalle,
                         principalSchema: "Articulo",
                         principalTable: "Talle",
-                        principalColumn: "IdTalle");
+                        principalColumn: "IdTalle",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -369,7 +365,7 @@ namespace TiendaAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NombreUsuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IdRol = table.Column<int>(type: "int", nullable: false),
+                    IdRol = table.Column<int>(type: "int", nullable: true),
                     IdEmpleado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -387,8 +383,7 @@ namespace TiendaAPI.Migrations
                         column: x => x.IdRol,
                         principalSchema: "Admin",
                         principalTable: "Rol",
-                        principalColumn: "IdRol",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdRol");
                 });
 
             migrationBuilder.CreateTable(
@@ -401,7 +396,7 @@ namespace TiendaAPI.Migrations
                     FechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FechaFin = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IdUsuario = table.Column<int>(type: "int", nullable: false),
-                    IdPuntoDeVenta = table.Column<int>(type: "int", nullable: false)
+                    IdPuntoDeVenta = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -411,19 +406,19 @@ namespace TiendaAPI.Migrations
                         column: x => x.IdPuntoDeVenta,
                         principalSchema: "Admin",
                         principalTable: "PuntoDeVenta",
-                        principalColumn: "IdPuntoDeVenta",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdPuntoDeVenta");
                     table.ForeignKey(
                         name: "FK_Sesion_Usuario_IdUsuario",
                         column: x => x.IdUsuario,
                         principalSchema: "Admin",
                         principalTable: "Usuario",
-                        principalColumn: "IdUsuario");
+                        principalColumn: "IdUsuario",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Venta",
-                schema: "Venta",
+                schema: "Ventas",
                 columns: table => new
                 {
                     IdVenta = table.Column<int>(type: "int", nullable: false)
@@ -435,9 +430,7 @@ namespace TiendaAPI.Migrations
                     IdCliente = table.Column<int>(type: "int", nullable: false),
                     IdTipoDeComprobante = table.Column<int>(type: "int", nullable: false),
                     IdUsuario = table.Column<int>(type: "int", nullable: false),
-                    IdPuntoVenta = table.Column<int>(type: "int", nullable: false),
-                    PuntoDeVentaIdPuntoDeVenta = table.Column<int>(type: "int", nullable: true),
-                    TipoDeComprobanteIdTipoDeComprobante = table.Column<int>(type: "int", nullable: true)
+                    IdPuntoVenta = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -454,36 +447,27 @@ namespace TiendaAPI.Migrations
                         column: x => x.IdPuntoVenta,
                         principalSchema: "Admin",
                         principalTable: "PuntoDeVenta",
-                        principalColumn: "IdPuntoDeVenta");
-                    table.ForeignKey(
-                        name: "FK_Venta_PuntoDeVenta_PuntoDeVentaIdPuntoDeVenta",
-                        column: x => x.PuntoDeVentaIdPuntoDeVenta,
-                        principalSchema: "Admin",
-                        principalTable: "PuntoDeVenta",
-                        principalColumn: "IdPuntoDeVenta");
+                        principalColumn: "IdPuntoDeVenta",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Venta_TipoDeComprobante_IdTipoDeComprobante",
                         column: x => x.IdTipoDeComprobante,
-                        principalSchema: "Venta",
+                        principalSchema: "Ventas",
                         principalTable: "TipoDeComprobante",
-                        principalColumn: "IdTipoDeComprobante");
-                    table.ForeignKey(
-                        name: "FK_Venta_TipoDeComprobante_TipoDeComprobanteIdTipoDeComprobante",
-                        column: x => x.TipoDeComprobanteIdTipoDeComprobante,
-                        principalSchema: "Venta",
-                        principalTable: "TipoDeComprobante",
-                        principalColumn: "IdTipoDeComprobante");
+                        principalColumn: "IdTipoDeComprobante",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Venta_Usuario_IdUsuario",
                         column: x => x.IdUsuario,
                         principalSchema: "Admin",
                         principalTable: "Usuario",
-                        principalColumn: "IdUsuario");
+                        principalColumn: "IdUsuario",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Comprobante",
-                schema: "Venta",
+                schema: "Ventas",
                 columns: table => new
                 {
                     IdComprobante = table.Column<int>(type: "int", nullable: false)
@@ -496,7 +480,7 @@ namespace TiendaAPI.Migrations
                     table.ForeignKey(
                         name: "FK_Comprobante_Venta_IdVenta",
                         column: x => x.IdVenta,
-                        principalSchema: "Venta",
+                        principalSchema: "Ventas",
                         principalTable: "Venta",
                         principalColumn: "IdVenta",
                         onDelete: ReferentialAction.Cascade);
@@ -504,7 +488,7 @@ namespace TiendaAPI.Migrations
 
             migrationBuilder.CreateTable(
                 name: "LineaDeVenta",
-                schema: "Venta",
+                schema: "Ventas",
                 columns: table => new
                 {
                     IdLineaDeVenta = table.Column<int>(type: "int", nullable: false)
@@ -512,8 +496,7 @@ namespace TiendaAPI.Migrations
                     Cantidad = table.Column<int>(type: "int", nullable: false),
                     PorcentajeIVA = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     IdInventario = table.Column<int>(type: "int", nullable: false),
-                    IdVenta = table.Column<int>(type: "int", nullable: false),
-                    VentaIdVenta = table.Column<int>(type: "int", nullable: true)
+                    IdVenta = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -528,20 +511,15 @@ namespace TiendaAPI.Migrations
                     table.ForeignKey(
                         name: "FK_LineaDeVenta_Venta_IdVenta",
                         column: x => x.IdVenta,
-                        principalSchema: "Venta",
+                        principalSchema: "Ventas",
                         principalTable: "Venta",
-                        principalColumn: "IdVenta");
-                    table.ForeignKey(
-                        name: "FK_LineaDeVenta_Venta_VentaIdVenta",
-                        column: x => x.VentaIdVenta,
-                        principalSchema: "Venta",
-                        principalTable: "Venta",
-                        principalColumn: "IdVenta");
+                        principalColumn: "IdVenta",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Pago",
-                schema: "Venta",
+                schema: "Ventas",
                 columns: table => new
                 {
                     IdPago = table.Column<int>(type: "int", nullable: false)
@@ -558,7 +536,7 @@ namespace TiendaAPI.Migrations
                     table.ForeignKey(
                         name: "FK_Pago_Venta_IdVenta",
                         column: x => x.IdVenta,
-                        principalSchema: "Venta",
+                        principalSchema: "Ventas",
                         principalTable: "Venta",
                         principalColumn: "IdVenta",
                         onDelete: ReferentialAction.Cascade);
@@ -590,7 +568,7 @@ namespace TiendaAPI.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comprobante_IdVenta",
-                schema: "Venta",
+                schema: "Ventas",
                 table: "Comprobante",
                 column: "IdVenta",
                 unique: true);
@@ -629,31 +607,23 @@ namespace TiendaAPI.Migrations
                 name: "IX_Inventario_IdTalle",
                 schema: "Articulo",
                 table: "Inventario",
-                column: "IdTalle",
-                unique: true);
+                column: "IdTalle");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LineaDeVenta_IdInventario",
-                schema: "Venta",
+                schema: "Ventas",
                 table: "LineaDeVenta",
                 column: "IdInventario");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LineaDeVenta_IdVenta",
-                schema: "Venta",
+                schema: "Ventas",
                 table: "LineaDeVenta",
-                column: "IdVenta",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LineaDeVenta_VentaIdVenta",
-                schema: "Venta",
-                table: "LineaDeVenta",
-                column: "VentaIdVenta");
+                column: "IdVenta");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pago_IdVenta",
-                schema: "Venta",
+                schema: "Ventas",
                 table: "Pago",
                 column: "IdVenta",
                 unique: true);
@@ -711,42 +681,27 @@ namespace TiendaAPI.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Venta_IdCliente",
-                schema: "Venta",
+                schema: "Ventas",
                 table: "Venta",
                 column: "IdCliente");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Venta_IdPuntoVenta",
-                schema: "Venta",
+                schema: "Ventas",
                 table: "Venta",
-                column: "IdPuntoVenta",
-                unique: true);
+                column: "IdPuntoVenta");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Venta_IdTipoDeComprobante",
-                schema: "Venta",
+                schema: "Ventas",
                 table: "Venta",
-                column: "IdTipoDeComprobante",
-                unique: true);
+                column: "IdTipoDeComprobante");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Venta_IdUsuario",
-                schema: "Venta",
+                schema: "Ventas",
                 table: "Venta",
-                column: "IdUsuario",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Venta_PuntoDeVentaIdPuntoDeVenta",
-                schema: "Venta",
-                table: "Venta",
-                column: "PuntoDeVentaIdPuntoDeVenta");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Venta_TipoDeComprobanteIdTipoDeComprobante",
-                schema: "Venta",
-                table: "Venta",
-                column: "TipoDeComprobanteIdTipoDeComprobante");
+                column: "IdUsuario");
         }
 
         /// <inheritdoc />
@@ -754,15 +709,15 @@ namespace TiendaAPI.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Comprobante",
-                schema: "Venta");
+                schema: "Ventas");
 
             migrationBuilder.DropTable(
                 name: "LineaDeVenta",
-                schema: "Venta");
+                schema: "Ventas");
 
             migrationBuilder.DropTable(
                 name: "Pago",
-                schema: "Venta");
+                schema: "Ventas");
 
             migrationBuilder.DropTable(
                 name: "Sesion",
@@ -774,7 +729,7 @@ namespace TiendaAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Venta",
-                schema: "Venta");
+                schema: "Ventas");
 
             migrationBuilder.DropTable(
                 name: "Articulo",
@@ -834,7 +789,7 @@ namespace TiendaAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "TipoDeComprobante",
-                schema: "Venta");
+                schema: "Ventas");
         }
     }
 }
