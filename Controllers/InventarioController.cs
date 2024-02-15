@@ -12,55 +12,55 @@ namespace TiendaAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TalleController : ControllerBase
+    public class InventarioController : ControllerBase
     {
         private readonly TiendaContext _context;
 
-        public TalleController(TiendaContext context)
+        public InventarioController(TiendaContext context)
         {
             _context = context;
         }
 
-        // GET: api/Talle
+        // GET: api/Inventario
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Talle>>> GetTalle()
+        public async Task<ActionResult<IEnumerable<Inventario>>> GetInventario()
         {
-          if (_context.Talle == null)
+          if (_context.Inventario == null)
           {
               return NotFound();
           }
-            return await _context.Talle.ToListAsync();
+            return await _context.Inventario.ToListAsync();
         }
 
-        // GET: api/Talle/5
+        // GET: api/Inventario/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Talle>> GetTalle(int id)
+        public async Task<ActionResult<Inventario>> GetInventario(int id)
         {
-          if (_context.Talle == null)
+          if (_context.Inventario == null)
           {
               return NotFound();
           }
-            var talle = await _context.Talle.FindAsync(id);
+            var inventario = await _context.Inventario.FindAsync(id);
 
-            if (talle == null)
+            if (inventario == null)
             {
                 return NotFound();
             }
 
-            return talle;
+            return inventario;
         }
 
-        // PUT: api/Talle/5
+        // PUT: api/Inventario/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTalle(int id, Talle talle)
+        public async Task<IActionResult> PutInventario(int id, Inventario inventario)
         {
-            if (id != talle.IdTalle)
+            if (id != inventario.IdInventario)
             {
                 return BadRequest();
             }
 
-            _context.Entry(talle).State = EntityState.Modified;
+            _context.Entry(inventario).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace TiendaAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TalleExists(id))
+                if (!InventarioExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace TiendaAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Talle
+        // POST: api/Inventario
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Talle>> PostTalle(Talle talle)
+        public async Task<ActionResult<Inventario>> PostInventario(Inventario inventario)
         {
-          if (_context.Talle == null)
+          if (_context.Inventario == null)
           {
-              return Problem("Entity set 'TiendaContext.Talle'  is null.");
+              return Problem("Entity set 'TiendaContext.Inventario'  is null.");
           }
-            _context.Talle.Add(talle);
+            _context.Inventario.Add(inventario);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTalle", new { id = talle.IdTalle }, talle);
+            return CreatedAtAction("GetInventario", new { id = inventario.IdInventario }, inventario);
         }
 
-        // DELETE: api/Talle/5
+        // DELETE: api/Inventario/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTalle(int id)
+        public async Task<IActionResult> DeleteInventario(int id)
         {
-            if (_context.Talle == null)
+            if (_context.Inventario == null)
             {
                 return NotFound();
             }
-            var talle = await _context.Talle.FindAsync(id);
-            if (talle == null)
+            var inventario = await _context.Inventario.FindAsync(id);
+            if (inventario == null)
             {
                 return NotFound();
             }
 
-            _context.Talle.Remove(talle);
+            _context.Inventario.Remove(inventario);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool TalleExists(int id)
+        private bool InventarioExists(int id)
         {
-            return (_context.Talle?.Any(e => e.IdTalle == id)).GetValueOrDefault();
+            return (_context.Inventario?.Any(e => e.IdInventario == id)).GetValueOrDefault();
         }
     }
 }

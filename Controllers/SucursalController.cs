@@ -12,55 +12,55 @@ namespace TiendaAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TalleController : ControllerBase
+    public class SucursalController : ControllerBase
     {
         private readonly TiendaContext _context;
 
-        public TalleController(TiendaContext context)
+        public SucursalController(TiendaContext context)
         {
             _context = context;
         }
 
-        // GET: api/Talle
+        // GET: api/Sucursal
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Talle>>> GetTalle()
+        public async Task<ActionResult<IEnumerable<Sucursal>>> GetSucursal()
         {
-          if (_context.Talle == null)
+          if (_context.Sucursal == null)
           {
               return NotFound();
           }
-            return await _context.Talle.ToListAsync();
+            return await _context.Sucursal.ToListAsync();
         }
 
-        // GET: api/Talle/5
+        // GET: api/Sucursal/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Talle>> GetTalle(int id)
+        public async Task<ActionResult<Sucursal>> GetSucursal(int id)
         {
-          if (_context.Talle == null)
+          if (_context.Sucursal == null)
           {
               return NotFound();
           }
-            var talle = await _context.Talle.FindAsync(id);
+            var sucursal = await _context.Sucursal.FindAsync(id);
 
-            if (talle == null)
+            if (sucursal == null)
             {
                 return NotFound();
             }
 
-            return talle;
+            return sucursal;
         }
 
-        // PUT: api/Talle/5
+        // PUT: api/Sucursal/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTalle(int id, Talle talle)
+        public async Task<IActionResult> PutSucursal(int id, Sucursal sucursal)
         {
-            if (id != talle.IdTalle)
+            if (id != sucursal.IdSucursal)
             {
                 return BadRequest();
             }
 
-            _context.Entry(talle).State = EntityState.Modified;
+            _context.Entry(sucursal).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace TiendaAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TalleExists(id))
+                if (!SucursalExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace TiendaAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Talle
+        // POST: api/Sucursal
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Talle>> PostTalle(Talle talle)
+        public async Task<ActionResult<Sucursal>> PostSucursal(Sucursal sucursal)
         {
-          if (_context.Talle == null)
+          if (_context.Sucursal == null)
           {
-              return Problem("Entity set 'TiendaContext.Talle'  is null.");
+              return Problem("Entity set 'TiendaContext.Sucursal'  is null.");
           }
-            _context.Talle.Add(talle);
+            _context.Sucursal.Add(sucursal);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTalle", new { id = talle.IdTalle }, talle);
+            return CreatedAtAction("GetSucursal", new { id = sucursal.IdSucursal }, sucursal);
         }
 
-        // DELETE: api/Talle/5
+        // DELETE: api/Sucursal/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTalle(int id)
+        public async Task<IActionResult> DeleteSucursal(int id)
         {
-            if (_context.Talle == null)
+            if (_context.Sucursal == null)
             {
                 return NotFound();
             }
-            var talle = await _context.Talle.FindAsync(id);
-            if (talle == null)
+            var sucursal = await _context.Sucursal.FindAsync(id);
+            if (sucursal == null)
             {
                 return NotFound();
             }
 
-            _context.Talle.Remove(talle);
+            _context.Sucursal.Remove(sucursal);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool TalleExists(int id)
+        private bool SucursalExists(int id)
         {
-            return (_context.Talle?.Any(e => e.IdTalle == id)).GetValueOrDefault();
+            return (_context.Sucursal?.Any(e => e.IdSucursal == id)).GetValueOrDefault();
         }
     }
 }

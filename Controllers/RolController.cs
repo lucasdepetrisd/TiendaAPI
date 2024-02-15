@@ -12,55 +12,55 @@ namespace TiendaAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TalleController : ControllerBase
+    public class RolController : ControllerBase
     {
         private readonly TiendaContext _context;
 
-        public TalleController(TiendaContext context)
+        public RolController(TiendaContext context)
         {
             _context = context;
         }
 
-        // GET: api/Talle
+        // GET: api/Rol
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Talle>>> GetTalle()
+        public async Task<ActionResult<IEnumerable<Rol>>> GetRol()
         {
-          if (_context.Talle == null)
+          if (_context.Rol == null)
           {
               return NotFound();
           }
-            return await _context.Talle.ToListAsync();
+            return await _context.Rol.ToListAsync();
         }
 
-        // GET: api/Talle/5
+        // GET: api/Rol/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Talle>> GetTalle(int id)
+        public async Task<ActionResult<Rol>> GetRol(int id)
         {
-          if (_context.Talle == null)
+          if (_context.Rol == null)
           {
               return NotFound();
           }
-            var talle = await _context.Talle.FindAsync(id);
+            var rol = await _context.Rol.FindAsync(id);
 
-            if (talle == null)
+            if (rol == null)
             {
                 return NotFound();
             }
 
-            return talle;
+            return rol;
         }
 
-        // PUT: api/Talle/5
+        // PUT: api/Rol/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTalle(int id, Talle talle)
+        public async Task<IActionResult> PutRol(int id, Rol rol)
         {
-            if (id != talle.IdTalle)
+            if (id != rol.IdRol)
             {
                 return BadRequest();
             }
 
-            _context.Entry(talle).State = EntityState.Modified;
+            _context.Entry(rol).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace TiendaAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TalleExists(id))
+                if (!RolExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace TiendaAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Talle
+        // POST: api/Rol
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Talle>> PostTalle(Talle talle)
+        public async Task<ActionResult<Rol>> PostRol(Rol rol)
         {
-          if (_context.Talle == null)
+          if (_context.Rol == null)
           {
-              return Problem("Entity set 'TiendaContext.Talle'  is null.");
+              return Problem("Entity set 'TiendaContext.Rol'  is null.");
           }
-            _context.Talle.Add(talle);
+            _context.Rol.Add(rol);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTalle", new { id = talle.IdTalle }, talle);
+            return CreatedAtAction("GetRol", new { id = rol.IdRol }, rol);
         }
 
-        // DELETE: api/Talle/5
+        // DELETE: api/Rol/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTalle(int id)
+        public async Task<IActionResult> DeleteRol(int id)
         {
-            if (_context.Talle == null)
+            if (_context.Rol == null)
             {
                 return NotFound();
             }
-            var talle = await _context.Talle.FindAsync(id);
-            if (talle == null)
+            var rol = await _context.Rol.FindAsync(id);
+            if (rol == null)
             {
                 return NotFound();
             }
 
-            _context.Talle.Remove(talle);
+            _context.Rol.Remove(rol);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool TalleExists(int id)
+        private bool RolExists(int id)
         {
-            return (_context.Talle?.Any(e => e.IdTalle == id)).GetValueOrDefault();
+            return (_context.Rol?.Any(e => e.IdRol == id)).GetValueOrDefault();
         }
     }
 }

@@ -12,55 +12,55 @@ namespace TiendaAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TalleController : ControllerBase
+    public class EmpleadoController : ControllerBase
     {
         private readonly TiendaContext _context;
 
-        public TalleController(TiendaContext context)
+        public EmpleadoController(TiendaContext context)
         {
             _context = context;
         }
 
-        // GET: api/Talle
+        // GET: api/Empleado
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Talle>>> GetTalle()
+        public async Task<ActionResult<IEnumerable<Empleado>>> GetEmpleado()
         {
-          if (_context.Talle == null)
+          if (_context.Empleado == null)
           {
               return NotFound();
           }
-            return await _context.Talle.ToListAsync();
+            return await _context.Empleado.ToListAsync();
         }
 
-        // GET: api/Talle/5
+        // GET: api/Empleado/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Talle>> GetTalle(int id)
+        public async Task<ActionResult<Empleado>> GetEmpleado(int id)
         {
-          if (_context.Talle == null)
+          if (_context.Empleado == null)
           {
               return NotFound();
           }
-            var talle = await _context.Talle.FindAsync(id);
+            var empleado = await _context.Empleado.FindAsync(id);
 
-            if (talle == null)
+            if (empleado == null)
             {
                 return NotFound();
             }
 
-            return talle;
+            return empleado;
         }
 
-        // PUT: api/Talle/5
+        // PUT: api/Empleado/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTalle(int id, Talle talle)
+        public async Task<IActionResult> PutEmpleado(int id, Empleado empleado)
         {
-            if (id != talle.IdTalle)
+            if (id != empleado.IdEmpleado)
             {
                 return BadRequest();
             }
 
-            _context.Entry(talle).State = EntityState.Modified;
+            _context.Entry(empleado).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace TiendaAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TalleExists(id))
+                if (!EmpleadoExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace TiendaAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Talle
+        // POST: api/Empleado
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Talle>> PostTalle(Talle talle)
+        public async Task<ActionResult<Empleado>> PostEmpleado(Empleado empleado)
         {
-          if (_context.Talle == null)
+          if (_context.Empleado == null)
           {
-              return Problem("Entity set 'TiendaContext.Talle'  is null.");
+              return Problem("Entity set 'TiendaContext.Empleado'  is null.");
           }
-            _context.Talle.Add(talle);
+            _context.Empleado.Add(empleado);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTalle", new { id = talle.IdTalle }, talle);
+            return CreatedAtAction("GetEmpleado", new { id = empleado.IdEmpleado }, empleado);
         }
 
-        // DELETE: api/Talle/5
+        // DELETE: api/Empleado/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTalle(int id)
+        public async Task<IActionResult> DeleteEmpleado(int id)
         {
-            if (_context.Talle == null)
+            if (_context.Empleado == null)
             {
                 return NotFound();
             }
-            var talle = await _context.Talle.FindAsync(id);
-            if (talle == null)
+            var empleado = await _context.Empleado.FindAsync(id);
+            if (empleado == null)
             {
                 return NotFound();
             }
 
-            _context.Talle.Remove(talle);
+            _context.Empleado.Remove(empleado);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool TalleExists(int id)
+        private bool EmpleadoExists(int id)
         {
-            return (_context.Talle?.Any(e => e.IdTalle == id)).GetValueOrDefault();
+            return (_context.Empleado?.Any(e => e.IdEmpleado == id)).GetValueOrDefault();
         }
     }
 }

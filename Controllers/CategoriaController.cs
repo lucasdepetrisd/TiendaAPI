@@ -12,55 +12,55 @@ namespace TiendaAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TalleController : ControllerBase
+    public class CategoriaController : ControllerBase
     {
         private readonly TiendaContext _context;
 
-        public TalleController(TiendaContext context)
+        public CategoriaController(TiendaContext context)
         {
             _context = context;
         }
 
-        // GET: api/Talle
+        // GET: api/Categoria
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Talle>>> GetTalle()
+        public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoria()
         {
-          if (_context.Talle == null)
+          if (_context.Categoria == null)
           {
               return NotFound();
           }
-            return await _context.Talle.ToListAsync();
+            return await _context.Categoria.ToListAsync();
         }
 
-        // GET: api/Talle/5
+        // GET: api/Categoria/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Talle>> GetTalle(int id)
+        public async Task<ActionResult<Categoria>> GetCategoria(int id)
         {
-          if (_context.Talle == null)
+          if (_context.Categoria == null)
           {
               return NotFound();
           }
-            var talle = await _context.Talle.FindAsync(id);
+            var categoria = await _context.Categoria.FindAsync(id);
 
-            if (talle == null)
+            if (categoria == null)
             {
                 return NotFound();
             }
 
-            return talle;
+            return categoria;
         }
 
-        // PUT: api/Talle/5
+        // PUT: api/Categoria/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTalle(int id, Talle talle)
+        public async Task<IActionResult> PutCategoria(int id, Categoria categoria)
         {
-            if (id != talle.IdTalle)
+            if (id != categoria.IdCategoria)
             {
                 return BadRequest();
             }
 
-            _context.Entry(talle).State = EntityState.Modified;
+            _context.Entry(categoria).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace TiendaAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TalleExists(id))
+                if (!CategoriaExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace TiendaAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Talle
+        // POST: api/Categoria
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Talle>> PostTalle(Talle talle)
+        public async Task<ActionResult<Categoria>> PostCategoria(Categoria categoria)
         {
-          if (_context.Talle == null)
+          if (_context.Categoria == null)
           {
-              return Problem("Entity set 'TiendaContext.Talle'  is null.");
+              return Problem("Entity set 'TiendaContext.Categoria'  is null.");
           }
-            _context.Talle.Add(talle);
+            _context.Categoria.Add(categoria);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTalle", new { id = talle.IdTalle }, talle);
+            return CreatedAtAction("GetCategoria", new { id = categoria.IdCategoria }, categoria);
         }
 
-        // DELETE: api/Talle/5
+        // DELETE: api/Categoria/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTalle(int id)
+        public async Task<IActionResult> DeleteCategoria(int id)
         {
-            if (_context.Talle == null)
+            if (_context.Categoria == null)
             {
                 return NotFound();
             }
-            var talle = await _context.Talle.FindAsync(id);
-            if (talle == null)
+            var categoria = await _context.Categoria.FindAsync(id);
+            if (categoria == null)
             {
                 return NotFound();
             }
 
-            _context.Talle.Remove(talle);
+            _context.Categoria.Remove(categoria);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool TalleExists(int id)
+        private bool CategoriaExists(int id)
         {
-            return (_context.Talle?.Any(e => e.IdTalle == id)).GetValueOrDefault();
+            return (_context.Categoria?.Any(e => e.IdCategoria == id)).GetValueOrDefault();
         }
     }
 }
