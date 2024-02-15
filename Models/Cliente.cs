@@ -9,10 +9,10 @@ public partial class Cliente
 {
     [Key]
     public int IdCliente { get; set; }
-    public int Dni { get; set; }
-    public int Cuil { get; set; }
+    public string Dni { get; set; } = null!;
+    public string Cuil { get; set; } = null!;
     public string Nombre { get; set; } = null!;
-    public string Apellidos { get; set; } = null!;
+    public string Apellido { get; set; } = null!;
     public string? Telefono { get; set; }
     public string? Email { get; set; }
     public string Domicilio { get; set; } = null!;

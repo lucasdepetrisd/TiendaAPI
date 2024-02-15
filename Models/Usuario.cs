@@ -23,6 +23,5 @@ public partial class Usuario
     public int IdEmpleado { get; set; }
     [ForeignKey("IdEmpleado")]
     public virtual Empleado Empleado { get; set; } = null!;
-
     public virtual ICollection<Venta> Ventas { get; set; } = new List<Venta>();
 }
