@@ -54,7 +54,7 @@ public partial class TiendaContext : DbContext
 
     public virtual DbSet<Venta> Venta { get; set; }
 
-    public DbSet<Sesion> Sesion { get; set; } = default!;
+    public virtual DbSet<Sesion> Sesion { get; set; } // = default!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -66,66 +66,26 @@ public partial class TiendaContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        var sesionConfig = modelBuilder.Entity<Sesion>();
-        //sesionConfig.HasOne(s => s.Usuario).WithOne(u => u.Sesion).OnDelete(DeleteBehavior.NoAction);
-        //sesionConfig.HasOne(s => s.PuntoDeVenta).WithMany(p => p.Sesiones).OnDelete(DeleteBehavior.oAction);
+        var ventaConfig = modelBuilder.Entity<Venta>(venta =>
+        {
+            venta.HasOne(d => d.TipoDeComprobante).WithMany(p => p.Ventas)
+                .HasForeignKey(d => d.IdTipoDeComprobante)
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
-        var tipoCompConfig = modelBuilder.Entity<TipoDeComprobante>();
-        tipoCompConfig
-            .HasMany(t => t.Ventas)
-            .WithOne(v => v.TipoDeComprobante)            
-            .OnDelete(DeleteBehavior.Restrict);
+            venta.HasOne(d => d.Usuario).WithMany(p => p.Ventas)
+                .HasForeignKey(d => d.IdUsuario)
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
-        tipoCompConfig
-            .HasMany(t => t.Ventas)
-            .WithOne(v => v.TipoDeComprobante)
-            .HasForeignKey(v => v.IdTipoDeComprobante)
-            .IsRequired();
+            venta.HasOne(d => d.PuntoDeVenta).WithMany(p => p.Ventas)
+                .HasForeignKey(d => d.IdPuntoVenta)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
 
-        var usuarioConfig = modelBuilder.Entity<Usuario>();
-        usuarioConfig
-            .HasMany(t => t.Ventas)
-            .WithOne(v => v.Usuario)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        //ventaConfig.HasOne(v => v.Usuario)
-        //    .WithOne()
-        //    .HasForeignKey<Venta>(i => i.IdUsuario) // Assuming IdTalle is the foreign key property in Inventario
-        //    .OnDelete(DeleteBehavior.NoAction);
-        //ventaConfig.HasOne(v => v.PuntoDeVenta)
-        //    .WithOne()
-        //    .HasForeignKey<Venta>(i => i.IdPuntoVenta) // Assuming IdTalle is the foreign key property in Inventario
-        //    .OnDelete(DeleteBehavior.NoAction);
-
-        var ventaConfig = modelBuilder.Entity<Venta>();
-        ventaConfig
-            .HasMany(v => v.LineasDeVentas)
-            .WithOne(l => l.Venta)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        ventaConfig
-            .HasMany(v => v.LineasDeVentas)
-            .WithOne(l => l.Venta)
-            .HasForeignKey(l => l.IdVenta)
-            .IsRequired();
-
-        var ptoVtaConfig = modelBuilder.Entity<PuntoDeVenta>();
-        ptoVtaConfig
-            .HasMany(p => p.Ventas)
-            .WithOne(v => v.PuntoDeVenta)
-            .HasForeignKey(v => v.IdPuntoVenta)
-            .IsRequired();
-
-        //linvenConfig.HasOne(i => i.Venta)
-        //    .WithOne()
-        //    .HasForeignKey<LineaDeVenta>(i => i.IdVenta) // Assuming IdTalle is the foreign key property in Inventario
-        //    .OnDelete(DeleteBehavior.NoAction);
-        /*
-        var invConfig = modelBuilder.Entity<Inventario>();
-        invConfig.HasOne(i => i.Talle)
-            .WithOne()
-            .HasForeignKey<Inventario>(i => i.IdTalle) // Assuming IdTalle is the foreign key property in Inventario
-            .OnDelete(DeleteBehavior.NoAction);*/
+        modelBuilder.Entity<LineaDeVenta>(lineaDeVenta =>
+        {
+            lineaDeVenta.HasOne(d => d.Venta).WithMany(p => p.LineasDeVentas)
+                .HasForeignKey(d => d.IdVenta);
+        });
 
         // Define a list of entity types
         var entityVenta = new List<Type>

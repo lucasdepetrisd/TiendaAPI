@@ -27,16 +27,17 @@ public partial class Venta
     [ForeignKey("IdCliente")]
     public virtual Cliente Cliente { get; set; } = null!;
 
-    public int IdTipoDeComprobante { get; set; }
-    [ForeignKey("IdTipoDeComprobante")]
-    public virtual TipoDeComprobante TipoDeComprobante { get; set; } = null!;
-
     public int IdUsuario { get; set; }
     [ForeignKey("IdUsuario")]
+    [DeleteBehavior(DeleteBehavior.ClientSetNull)]
     public virtual Usuario Usuario { get; set; } = null!;
 
+    public int IdTipoDeComprobante { get; set; }
+    [ForeignKey("IdTipoDeComprobante")]
+    [DeleteBehavior(DeleteBehavior.ClientSetNull)]
+    public virtual TipoDeComprobante TipoDeComprobante { get; set; } = null!;
+
     public int IdPuntoVenta { get; set; }
-    [ForeignKey("IdPuntoVenta")]
     public virtual PuntoDeVenta PuntoDeVenta { get; set; } = null!;
 
     public virtual ICollection<LineaDeVenta> LineasDeVentas { get; set; } = new List<LineaDeVenta>();

@@ -18,5 +18,5 @@ public partial class Sesion
 
     public int? IdPuntoDeVenta { get; set; }
     [ForeignKey("IdPuntoDeVenta")]
-    public virtual PuntoDeVenta? PuntoDeVenta { get; set; } = null!;
+    public virtual PuntoDeVenta PuntoDeVenta { get; set; } = null!;
 }

@@ -12,8 +12,8 @@ using TiendaAPI.Data;
 namespace TiendaAPI.Migrations
 {
     [DbContext(typeof(TiendaContext))]
-    [Migration("20240214051717_Cuit-cuil-string")]
-    partial class Cuitcuilstring
+    [Migration("20240215181642_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,7 +95,7 @@ namespace TiendaAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCliente"));
 
-                    b.Property<string>("Apellidos")
+                    b.Property<string>("Apellido")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -711,7 +711,7 @@ namespace TiendaAPI.Migrations
                     b.HasOne("TiendaAPI.Models.Venta", "Venta")
                         .WithMany("LineasDeVentas")
                         .HasForeignKey("IdVenta")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Inventario");
@@ -817,19 +817,16 @@ namespace TiendaAPI.Migrations
                     b.HasOne("TiendaAPI.Models.PuntoDeVenta", "PuntoDeVenta")
                         .WithMany("Ventas")
                         .HasForeignKey("IdPuntoVenta")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TiendaAPI.Models.TipoDeComprobante", "TipoDeComprobante")
                         .WithMany("Ventas")
                         .HasForeignKey("IdTipoDeComprobante")
-                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TiendaAPI.Models.Usuario", "Usuario")
                         .WithMany("Ventas")
                         .HasForeignKey("IdUsuario")
-                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Cliente");

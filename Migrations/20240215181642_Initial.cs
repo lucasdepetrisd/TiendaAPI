@@ -193,10 +193,10 @@ namespace TiendaAPI.Migrations
                 {
                     IdCliente = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Dni = table.Column<int>(type: "int", nullable: false),
-                    Cuil = table.Column<int>(type: "int", nullable: false),
+                    Dni = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Cuil = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Apellidos = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Apellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Telefono = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Domicilio = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -220,7 +220,7 @@ namespace TiendaAPI.Migrations
                 {
                     IdTienda = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Cuit = table.Column<int>(type: "int", nullable: false),
+                    Cuit = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdCondicionTributaria = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -428,8 +428,8 @@ namespace TiendaAPI.Migrations
                     Estado = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Observaciones = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdCliente = table.Column<int>(type: "int", nullable: false),
-                    IdTipoDeComprobante = table.Column<int>(type: "int", nullable: false),
                     IdUsuario = table.Column<int>(type: "int", nullable: false),
+                    IdTipoDeComprobante = table.Column<int>(type: "int", nullable: false),
                     IdPuntoVenta = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -447,22 +447,19 @@ namespace TiendaAPI.Migrations
                         column: x => x.IdPuntoVenta,
                         principalSchema: "Admin",
                         principalTable: "PuntoDeVenta",
-                        principalColumn: "IdPuntoDeVenta",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "IdPuntoDeVenta");
                     table.ForeignKey(
                         name: "FK_Venta_TipoDeComprobante_IdTipoDeComprobante",
                         column: x => x.IdTipoDeComprobante,
                         principalSchema: "Ventas",
                         principalTable: "TipoDeComprobante",
-                        principalColumn: "IdTipoDeComprobante",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "IdTipoDeComprobante");
                     table.ForeignKey(
                         name: "FK_Venta_Usuario_IdUsuario",
                         column: x => x.IdUsuario,
                         principalSchema: "Admin",
                         principalTable: "Usuario",
-                        principalColumn: "IdUsuario",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "IdUsuario");
                 });
 
             migrationBuilder.CreateTable(
@@ -514,7 +511,7 @@ namespace TiendaAPI.Migrations
                         principalSchema: "Ventas",
                         principalTable: "Venta",
                         principalColumn: "IdVenta",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

@@ -18,5 +18,5 @@ public partial class PuntoDeVenta
     public virtual Sucursal Sucursal { get; set; } = null!;
 
     public virtual ICollection<Sesion> Sesiones { get; set; } = new List<Sesion>();
-    public ICollection<Venta> Ventas { get; set; } = new List<Venta>();
+    public virtual ICollection<Venta> Ventas { get; set; } = new List<Venta>();
 }

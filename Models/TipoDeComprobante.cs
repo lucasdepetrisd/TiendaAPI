@@ -17,5 +17,6 @@ public partial class TipoDeComprobante
     public virtual CondicionTributaria CondicionTributaria { get; set; } = null!;*/
     //TODO: Añadir relación 1 a 1
     public virtual ICollection<CondicionTributaria> CondicionesTributarias { get; set; } = new List<CondicionTributaria>();
+
     public virtual ICollection<Venta> Ventas { get; set; } = new List<Venta>();
 }
