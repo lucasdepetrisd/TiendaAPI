@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Domain.Models;
 
-namespace TiendaAPI.Controllers
+namespace Domain.Controllers
 {
     [ApiController]
     [Route("[controller]")]
@@ -9,7 +10,7 @@ namespace TiendaAPI.Controllers
         private static readonly string[] Summaries = new[]
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+        };
 
         private readonly ILogger<WeatherForecastController> _logger;
 

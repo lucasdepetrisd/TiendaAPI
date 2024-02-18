@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Reflection.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Domain.Models;
 using Application.Data;
@@ -59,13 +55,16 @@ public partial class TiendaContext : DbContext, ITiendaContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        base.OnConfiguring(optionsBuilder);
-        optionsBuilder.UseSqlServer("Server=THORS\\SQLEXPRESS;Database=TIENDADB;Trusted_Connection=true;TrustServerCertificate=Yes;");
+        //base.OnConfiguring(optionsBuilder);
+        //optionsBuilder.UseSqlServer("Server=THORS\\SQLEXPRESS;Database=TIENDADB;Trusted_Connection=true;TrustServerCertificate=Yes;");
+        optionsBuilder.UseSqlServer();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        //base.OnModelCreating(modelBuilder);
+
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(TiendaContext).Assembly);
 
         var ventaConfig = modelBuilder.Entity<Venta>(venta =>
         {

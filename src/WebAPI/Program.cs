@@ -14,7 +14,7 @@ builder.Services.AddSwaggerGen();
 // Layers DI
 builder.Services
     .AddApplication()
-    .AddInfraestructure();
+    .AddInfraestructure(builder.Configuration);
 
 var app = builder.Build();
 

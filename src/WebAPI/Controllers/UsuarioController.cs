@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TiendaAPI.Data;
-using TiendaAPI.Models;
+using Application.Data;
+using Domain.Models;
 
-namespace TiendaAPI.Controllers
+namespace Domain.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        private readonly TiendaContext _context;
+        private readonly ITiendaContext _context;
 
-        public UsuarioController(TiendaContext context)
+        public UsuarioController(ITiendaContext context)
         {
             _context = context;
         }
@@ -60,7 +60,7 @@ namespace TiendaAPI.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(usuario).State = EntityState.Modified;
+            _context.Usuario.Entry(usuario).State = EntityState.Modified;
 
             try
             {
@@ -88,7 +88,7 @@ namespace TiendaAPI.Controllers
         {
           if (_context.Usuario == null)
           {
-              return Problem("Entity set 'TiendaContext.Usuario'  is null.");
+              return Problem("Entity set 'ITiendaContext.Usuario'  is null.");
           }
             _context.Usuario.Add(usuario);
             await _context.SaveChangesAsync();

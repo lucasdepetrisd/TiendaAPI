@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TiendaAPI.Data;
-using TiendaAPI.Models;
+using Application.Data;
+using Domain.Models;
 
-namespace TiendaAPI.Controllers
+namespace Domain.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class InventarioController : ControllerBase
     {
-        private readonly TiendaContext _context;
+        private readonly ITiendaContext _context;
 
-        public InventarioController(TiendaContext context)
+        public InventarioController(ITiendaContext context)
         {
             _context = context;
         }
@@ -60,7 +60,7 @@ namespace TiendaAPI.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(inventario).State = EntityState.Modified;
+            _context.Inventario.Entry(inventario).State = EntityState.Modified;
 
             try
             {
@@ -88,7 +88,7 @@ namespace TiendaAPI.Controllers
         {
           if (_context.Inventario == null)
           {
-              return Problem("Entity set 'TiendaContext.Inventario'  is null.");
+              return Problem("Entity set 'ITiendaContext.Inventario'  is null.");
           }
             _context.Inventario.Add(inventario);
             await _context.SaveChangesAsync();

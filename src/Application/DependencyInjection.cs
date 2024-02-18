@@ -13,7 +13,7 @@ public static class DependencyInjection
             configuration.RegisterServicesFromAssembly(assembly));
 
         services.AddValidatorsFromAssembly(assembly);
-        
+
         return services;
     }
 }

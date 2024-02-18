@@ -5,62 +5,62 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TiendaAPI.Data;
-using TiendaAPI.Models;
+using Application.Data;
+using Domain.Models;
 
-namespace TiendaAPI.Controllers
+namespace Domain.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RolController : ControllerBase
+    public class MarcaController : ControllerBase
     {
-        private readonly TiendaContext _context;
+        private readonly ITiendaContext _context;
 
-        public RolController(TiendaContext context)
+        public MarcaController(ITiendaContext context)
         {
             _context = context;
         }
 
-        // GET: api/Rol
+        // GET: api/Marca
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Rol>>> GetRol()
+        public async Task<ActionResult<IEnumerable<Marca>>> GetMarca()
         {
-          if (_context.Rol == null)
+          if (_context.Marca == null)
           {
               return NotFound();
           }
-            return await _context.Rol.ToListAsync();
+            return await _context.Marca.ToListAsync();
         }
 
-        // GET: api/Rol/5
+        // GET: api/Marca/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Rol>> GetRol(int id)
+        public async Task<ActionResult<Marca>> GetMarca(int id)
         {
-          if (_context.Rol == null)
+          if (_context.Marca == null)
           {
               return NotFound();
           }
-            var rol = await _context.Rol.FindAsync(id);
+            var marca = await _context.Marca.FindAsync(id);
 
-            if (rol == null)
+            if (marca == null)
             {
                 return NotFound();
             }
 
-            return rol;
+            return marca;
         }
 
-        // PUT: api/Rol/5
+        // PUT: api/Marca/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRol(int id, Rol rol)
+        public async Task<IActionResult> PutMarca(int id, Marca marca)
         {
-            if (id != rol.IdRol)
+            if (id != marca.IdMarca)
             {
                 return BadRequest();
             }
 
-            _context.Entry(rol).State = EntityState.Modified;
+            _context.Marca.Entry(marca).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace TiendaAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RolExists(id))
+                if (!MarcaExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace TiendaAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Rol
+        // POST: api/Marca
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Rol>> PostRol(Rol rol)
+        public async Task<ActionResult<Marca>> PostMarca(Marca marca)
         {
-          if (_context.Rol == null)
+          if (_context.Marca == null)
           {
-              return Problem("Entity set 'TiendaContext.Rol'  is null.");
+              return Problem("Entity set 'ITiendaContext.Marca'  is null.");
           }
-            _context.Rol.Add(rol);
+            _context.Marca.Add(marca);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRol", new { id = rol.IdRol }, rol);
+            return CreatedAtAction("GetMarca", new { id = marca.IdMarca }, marca);
         }
 
-        // DELETE: api/Rol/5
+        // DELETE: api/Marca/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRol(int id)
+        public async Task<IActionResult> DeleteMarca(int id)
         {
-            if (_context.Rol == null)
+            if (_context.Marca == null)
             {
                 return NotFound();
             }
-            var rol = await _context.Rol.FindAsync(id);
-            if (rol == null)
+            var marca = await _context.Marca.FindAsync(id);
+            if (marca == null)
             {
                 return NotFound();
             }
 
-            _context.Rol.Remove(rol);
+            _context.Marca.Remove(marca);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool RolExists(int id)
+        private bool MarcaExists(int id)
         {
-            return (_context.Rol?.Any(e => e.IdRol == id)).GetValueOrDefault();
+            return (_context.Marca?.Any(e => e.IdMarca == id)).GetValueOrDefault();
         }
     }
 }

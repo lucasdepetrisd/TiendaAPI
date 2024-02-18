@@ -12,9 +12,12 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContext<TiendaContext>(options => options.UseSqlServer(configuration.GetConnectionString("Database")));
+        //services.AddDbContext<TiendaContext>(options => options.UseSqlServer(configuration.GetConnectionString("Database")));
+        services.AddDbContext<TiendaContext>(options => options.UseSqlServer(configuration.GetConnectionString("localSQL")));
 
         services.AddScoped<ITiendaContext, TiendaContext>();
+        //services.AddScoped<ITiendaContext>(sp => sp.GetRequiredService<TiendaContext>());
+
         return services;
     }
 }

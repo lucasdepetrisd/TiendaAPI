@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TiendaAPI.Data;
-using TiendaAPI.Models;
+using Application.Data;
+using Domain.Models;
 
-namespace TiendaAPI.Controllers
+namespace Domain.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class PuntoDeVentaController : ControllerBase
     {
-        private readonly TiendaContext _context;
+        private readonly ITiendaContext _context;
 
-        public PuntoDeVentaController(TiendaContext context)
+        public PuntoDeVentaController(ITiendaContext context)
         {
             _context = context;
         }
@@ -60,7 +60,7 @@ namespace TiendaAPI.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(puntoDeVenta).State = EntityState.Modified;
+            _context.PuntoDeVenta.Entry(puntoDeVenta).State = EntityState.Modified;
 
             try
             {
@@ -88,7 +88,7 @@ namespace TiendaAPI.Controllers
         {
           if (_context.PuntoDeVenta == null)
           {
-              return Problem("Entity set 'TiendaContext.PuntoDeVenta'  is null.");
+              return Problem("Entity set 'ITiendaContext.PuntoDeVenta'  is null.");
           }
             _context.PuntoDeVenta.Add(puntoDeVenta);
             await _context.SaveChangesAsync();

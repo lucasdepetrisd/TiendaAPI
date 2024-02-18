@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TiendaAPI.Data;
-using TiendaAPI.Models;
+using Application.Data;
+using Domain.Models;
 
-namespace TiendaAPI.Controllers
+namespace Domain.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class CondicionTributariaController : ControllerBase
     {
-        private readonly TiendaContext _context;
+        private readonly ITiendaContext _context;
 
-        public CondicionTributariaController(TiendaContext context)
+        public CondicionTributariaController(ITiendaContext context)
         {
             _context = context;
         }
@@ -60,7 +60,7 @@ namespace TiendaAPI.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(condicionTributaria).State = EntityState.Modified;
+            _context.CondicionTributaria.Entry(condicionTributaria).State = EntityState.Modified;
 
             try
             {
@@ -88,7 +88,7 @@ namespace TiendaAPI.Controllers
         {
           if (_context.CondicionTributaria == null)
           {
-              return Problem("Entity set 'TiendaContext.CondicionTributaria'  is null.");
+              return Problem("Entity set 'ITiendaContext.CondicionTributaria'  is null.");
           }
             _context.CondicionTributaria.Add(condicionTributaria);
             await _context.SaveChangesAsync();

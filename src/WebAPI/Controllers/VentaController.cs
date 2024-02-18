@@ -5,62 +5,62 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TiendaAPI.Data;
-using TiendaAPI.Models;
+using Application.Data;
+using Domain.Models;
 
-namespace TiendaAPI.Controllers
+namespace Domain.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TalleController : ControllerBase
+    public class VentaController : ControllerBase
     {
-        private readonly TiendaContext _context;
+        private readonly ITiendaContext _context;
 
-        public TalleController(TiendaContext context)
+        public VentaController(ITiendaContext context)
         {
             _context = context;
         }
 
-        // GET: api/Talle
+        // GET: api/Venta
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Talle>>> GetTalle()
+        public async Task<ActionResult<IEnumerable<Venta>>> GetVenta()
         {
-          if (_context.Talle == null)
+          if (_context.Venta == null)
           {
               return NotFound();
           }
-            return await _context.Talle.ToListAsync();
+            return await _context.Venta.ToListAsync();
         }
 
-        // GET: api/Talle/5
+        // GET: api/Venta/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Talle>> GetTalle(int id)
+        public async Task<ActionResult<Venta>> GetVenta(int id)
         {
-          if (_context.Talle == null)
+          if (_context.Venta == null)
           {
               return NotFound();
           }
-            var talle = await _context.Talle.FindAsync(id);
+            var venta = await _context.Venta.FindAsync(id);
 
-            if (talle == null)
+            if (venta == null)
             {
                 return NotFound();
             }
 
-            return talle;
+            return venta;
         }
 
-        // PUT: api/Talle/5
+        // PUT: api/Venta/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTalle(int id, Talle talle)
+        public async Task<IActionResult> PutVenta(int id, Venta venta)
         {
-            if (id != talle.IdTalle)
+            if (id != venta.IdVenta)
             {
                 return BadRequest();
             }
 
-            _context.Entry(talle).State = EntityState.Modified;
+            _context.Venta.Entry(venta).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace TiendaAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TalleExists(id))
+                if (!VentaExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace TiendaAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Talle
+        // POST: api/Venta
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Talle>> PostTalle(Talle talle)
+        public async Task<ActionResult<Venta>> PostVenta(Venta venta)
         {
-          if (_context.Talle == null)
+          if (_context.Venta == null)
           {
-              return Problem("Entity set 'TiendaContext.Talle'  is null.");
+              return Problem("Entity set 'ITiendaContext.Venta'  is null.");
           }
-            _context.Talle.Add(talle);
+            _context.Venta.Add(venta);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetTalle", new { id = talle.IdTalle }, talle);
+            return CreatedAtAction("GetVenta", new { id = venta.IdVenta }, venta);
         }
 
-        // DELETE: api/Talle/5
+        // DELETE: api/Venta/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTalle(int id)
+        public async Task<IActionResult> DeleteVenta(int id)
         {
-            if (_context.Talle == null)
+            if (_context.Venta == null)
             {
                 return NotFound();
             }
-            var talle = await _context.Talle.FindAsync(id);
-            if (talle == null)
+            var venta = await _context.Venta.FindAsync(id);
+            if (venta == null)
             {
                 return NotFound();
             }
 
-            _context.Talle.Remove(talle);
+            _context.Venta.Remove(venta);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool TalleExists(int id)
+        private bool VentaExists(int id)
         {
-            return (_context.Talle?.Any(e => e.IdTalle == id)).GetValueOrDefault();
+            return (_context.Venta?.Any(e => e.IdVenta == id)).GetValueOrDefault();
         }
     }
 }

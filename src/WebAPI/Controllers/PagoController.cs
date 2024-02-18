@@ -5,62 +5,62 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TiendaAPI.Data;
-using TiendaAPI.Models;
+using Application.Data;
+using Domain.Models;
 
-namespace TiendaAPI.Controllers
+namespace Domain.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VentaController : ControllerBase
+    public class PagoController : ControllerBase
     {
-        private readonly TiendaContext _context;
+        private readonly ITiendaContext _context;
 
-        public VentaController(TiendaContext context)
+        public PagoController(ITiendaContext context)
         {
             _context = context;
         }
 
-        // GET: api/Venta
+        // GET: api/Pago
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Venta>>> GetVenta()
+        public async Task<ActionResult<IEnumerable<Pago>>> GetPago()
         {
-          if (_context.Venta == null)
+          if (_context.Pago == null)
           {
               return NotFound();
           }
-            return await _context.Venta.ToListAsync();
+            return await _context.Pago.ToListAsync();
         }
 
-        // GET: api/Venta/5
+        // GET: api/Pago/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Venta>> GetVenta(int id)
+        public async Task<ActionResult<Pago>> GetPago(int id)
         {
-          if (_context.Venta == null)
+          if (_context.Pago == null)
           {
               return NotFound();
           }
-            var venta = await _context.Venta.FindAsync(id);
+            var pago = await _context.Pago.FindAsync(id);
 
-            if (venta == null)
+            if (pago == null)
             {
                 return NotFound();
             }
 
-            return venta;
+            return pago;
         }
 
-        // PUT: api/Venta/5
+        // PUT: api/Pago/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVenta(int id, Venta venta)
+        public async Task<IActionResult> PutPago(int id, Pago pago)
         {
-            if (id != venta.IdVenta)
+            if (id != pago.IdPago)
             {
                 return BadRequest();
             }
 
-            _context.Entry(venta).State = EntityState.Modified;
+            _context.Pago.Entry(pago).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace TiendaAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!VentaExists(id))
+                if (!PagoExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace TiendaAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Venta
+        // POST: api/Pago
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Venta>> PostVenta(Venta venta)
+        public async Task<ActionResult<Pago>> PostPago(Pago pago)
         {
-          if (_context.Venta == null)
+          if (_context.Pago == null)
           {
-              return Problem("Entity set 'TiendaContext.Venta'  is null.");
+              return Problem("Entity set 'ITiendaContext.Pago'  is null.");
           }
-            _context.Venta.Add(venta);
+            _context.Pago.Add(pago);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetVenta", new { id = venta.IdVenta }, venta);
+            return CreatedAtAction("GetPago", new { id = pago.IdPago }, pago);
         }
 
-        // DELETE: api/Venta/5
+        // DELETE: api/Pago/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVenta(int id)
+        public async Task<IActionResult> DeletePago(int id)
         {
-            if (_context.Venta == null)
+            if (_context.Pago == null)
             {
                 return NotFound();
             }
-            var venta = await _context.Venta.FindAsync(id);
-            if (venta == null)
+            var pago = await _context.Pago.FindAsync(id);
+            if (pago == null)
             {
                 return NotFound();
             }
 
-            _context.Venta.Remove(venta);
+            _context.Pago.Remove(pago);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool VentaExists(int id)
+        private bool PagoExists(int id)
         {
-            return (_context.Venta?.Any(e => e.IdVenta == id)).GetValueOrDefault();
+            return (_context.Pago?.Any(e => e.IdPago == id)).GetValueOrDefault();
         }
     }
 }

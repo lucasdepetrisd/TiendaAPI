@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TiendaAPI.Data;
-using TiendaAPI.Models;
+using Application.Data;
+using Domain.Models;
 
-namespace TiendaAPI.Controllers
+namespace Domain.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class TipoDeComprobanteController : ControllerBase
     {
-        private readonly TiendaContext _context;
+        private readonly ITiendaContext _context;
 
-        public TipoDeComprobanteController(TiendaContext context)
+        public TipoDeComprobanteController(ITiendaContext context)
         {
             _context = context;
         }
@@ -60,7 +60,7 @@ namespace TiendaAPI.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(tipoDeComprobante).State = EntityState.Modified;
+            _context.TipoDeComprobante.Entry(tipoDeComprobante).State = EntityState.Modified;
 
             try
             {
@@ -88,7 +88,7 @@ namespace TiendaAPI.Controllers
         {
           if (_context.TipoDeComprobante == null)
           {
-              return Problem("Entity set 'TiendaContext.TipoDeComprobante'  is null.");
+              return Problem("Entity set 'ITiendaContext.TipoDeComprobante'  is null.");
           }
             _context.TipoDeComprobante.Add(tipoDeComprobante);
             await _context.SaveChangesAsync();

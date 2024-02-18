@@ -5,62 +5,62 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TiendaAPI.Data;
-using TiendaAPI.Models;
+using Application.Data;
+using Domain.Models;
 
-namespace TiendaAPI.Controllers
+namespace Domain.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PagoController : ControllerBase
+    public class TalleController : ControllerBase
     {
-        private readonly TiendaContext _context;
+        private readonly ITiendaContext _context;
 
-        public PagoController(TiendaContext context)
+        public TalleController(ITiendaContext context)
         {
             _context = context;
         }
 
-        // GET: api/Pago
+        // GET: api/Talle
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Pago>>> GetPago()
+        public async Task<ActionResult<IEnumerable<Talle>>> GetTalle()
         {
-          if (_context.Pago == null)
+          if (_context.Talle == null)
           {
               return NotFound();
           }
-            return await _context.Pago.ToListAsync();
+            return await _context.Talle.ToListAsync();
         }
 
-        // GET: api/Pago/5
+        // GET: api/Talle/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Pago>> GetPago(int id)
+        public async Task<ActionResult<Talle>> GetTalle(int id)
         {
-          if (_context.Pago == null)
+          if (_context.Talle == null)
           {
               return NotFound();
           }
-            var pago = await _context.Pago.FindAsync(id);
+            var talle = await _context.Talle.FindAsync(id);
 
-            if (pago == null)
+            if (talle == null)
             {
                 return NotFound();
             }
 
-            return pago;
+            return talle;
         }
 
-        // PUT: api/Pago/5
+        // PUT: api/Talle/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPago(int id, Pago pago)
+        public async Task<IActionResult> PutTalle(int id, Talle talle)
         {
-            if (id != pago.IdPago)
+            if (id != talle.IdTalle)
             {
                 return BadRequest();
             }
 
-            _context.Entry(pago).State = EntityState.Modified;
+            _context.Talle.Entry(talle).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace TiendaAPI.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PagoExists(id))
+                if (!TalleExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace TiendaAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Pago
+        // POST: api/Talle
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Pago>> PostPago(Pago pago)
+        public async Task<ActionResult<Talle>> PostTalle(Talle talle)
         {
-          if (_context.Pago == null)
+          if (_context.Talle == null)
           {
-              return Problem("Entity set 'TiendaContext.Pago'  is null.");
+              return Problem("Entity set 'ITiendaContext.Talle'  is null.");
           }
-            _context.Pago.Add(pago);
+            _context.Talle.Add(talle);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetPago", new { id = pago.IdPago }, pago);
+            return CreatedAtAction("GetTalle", new { id = talle.IdTalle }, talle);
         }
 
-        // DELETE: api/Pago/5
+        // DELETE: api/Talle/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePago(int id)
+        public async Task<IActionResult> DeleteTalle(int id)
         {
-            if (_context.Pago == null)
+            if (_context.Talle == null)
             {
                 return NotFound();
             }
-            var pago = await _context.Pago.FindAsync(id);
-            if (pago == null)
+            var talle = await _context.Talle.FindAsync(id);
+            if (talle == null)
             {
                 return NotFound();
             }
 
-            _context.Pago.Remove(pago);
+            _context.Talle.Remove(talle);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool PagoExists(int id)
+        private bool TalleExists(int id)
         {
-            return (_context.Pago?.Any(e => e.IdPago == id)).GetValueOrDefault();
+            return (_context.Talle?.Any(e => e.IdTalle == id)).GetValueOrDefault();
         }
     }
 }
