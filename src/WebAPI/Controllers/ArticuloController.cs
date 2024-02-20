@@ -7,118 +7,30 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Domain.Models;
 using Application.Data;
+using AutoMapper;
+using Domain.DTOs;
+using System.Collections;
+using Application.Repositories;
+using WebAPI.Controllers;
+using System.Linq.Expressions;
 
 namespace Domain.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ArticuloController : ControllerBase
+    public class ArticuloController : BaseController<Articulo, ArticuloDTO, CreateArticuloDTO>
     {
-        private readonly ITiendaContext _context;
-
-        public ArticuloController(ITiendaContext context)
+        public ArticuloController(ITiendaContext context, IMapper mapper)
+            : base(context, mapper)
         {
-            _context = context;
         }
 
-        // GET: api/Articulo
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Articulo>>> GetArticulo()
+        protected override Expression<Func<Articulo, bool>> PrimaryKeyPredicate(int id)
         {
-          if (_context.Articulo == null)
-          {
-              return NotFound();
-          }
-            return await _context.Articulo.ToListAsync();
+            return articulo => articulo.IdArticulo == id;
         }
 
-        // GET: api/Articulo/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Articulo>> GetArticulo(int id)
-        {
-          if (_context.Articulo == null)
-          {
-              return NotFound();
-          }
-            var articulo = await _context.Articulo.FindAsync(id);
-
-            if (articulo == null)
-            {
-                return NotFound();
-            }
-
-            return articulo;
-        }
-
-        // PUT: api/Articulo/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutArticulo(int id, Articulo articulo)
-        {
-            if (id != articulo.IdArticulo)
-            {
-                return BadRequest();
-            }
-
-            _context.Articulo.Entry(articulo).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ArticuloExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Articulo
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Articulo>> PostArticulo(Articulo articulo)
-        {
-          if (_context.Articulo == null)
-          {
-              return Problem("Entity set 'ITiendaContext.Articulo'  is null.");
-          }
-            _context.Articulo.Add(articulo);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetArticulo", new { id = articulo.IdArticulo }, articulo);
-        }
-
-        // DELETE: api/Articulo/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteArticulo(int id)
-        {
-            if (_context.Articulo == null)
-            {
-                return NotFound();
-            }
-            var articulo = await _context.Articulo.FindAsync(id);
-            if (articulo == null)
-            {
-                return NotFound();
-            }
-
-            _context.Articulo.Remove(articulo);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool ArticuloExists(int id)
-        {
-            return (_context.Articulo?.Any(e => e.IdArticulo == id)).GetValueOrDefault();
-        }
+        protected override Expression<Func<Articulo, object>>[] NavigationPropertiesToLoad
+        => [a => a.Categoria, a => a.Marca, a => a.TipoTalle];
     }
 }
