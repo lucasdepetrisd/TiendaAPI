@@ -1,5 +1,7 @@
 ﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Application.Data
 {
@@ -26,6 +28,9 @@ namespace Application.Data
         DbSet<TipoTalle> TipoTalle { get; set; }
         DbSet<Usuario> Usuario { get; set; }
         DbSet<Venta> Venta { get; set; }
+
+        // Añado para ser utilizado en BaseController.
+        DbSet<TEntity> Set<TEntity>() where TEntity : class;
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
