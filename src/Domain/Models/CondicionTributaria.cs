@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models;
 
+// TODO: Plantear conversion a Complex Value Object
 public partial class CondicionTributaria
 {
     [Key]

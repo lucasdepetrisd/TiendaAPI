@@ -7,55 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DTOs\ArticuloDTO.cs" />
-    <Compile Remove="DTOs\CategoriaDTO.cs" />
-    <Compile Remove="DTOs\ClienteDTO.cs" />
-    <Compile Remove="DTOs\ColorDTO.cs" />
-    <Compile Remove="DTOs\ComprobanteDTO.cs" />
-    <Compile Remove="DTOs\CondicionTributariaDTO.cs" />
-    <Compile Remove="DTOs\EmpleadoDTO.cs" />
-    <Compile Remove="DTOs\InventarioDTO.cs" />
-    <Compile Remove="DTOs\LineaDeVentaDTO.cs" />
-    <Compile Remove="DTOs\MarcaDTO.cs" />
-    <Compile Remove="DTOs\PagoDTO.cs" />
-    <Compile Remove="DTOs\PuntoDeVentaDTO.cs" />
-    <Compile Remove="DTOs\RolDTO.cs" />
-    <Compile Remove="DTOs\SesionDTO.cs" />
-    <Compile Remove="DTOs\SucursalDTO.cs" />
-    <Compile Remove="DTOs\TalleDTO.cs" />
-    <Compile Remove="DTOs\TiendaDTO.cs" />
-    <Compile Remove="DTOs\TipoDeComprobanteDTO.cs" />
-    <Compile Remove="DTOs\TipoTalleDTO.cs" />
-    <Compile Remove="DTOs\UsuarioDTO.cs" />
-    <Compile Remove="DTOs\VentaDTO.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Repositories\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="DTOs\ArticuloDTO.cs" />
-    <None Include="DTOs\CategoriaDTO.cs" />
-    <None Include="DTOs\ClienteDTO.cs" />
-    <None Include="DTOs\ColorDTO.cs" />
-    <None Include="DTOs\ComprobanteDTO.cs" />
-    <None Include="DTOs\CondicionTributariaDTO.cs" />
-    <None Include="DTOs\EmpleadoDTO.cs" />
-    <None Include="DTOs\InventarioDTO.cs" />
-    <None Include="DTOs\LineaDeVentaDTO.cs" />
-    <None Include="DTOs\MarcaDTO.cs" />
-    <None Include="DTOs\PagoDTO.cs" />
-    <None Include="DTOs\PuntoDeVentaDTO.cs" />
-    <None Include="DTOs\RolDTO.cs" />
-    <None Include="DTOs\SesionDTO.cs" />
-    <None Include="DTOs\SucursalDTO.cs" />
-    <None Include="DTOs\TalleDTO.cs" />
-    <None Include="DTOs\TiendaDTO.cs" />
-    <None Include="DTOs\TipoDeComprobanteDTO.cs" />
-    <None Include="DTOs\TipoTalleDTO.cs" />
-    <None Include="DTOs\UsuarioDTO.cs" />
-    <None Include="DTOs\VentaDTO.cs" />
   </ItemGroup>
 
   <ItemGroup>

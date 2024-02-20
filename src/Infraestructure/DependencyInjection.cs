@@ -1,5 +1,7 @@
 ﻿using Application.Data;
+using AutoMapper;
 using Infraestructure.Data;
+using Infraestructure.Profiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +19,14 @@ public static class DependencyInjection
 
         services.AddScoped<ITiendaContext, TiendaContext>();
         //services.AddScoped<ITiendaContext>(sp => sp.GetRequiredService<TiendaContext>());
+
+        var mapperConfiguration = new MapperConfiguration(configuration =>
+        {
+            configuration.AddProfile(new AutomapperProfile());
+        });
+
+        var mapper = mapperConfiguration.CreateMapper();
+        services.AddSingleton(mapper);
 
         return services;
     }
