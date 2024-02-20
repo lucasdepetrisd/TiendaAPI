@@ -13,6 +13,11 @@ public record TipoTalleDTO
     public virtual ICollection<TalleDTO> Talles { get; set; } = new List<TalleDTO>();
 }
 
+public record CreateTipoTalleDTO
+{
+    public string Descripcion { get; set; } = null!;
+}
+
 public record ShowTipoTalleDTO
 {
     public int IdTipoTalle { get; set; }
