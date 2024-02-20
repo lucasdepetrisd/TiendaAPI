@@ -8,39 +8,86 @@ namespace Infraestructure.Profiles
     {
         public AutomapperProfile()
         {
+            //*---------------------Articulo------------------------*
             CreateMap<Articulo, ArticuloDTO>().ReverseMap();
             CreateMap<Articulo, CreateArticuloDTO>().ReverseMap();
-
-            CreateMap<Marca, MarcaDTO>().ReverseMap();
-            CreateMap<Marca, ShowMarcaDTO>().ReverseMap();
-
-            CreateMap<TipoTalle, TipoTalleDTO>().ReverseMap();
-            CreateMap<TipoTalle, ShowTipoTalleDTO>().ReverseMap();
+            CreateMap<Articulo, ViewArticuloDTO>().ReverseMap();
 
             CreateMap<Categoria, CategoriaDTO>().ReverseMap();
-            CreateMap<Categoria, ShowCategoriaDTO>().ReverseMap();
             CreateMap<Categoria, CreateCategoriaDTO>().ReverseMap();
+            CreateMap<Categoria, ViewCategoriaDTO>().ReverseMap();
 
-            CreateMap<Cliente, ClienteDTO>().ReverseMap();
-            CreateMap<Color, ColorDTO>().ReverseMap();
-            CreateMap<Comprobante, ComprobanteDTO>().ReverseMap();
-            CreateMap<CondicionTributaria, CondicionTributariaDTO>().ReverseMap();
-            CreateMap<Empleado, EmpleadoDTO>().ReverseMap();
-            CreateMap<Inventario, InventarioDTO>().ReverseMap();
-            CreateMap<LineaDeVenta, LineaDeVentaDTO>().ReverseMap();
+            CreateMap<Marca, MarcaDTO>().ReverseMap();
+            CreateMap<Marca, CreateMarcaDTO>().ReverseMap();
+            CreateMap<Marca, ViewMarcaDTO>().ReverseMap();
 
-            CreateMap<Pago, PagoDTO>().ReverseMap();
-            CreateMap<PuntoDeVenta, PuntoDeVentaDTO>().ReverseMap();
-            CreateMap<Rol, RolDTO>().ReverseMap();
-            CreateMap<Sesion, SesionDTO>().ReverseMap();
-            CreateMap<Sucursal, SucursalDTO>().ReverseMap();
+            CreateMap<TipoTalle, TipoTalleDTO>().ReverseMap();
+            CreateMap<TipoTalle, CreateTipoTalleDTO>().ReverseMap();
+            CreateMap<TipoTalle, ViewTipoTalleDTO>().ReverseMap();
+
             CreateMap<Talle, TalleDTO>().ReverseMap();
-            CreateMap<Tienda, TiendaDTO>().ReverseMap();
-            CreateMap<TipoDeComprobante, TipoDeComprobanteDTO>().ReverseMap();
+            CreateMap<Talle, CreateTalleDTO>().ReverseMap();
 
+            CreateMap<Inventario, InventarioDTO>().ReverseMap();
+            CreateMap<Inventario, CreateInventarioDTO>().ReverseMap();
+
+            CreateMap<Color, ColorDTO>().ReverseMap();
+            CreateMap<Color, CreateColorDTO>().ReverseMap();
+
+            //*---------------------Admin------------------------*
+            CreateMap<Tienda, TiendaDTO>().ReverseMap();
+            CreateMap<Tienda, ViewTiendaDTO>().ReverseMap();
+
+            CreateMap<Sucursal, SucursalDTO>().ReverseMap();
+            CreateMap<Sucursal, CreateSucursalDTO>().ReverseMap();
+            CreateMap<Sucursal, ViewSucursalDTO>().ReverseMap();
+            
+            CreateMap<CondicionTributaria, CondicionTributariaDTO>().ReverseMap();
+            CreateMap<CondicionTributaria, CreateCondicionTributariaDTO>().ReverseMap();
+            CreateMap<CondicionTributaria, ViewCondicionTributariaDTO>().ReverseMap();
+            
+            CreateMap<Empleado, EmpleadoDTO>().ReverseMap();
+            CreateMap<Empleado, CreateEmpleadoDTO>().ReverseMap();
+            CreateMap<Empleado, ViewEmpleadoDTO>().ReverseMap();
 
             CreateMap<Usuario, UsuarioDTO>().ReverseMap();
+            CreateMap<Usuario, CreateUsuarioDTO>().ReverseMap();
+            CreateMap<Usuario, ViewUsuarioDTO>().ReverseMap();
+
+            CreateMap<Rol, RolDTO>().ReverseMap();
+            CreateMap<Rol, CreateRolDTO>().ReverseMap();
+            CreateMap<Rol, ViewRolDTO>().ReverseMap();
+
+            CreateMap<Cliente, ClienteDTO>().ReverseMap();
+            CreateMap<Cliente, CreateClienteDTO>().ReverseMap();
+            CreateMap<Cliente, ViewClienteDTO>().ReverseMap();
+
+            CreateMap<PuntoDeVenta, PuntoDeVentaDTO>().ReverseMap();
+            CreateMap<PuntoDeVenta, CreatePuntoDeVentaDTO>().ReverseMap();
+            CreateMap<PuntoDeVenta, ViewPuntoDeVentaDTO>().ReverseMap();
+
+            CreateMap<Sesion, SesionDTO>().ReverseMap();
+            CreateMap<Sesion, CreateSesionDTO>().ReverseMap();
+            CreateMap<Sesion, ViewSesionDTO>().ReverseMap();
+
+            //*---------------------Venta------------------------*
             CreateMap<Venta, VentaDTO>().ReverseMap();
+            CreateMap<Venta, CreateVentaDTO>().ReverseMap();
+            CreateMap<Venta, ViewVentaDTO>().ReverseMap();
+
+            CreateMap<LineaDeVenta, LineaDeVentaDTO>().ReverseMap();
+            CreateMap<LineaDeVenta, CreateLineaDeVentaDTO>().ReverseMap();
+
+            CreateMap<Pago, PagoDTO>().ReverseMap();
+            CreateMap<Pago, CreatePagoDTO>().ReverseMap();
+            CreateMap<Pago, ViewPagoDTO>().ReverseMap();
+
+            CreateMap<TipoDeComprobante, TipoDeComprobanteDTO>().ReverseMap();
+            CreateMap<TipoDeComprobante, CreateTipoDeComprobanteDTO>().ReverseMap();
+            CreateMap<TipoDeComprobante, ViewTipoDeComprobanteDTO>().ReverseMap();
+
+            CreateMap<Comprobante, ComprobanteDTO>().ReverseMap();
+            CreateMap<Comprobante, CreateComprobanteDTO>().ReverseMap();
         }
     }
 }

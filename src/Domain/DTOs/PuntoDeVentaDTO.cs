@@ -7,15 +7,34 @@ namespace Domain.DTOs;
 
 public record PuntoDeVentaDTO
 {
-    [Key]
+    public int IdPuntoDeVenta { get; set; }
+    public int NumeroPtoVenta { get; set; }
+    public bool Habilitado { get; set; }
+
+    public virtual ViewSucursalDTO Sucursal { get; set; } = null!;
+
+    public virtual ICollection<ViewSesionDTO> Sesiones { get; set; } = new List<ViewSesionDTO>();
+    public virtual ICollection<ViewVentaDTO> Ventas { get; set; } = new List<ViewVentaDTO>();
+}
+
+public record CreatePuntoDeVentaDTO
+{
+    public int IdPuntoDeVenta { get; set; }
+    public int NumeroPtoVenta { get; set; }
+    public bool Habilitado { get; set; }
+
+    public int IdSucursal { get; set; }
+}
+
+public record ViewPuntoDeVentaDTO
+{
     public int IdPuntoDeVenta { get; set; }
 
     public int NumeroPtoVenta { get; set; }
     public bool Habilitado { get; set; }
 
-    public int IdSucursal { get; set; }
-    public virtual SucursalDTO Sucursal { get; set; } = null!;
+    public virtual ViewSucursalDTO Sucursal { get; set; } = null!;
 
-    public virtual ICollection<SesionDTO> Sesiones { get; set; } = new List<SesionDTO>();
-    public virtual ICollection<VentaDTO> Ventas { get; set; } = new List<VentaDTO>();
+    public virtual ICollection<ViewSesionDTO> Sesiones { get; set; } = new List<ViewSesionDTO>();
+    public virtual ICollection<ViewVentaDTO> Ventas { get; set; } = new List<ViewVentaDTO>();
 }

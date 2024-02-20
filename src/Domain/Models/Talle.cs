@@ -10,7 +10,7 @@ public partial class Talle
     [Key]
     public int IdTalle { get; set; }
 
-    public string? Medida { get; set; }
+    public string Medida { get; set; } = null!;
 
     public int? IdTipoTalle { get; set; }
     [ForeignKey("IdTipoTalle")]

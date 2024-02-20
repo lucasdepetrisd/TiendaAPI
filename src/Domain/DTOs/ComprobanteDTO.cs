@@ -12,3 +12,8 @@ public record ComprobanteDTO
     public int IdVenta { get; set; }
     public virtual VentaDTO Venta { get; set; } = null!;
 }
+
+public record CreateComprobanteDTO
+{
+    public int IdVenta { get; set; }
+}

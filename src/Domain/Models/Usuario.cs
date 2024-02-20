@@ -14,7 +14,7 @@ public partial class Usuario
 
     public string Contraseña { get; set; } = null!;
 
-    public Sesion? Sesion { get; set; }
+    public virtual Sesion? Sesion { get; set; }
 
     public int? IdRol { get; set; }
     [ForeignKey("IdRol")]

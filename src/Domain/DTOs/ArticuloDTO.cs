@@ -14,9 +14,9 @@ public record ArticuloDTO
     public string Descripcion { get; init; } = null!;
     public decimal Costo { get; init; }
     public int MargenGanancia { get; init; }
-    public ShowCategoriaDTO? Categoria { get; set; }
-    public ShowMarcaDTO? Marca { get; set; }
-    public ShowTipoTalleDTO? TipoTalle { get; set; }
+    public ViewCategoriaDTO? Categoria { get; set; }
+    public ViewMarcaDTO? Marca { get; set; }
+    public ViewTipoTalleDTO? TipoTalle { get; set; }
 }
 
 public record CreateArticuloDTO
@@ -25,16 +25,21 @@ public record CreateArticuloDTO
     public string Descripcion { get; init; } = null!;
     public decimal Costo { get; init; }
     public int MargenGanancia { get; init; }
-    public int? IdCategoria { get; init; }
-    public int? IdMarca { get; init; }
-    public int? IdTipoTalle { get; init; }
+    
+    public int IdCategoria { get; init; }
+    public int IdMarca { get; init; }
+    public int IdTipoTalle { get; init; }
 }
 
-public record ShowArticuloDTO
+public record ViewArticuloDTO
 {
     public int IdArticulo { get; init; }
     public int Codigo { get; init; }
     public string Descripcion { get; init; } = null!;
     public decimal Costo { get; init; }
     public int MargenGanancia { get; init; }
+
+    public int? IdCategoria { get; init; }
+    public int? IdMarca { get; init; }
+    public int? IdTipoTalle { get; init; }
 }

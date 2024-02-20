@@ -7,6 +7,10 @@ namespace Domain.DTOs;
 public record ColorDTO
 {
     public int IdColor { get; set; }
+    public string Nombre { get; set; } = null!;
+}
 
+public record CreateColorDTO
+{
     public string Nombre { get; set; } = null!;
 }

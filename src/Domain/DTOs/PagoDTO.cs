@@ -8,20 +8,34 @@ namespace Domain.DTOs;
 
 public record PagoDTO
 {
-    [Key]
     public int IdPago { get; set; }
-
     public DateTime Fecha { get; set; }
-
-    [Precision(18, 2)]
     public decimal Monto { get; set; }
-
     public int Ticket { get; set; }
-
     public string? Estado { get; set; }
-
     public string? Observaciones { get; set; }
 
+    public virtual ViewVentaDTO Venta { get; set; } = null!;
+}
+
+public record CreatePagoDTO
+{
+    public DateTime Fecha { get; set; }
+    public decimal Monto { get; set; }
+    public int Ticket { get; set; }
+    public string? Estado { get; set; }
+    public string? Observaciones { get; set; }
+    
     public int IdVenta { get; set; }
-    public virtual VentaDTO Venta { get; set; } = null!;
+}
+
+public record ViewPagoDTO
+{
+    public int IdPago { get; set; }
+    public DateTime Fecha { get; set; }
+    public decimal Monto { get; set; }
+    public int Ticket { get; set; }
+    public string? Estado { get; set; }
+    public string? Observaciones { get; set; }
+    public int IdVenta { get; set; }
 }
