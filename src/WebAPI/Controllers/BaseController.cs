@@ -27,8 +27,14 @@ namespace WebAPI.Controllers
 
         protected virtual Expression<Func<TEntity, bool>> PrimaryKeyPredicate(int id)
         {
-            // Default implementation assuming TEntity has an int Id property
-            return entity => EF.Property<int>(entity, "Id") == id;
+            var primaryKeyProperty = GetPrimaryKeyProperty<TEntity>();
+
+            var parameter = Expression.Parameter(typeof(TEntity), "entity");
+            var member = Expression.PropertyOrField(parameter, primaryKeyProperty.Name);
+            var constant = Expression.Constant(id);
+            var body = Expression.Equal(member, constant);
+
+            return Expression.Lambda<Func<TEntity, bool>>(body, parameter);
         }
 
         protected virtual Expression<Func<TEntity, object>>[] NavigationPropertiesToLoad => Array.Empty<Expression<Func<TEntity, object>>>();
@@ -104,6 +110,10 @@ namespace WebAPI.Controllers
 
             _mapper.Map(createDTO, entityDB);
 
+            var primaryKeyProperty = GetPrimaryKeyProperty<TEntity>();
+
+            primaryKeyProperty?.SetValue(entityDB, id);
+
             _context.Set<TEntity>().Entry(entityDB).State = EntityState.Modified;
 
             try
@@ -143,18 +153,15 @@ namespace WebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating {typeof(TEntity).Name}");
             }
 
-            var primaryKeyProperty = typeof(TEntity).GetProperties()
-                .FirstOrDefault(prop => prop.GetCustomAttributes(typeof(KeyAttribute), true).Any());
+            var primaryKeyProperty = GetPrimaryKeyProperty<TEntity>();
 
             var primaryKeyValue = primaryKeyProperty?.GetValue(entityDB);
 
             if (primaryKeyValue != null && primaryKeyValue is int id)
             {
-                // Call the GetSingle method with the primary key value
                 var response = await GetSingle(id);
                 var entityCreatedDTO = response.Value;
 
-                // Return the created DTO with the CreatedAtAction method
                 return CreatedAtAction(nameof(GetSingle), new { id = primaryKeyValue }, entityCreatedDTO);
             }
             else
@@ -195,19 +202,34 @@ namespace WebAPI.Controllers
             return entity != null;
         }
 
-       /* public virtual IEnumerable<TEntity> GetAll(params string[] propertyNames)
+        private static PropertyInfo? GetPrimaryKeyProperty<T>()
         {
-            if (propertyNames == null)
-                throw new ArgumentNullException(nameof(propertyNames));
+            // Get the primary key property using reflection
+            var entityType = typeof(TEntity);
+            var primaryKeyProperty = typeof(T).GetProperties()
+                .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
 
-            var query = _context.Set<TEntity>().AsQueryable();
-
-            foreach (var propertyName in propertyNames)
+            if (primaryKeyProperty == null)
             {
-                query = query.Include(propertyName);
+                throw new InvalidOperationException("Primary key property not found.");
             }
 
-            return query.AsNoTracking().ToList();
-        }*/
+            return primaryKeyProperty;
+        }
+
+        /* public virtual IEnumerable<TEntity> GetAll(params string[] propertyNames)
+         {
+             if (propertyNames == null)
+                 throw new ArgumentNullException(nameof(propertyNames));
+
+             var query = _context.Set<TEntity>().AsQueryable();
+
+             foreach (var propertyName in propertyNames)
+             {
+                 query = query.Include(propertyName);
+             }
+
+             return query.AsNoTracking().ToList();
+         }*/
     }
 }

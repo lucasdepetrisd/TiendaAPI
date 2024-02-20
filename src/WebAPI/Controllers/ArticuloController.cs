@@ -25,10 +25,10 @@ namespace Domain.Controllers
         {
         }
 
-        protected override Expression<Func<Articulo, bool>> PrimaryKeyPredicate(int id)
+        /*protected override Expression<Func<Articulo, bool>> PrimaryKeyPredicate(int id)
         {
             return articulo => articulo.IdArticulo == id;
-        }
+        }*/
 
         protected override Expression<Func<Articulo, object>>[] NavigationPropertiesToLoad
         => [a => a.Categoria, a => a.Marca, a => a.TipoTalle];

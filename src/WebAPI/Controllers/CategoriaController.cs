@@ -22,10 +22,5 @@ namespace Domain.Controllers
             : base(context, mapper)
         {
         }
-
-        protected override Expression<Func<Categoria, bool>> PrimaryKeyPredicate(int id)
-        {
-            return categoria => categoria.IdCategoria == id;
-        }
     }
 }
