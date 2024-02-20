@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <None Include="appsettings.json" />
+    <None Include="wwwroot\Swagger\SwaggerDark.css" />
   </ItemGroup>
 
   <ItemGroup>

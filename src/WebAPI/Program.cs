@@ -1,6 +1,7 @@
 using Application;
 using Infraestructure;
 using Microsoft.AspNetCore.Hosting;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,10 +20,16 @@ builder.Services
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseStaticFiles();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        options.DocExpansion(DocExpansion.None);
+        options.InjectStylesheet("/Swagger/SwaggerDark.css");
+    });
 }
 
 app.UseHttpsRedirection();
