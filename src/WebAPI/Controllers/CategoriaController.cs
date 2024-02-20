@@ -22,5 +22,8 @@ namespace Domain.Controllers
             : base(context, mapper)
         {
         }
+
+        protected override Expression<Func<Categoria, object>>[] NavigationPropertiesToLoad
+        => [a => a.Articulos];
     }
 }

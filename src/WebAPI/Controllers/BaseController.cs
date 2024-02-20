@@ -47,7 +47,7 @@ namespace WebAPI.Controllers
 
         // GET: api/Entity
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<TEntityDTO>>> Get()
+        public virtual async Task<ActionResult<IEnumerable<TEntityDTO>>> Get()
         {
             var query = _context.Set<TEntity>().AsQueryable();
 
@@ -166,7 +166,6 @@ namespace WebAPI.Controllers
             }
             else
             {
-                // Handle the case where the primary key value is null
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating {typeof(TEntity).Name}: Primary key value not found");
             }
         }
