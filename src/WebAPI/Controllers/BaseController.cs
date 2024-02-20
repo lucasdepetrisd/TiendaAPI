@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -70,7 +71,7 @@ namespace WebAPI.Controllers
 
         // GET: api/Entity/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TEntityDTO>> GetSingle(int id)
+        public virtual async Task<ActionResult<TEntityDTO>> GetSingle(int id)
         {
             var query = _context.Set<TEntity>().AsQueryable();
 
@@ -99,7 +100,7 @@ namespace WebAPI.Controllers
         // PUT: api/Entity/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, TCreateDTO createDTO)
+        public virtual async Task<IActionResult> Put(int id, TCreateDTO createDTO)
         {
             var entityDB = await _context.Set<TEntity>().FindAsync(id);
 
@@ -138,7 +139,7 @@ namespace WebAPI.Controllers
         // POST: api/Entity
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TEntityDTO>> Post(TCreateDTO entityDTO)
+        public virtual async Task<ActionResult<TEntityDTO>> Post(TCreateDTO entityDTO) 
         {
             var entityDB = _mapper.Map<TEntity>(entityDTO);
 
@@ -148,9 +149,10 @@ namespace WebAPI.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating {typeof(TEntity).Name}");
+                string? errorMessage = ex.InnerException?.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating {typeof(TEntity).Name}. Error: {errorMessage}");
             }
 
             var primaryKeyProperty = GetPrimaryKeyProperty<TEntity>();
@@ -172,7 +174,7 @@ namespace WebAPI.Controllers
 
         // DELETE: api/Entity/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public virtual async Task<IActionResult> Delete(int id)
         {
             var entity = await _context.Set<TEntity>().FindAsync(id);
             

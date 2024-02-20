@@ -3,6 +3,7 @@ using Domain.Models;
 
 namespace Domain.Controllers
 {
+    [NonController]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase

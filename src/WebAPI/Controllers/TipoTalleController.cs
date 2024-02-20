@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Application.Data;
 using Domain.Models;
 using AutoMapper;
@@ -24,6 +18,6 @@ namespace Domain.Controllers
         }
 
         protected override Expression<Func<TipoTalle, object>>[] NavigationPropertiesToLoad
-        => [a => a.Articulos];
+        => [a => a.Talles];
     }
 }

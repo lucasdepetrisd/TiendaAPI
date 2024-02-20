@@ -1,6 +1,7 @@
 using Application;
 using Infraestructure;
 using Microsoft.AspNetCore.Hosting;
+using SwaggerThemes;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,10 +26,12 @@ app.UseStaticFiles();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
+    //app.UseSwaggerThemes(Theme.OneDark);
     app.UseSwaggerUI(options =>
     {
         options.DocExpansion(DocExpansion.None);
         options.InjectStylesheet("/Swagger/SwaggerDark.css");
+        options.EnableTryItOutByDefault();
     });
 }
 

@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using Domain.Models;
 using Application.Data;
 using AutoMapper;
 using Domain.DTOs;
-using System.Collections;
-using Application.Repositories;
 using WebAPI.Controllers;
 using System.Linq.Expressions;
 

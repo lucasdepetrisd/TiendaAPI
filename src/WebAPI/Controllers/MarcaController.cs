@@ -1,124 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Application.Data;
+using AutoMapper;
+using Domain.DTOs;
+using System.Linq.Expressions;
 using Domain.Models;
+using WebAPI.Controllers;
 
 namespace Domain.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MarcaController : ControllerBase
+    public class MarcaController : BaseController<Marca, MarcaDTO, CreateMarcaDTO>
     {
-        private readonly ITiendaContext _context;
-
-        public MarcaController(ITiendaContext context)
+        public MarcaController(ITiendaContext context, IMapper mapper)
+            : base(context, mapper)
         {
-            _context = context;
         }
 
-        // GET: api/Marca
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Marca>>> GetMarca()
-        {
-          if (_context.Marca == null)
-          {
-              return NotFound();
-          }
-            return await _context.Marca.ToListAsync();
-        }
-
-        // GET: api/Marca/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Marca>> GetMarca(int id)
-        {
-          if (_context.Marca == null)
-          {
-              return NotFound();
-          }
-            var marca = await _context.Marca.FindAsync(id);
-
-            if (marca == null)
-            {
-                return NotFound();
-            }
-
-            return marca;
-        }
-
-        // PUT: api/Marca/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMarca(int id, Marca marca)
-        {
-            if (id != marca.IdMarca)
-            {
-                return BadRequest();
-            }
-
-            _context.Marca.Entry(marca).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MarcaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Marca
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Marca>> PostMarca(Marca marca)
-        {
-          if (_context.Marca == null)
-          {
-              return Problem("Entity set 'ITiendaContext.Marca'  is null.");
-          }
-            _context.Marca.Add(marca);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetMarca", new { id = marca.IdMarca }, marca);
-        }
-
-        // DELETE: api/Marca/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMarca(int id)
-        {
-            if (_context.Marca == null)
-            {
-                return NotFound();
-            }
-            var marca = await _context.Marca.FindAsync(id);
-            if (marca == null)
-            {
-                return NotFound();
-            }
-
-            _context.Marca.Remove(marca);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool MarcaExists(int id)
-        {
-            return (_context.Marca?.Any(e => e.IdMarca == id)).GetValueOrDefault();
-        }
+        protected override Expression<Func<Marca, object>>[] NavigationPropertiesToLoad
+        => [a => a.Articulos];
     }
 }
