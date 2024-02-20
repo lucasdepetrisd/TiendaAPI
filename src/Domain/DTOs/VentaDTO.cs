@@ -26,7 +26,6 @@ public record VentaDTO
 
 public record CreateVentaDTO
 {
-    public int IdVenta { get; set; }
     public DateTime Fecha { get; set; }
     public decimal Monto { get; set; }
     public string Estado { get; set; } = null!;
@@ -48,7 +47,6 @@ public record ViewVentaDTO
 
     public virtual ViewPagoDTO? Pago { get; set; }
     public virtual ComprobanteDTO? Comprobante { get; set; }
-    public virtual ViewTipoDeComprobanteDTO TipoDeComprobante { get; set; } = null!;
 
     public int IdCliente { get; set; }
     public int IdUsuario { get; set; }

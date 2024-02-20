@@ -21,6 +21,4 @@ public record ViewRolDTO
 {
     public int IdRol { get; set; }
     public string? Descripcion { get; set; }
-
-    public virtual ICollection<ViewUsuarioDTO> Usuarios { get; set; } = new List<ViewUsuarioDTO>();
 }

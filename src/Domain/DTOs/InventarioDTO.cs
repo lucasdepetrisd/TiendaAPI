@@ -27,3 +27,14 @@ public record CreateInventarioDTO
     public int IdTalle { get; set; }
     public int IdArticulo { get; set; }
 }
+
+public record ShowInventarioDTO
+{
+    public int IdInventario { get; set; }
+    public int Cantidad { get; set; }
+
+    public int IdSucursal { get; set; }
+    public int IdColor { get; set; }
+    public int IdTalle { get; set; }
+    public int IdArticulo { get; set; }
+}

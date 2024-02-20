@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,7 +20,8 @@ public record SesionDTO
 public record CreateSesionDTO
 {
     public DateTime FechaInicio { get; set; }
-    public DateTime? FechaFin { get; set; }
+    [DefaultValue(null)]
+    public DateTime? FechaFin { get; set; } = null;
 
     public int IdUsuario { get; set; }
 
@@ -32,7 +34,7 @@ public record ViewSesionDTO
     public DateTime FechaInicio { get; set; }
     public DateTime? FechaFin { get; set; }
 
-    public virtual ViewUsuarioDTO Usuario { get; set; } = null!;
+    public int IdUsuario;
 
-    public virtual ViewPuntoDeVentaDTO PuntoDeVenta { get; set; } = null!;
+    public int IdPuntoDeVenta;
 }

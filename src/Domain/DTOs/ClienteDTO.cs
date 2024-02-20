@@ -23,15 +23,14 @@ public record ClienteDTO
 
 public record CreateClienteDTO
 {
-    public string Dni { get; set; } = null!;
-    public string Cuil { get; set; } = null!;
-    public string Nombre { get; set; } = null!;
-    public string Apellido { get; set; } = null!;
+    [Required] public string Dni { get; set; } = null!;
+    [Required] public string Cuil { get; set; } = null!;
+    [Required] public string Nombre { get; set; } = null!;
+    [Required] public string Apellido { get; set; } = null!;
     public string? Telefono { get; set; }
     public string? Email { get; set; }
-    public string Domicilio { get; set; } = null!;
-
-    public int? IdCondicionTributaria { get; set; }
+    [Required] public string Domicilio { get; set; } = null!;
+    [Required] public int IdCondicionTributaria { get; set; }
 }
 
 public record ViewClienteDTO

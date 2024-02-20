@@ -27,9 +27,11 @@ namespace Infraestructure.Profiles
 
             CreateMap<Talle, TalleDTO>().ReverseMap();
             CreateMap<Talle, CreateTalleDTO>().ReverseMap();
+            CreateMap<Talle, ViewTalleDTO>().ReverseMap();
 
             CreateMap<Inventario, InventarioDTO>().ReverseMap();
             CreateMap<Inventario, CreateInventarioDTO>().ReverseMap();
+            CreateMap<Inventario, ShowInventarioDTO>().ReverseMap();
 
             CreateMap<Color, ColorDTO>().ReverseMap();
             CreateMap<Color, CreateColorDTO>().ReverseMap();

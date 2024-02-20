@@ -44,7 +44,6 @@ public record ViewEmpleadoDTO
     public string? Domicilio { get; set; }
 
     public int IdSucursal { get; set; }
-    public int IdUsuario { get; set; }
 
     //public virtual ICollection<Venta> Ventas { get; set; } = new List<Venta>();
 }

@@ -11,14 +11,16 @@ public record TalleDTO
     public int IdTalle { get; set; }
     public string Medida { get; set; } = null!;
     
-    public virtual TipoTalleDTO? TipoTalle { get; set; }
+    public virtual ViewTipoTalleDTO? TipoTalle { get; set; }
     
     //public virtual ICollection<Inventario> Inventarios { get; set; } = new List<Inventario>();
 }
 
 public record CreateTalleDTO
 {
-    public string Medida { get; set; } = null!;
+    [Required] public string Medida { get; set; } = null!;
+    
+    public virtual int? IdTipoTalle { get; set; }
 }
 
 public record ViewTalleDTO

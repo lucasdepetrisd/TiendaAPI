@@ -16,7 +16,6 @@ public record CondicionTributariaDTO
 
 public record CreateCondicionTributariaDTO
 {
-    public int IdCondicionTributaria { get; set; }
     public string Descripcion { get; set; } = null!;
     public int IdTipoDeComprobante { get; set; }
 }

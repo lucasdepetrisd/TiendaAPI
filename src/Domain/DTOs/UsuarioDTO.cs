@@ -28,8 +28,6 @@ public record CreateUsuarioDTO
 
     public string Contraseña { get; set; } = null!;
 
-    public virtual SesionDTO? Sesion { get; set; }
-
     public int IdRol { get; set; }
 
     public int IdEmpleado { get; set; }
@@ -41,11 +39,11 @@ public record ViewUsuarioDTO
     public string NombreUsuario { get; set; } = null!;
     public string Contraseña { get; set; } = null!;
     
-    public virtual ViewSesionDTO? Sesion { get; set; }
+    public int? IdSesion { get; set; }
 
-    public virtual ViewRolDTO? Rol { get; set; }
+    public int IdRol { get; set; }
 
-    public virtual ViewEmpleadoDTO Empleado { get; set; } = null!;
+    public int IdEmpleado { get; set; }
 
     //public virtual ICollection<VentaDTO> Ventas { get; set; } = new List<VentaDTO>();
 }

@@ -22,12 +22,8 @@ public record LineaDeVentaDTO
 
 public record CreateLineaDeVentaDTO
 {
-    public int IdLineaDeVenta { get; set; }
     public int Cantidad { get; set; }
-    public decimal NetoGravado { get; set; }
     public decimal PorcentajeIVA { get; set; }
-    public decimal MontoIVA { get; set; }
-    public decimal Subtotal { get; set; }
 
     public int IdInventario { get; set; }
     public int IdVenta { get; set; }

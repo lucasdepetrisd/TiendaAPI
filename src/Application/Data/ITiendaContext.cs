@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Application.Data;
+using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Diagnostics.CodeAnalysis;
