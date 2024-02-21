@@ -16,6 +16,8 @@ public static class DependencyInjection
     {
         var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? configuration.GetConnectionString("FreeASP");
 
+        Console.WriteLine(connectionString);
+
         //services.AddDbContext<TiendaContext>(options => options.UseSqlServer(configuration.GetConnectionString("Database")));
         services.AddDbContext<TiendaContext>(options => options.UseSqlServer(connectionString));
 
