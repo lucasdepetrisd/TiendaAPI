@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using SwaggerThemes;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Configuration;
+using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-if (builder.Environment.EnvironmentName == "Production")
+/*if (builder.Environment.EnvironmentName == "Production")
 {
     var connectionUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 
@@ -36,11 +37,12 @@ if (builder.Environment.EnvironmentName == "Production")
 }
 else
 {
-    // Layers DI
-    builder.Services
-        .AddApplication()
-        .AddInfraestructure(builder.Configuration.GetConnectionString("localSQL"));
-}
+}*/
+
+// Layers DI
+builder.Services
+    .AddApplication()
+    .AddInfraestructure(builder.Configuration);
 
 var app = builder.Build();
 

@@ -12,8 +12,10 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfraestructure(
         this IServiceCollection services,
-        string connectionString)
+        IConfiguration configuration)
     {
+        var connectionString = configuration.GetConnectionString("FreeASP");
+
         //services.AddDbContext<TiendaContext>(options => options.UseSqlServer(configuration.GetConnectionString("Database")));
         services.AddDbContext<TiendaContext>(options => options.UseSqlServer(connectionString));
 
