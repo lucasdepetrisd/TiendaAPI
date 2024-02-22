@@ -4,6 +4,16 @@
       "type": "mssql",
       "connectionId": "ConnectionStrings:localSQL",
       "dynamicId": null
+    },
+    "secrets1": {
+      "type": "secrets",
+      "connectionId": "VaultUri",
+      "dynamicId": null
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:AzureSQL",
+      "dynamicId": null
     }
   }
 }

@@ -8,6 +8,10 @@ using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
+/*
+var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("https://webapi-vault.vault.azure.net/"));
+builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());*/
+
 // Add services to the container.
 builder.Services.AddControllers();
 
@@ -36,17 +40,18 @@ app.Use(async (context, next) =>
 // Configure the HTTP request pipeline.
 app.UseStaticFiles();
 
-if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+app.UseSwagger();
+//app.UseSwaggerThemes(Theme.OneDark);
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    //app.UseSwaggerThemes(Theme.OneDark);
-    app.UseSwaggerUI(options =>
-    {
-        options.DocExpansion(DocExpansion.None);
-        options.InjectStylesheet("/Swagger/SwaggerDark.css");
-        options.EnableTryItOutByDefault();
-    });
-}
+    options.DocExpansion(DocExpansion.None);
+    options.InjectStylesheet("/Swagger/SwaggerDark.css");
+    options.EnableTryItOutByDefault();
+});
+
+/*if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+{
+}*/
 
 app.UseHttpsRedirection();
 
@@ -59,6 +64,7 @@ if (app.Environment.IsProduction())
     var port = Environment.GetEnvironmentVariable("PORT");
     app.Urls.Add($"http://*:{port}");
 }
+
 /*var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 var host = Environment.GetEnvironmentVariable("applicationUrl") ?? "localhost";*/
 app.Run();
