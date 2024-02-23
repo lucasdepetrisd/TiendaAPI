@@ -7,39 +7,39 @@ namespace Domain.DTOs;
 
 public record SucursalDTO
 {
-    public int IdSucursal { get; set; }
-    public string Nombre { get; set; } = null!;
-    public string? Telefono { get; set; }
-    public string Email { get; set; } = null!;
-    public string Domicilio { get; set; } = null!;
-    public string Ciudad { get; set; } = null!;
+    public int IdSucursal { get; init; }
+    public string Nombre { get; init; } = null!;
+    public string? Telefono { get; init; }
+    public string Email { get; init; } = null!;
+    public string Domicilio { get; init; } = null!;
+    public string Ciudad { get; init; } = null!;
 
-    public virtual ViewTiendaDTO Tienda { get; set; } = null!;
+    public virtual ViewTiendaDTO Tienda { get; init; } = null!;
 
-    public virtual ICollection<ViewEmpleadoDTO> Empleados { get; set; } = new List<ViewEmpleadoDTO>();
+    public virtual ICollection<ViewEmpleadoDTO> Empleados { get; init; } = new List<ViewEmpleadoDTO>();
 
-    public virtual ICollection<ViewPuntoDeVentaDTO> PuntosDeVentas { get; set; } = new List<ViewPuntoDeVentaDTO>();
+    public virtual ICollection<ViewPuntoDeVentaDTO> PuntosDeVentas { get; init; } = new List<ViewPuntoDeVentaDTO>();
 }
 
 public record CreateSucursalDTO
 {
-    public string Nombre { get; set; } = null!;
-    public string? Telefono { get; set; }
-    public string Email { get; set; } = null!;
-    public string Domicilio { get; set; } = null!;
-    public string Ciudad { get; set; } = null!;
+    public string Nombre { get; init; } = null!;
+    public string? Telefono { get; init; }
+    public string Email { get; init; } = null!;
+    public string Domicilio { get; init; } = null!;
+    public string Ciudad { get; init; } = null!;
 
-    public int IdTienda { get; set; }
+    public int IdTienda { get; init; }
 }
 
 public record ViewSucursalDTO
 {
-    public int IdSucursal { get; set; }
-    public string Nombre { get; set; } = null!;
-    public string? Telefono { get; set; }
-    public string Email { get; set; } = null!;
-    public string Domicilio { get; set; } = null!;
-    public string Ciudad { get; set; } = null!;
+    public int IdSucursal { get; init; }
+    public string Nombre { get; init; } = null!;
+    public string? Telefono { get; init; }
+    public string Email { get; init; } = null!;
+    public string Domicilio { get; init; } = null!;
+    public string Ciudad { get; init; } = null!;
 
-    public int IdTienda { get; set; }
+    public int IdTienda { get; init; }
 }

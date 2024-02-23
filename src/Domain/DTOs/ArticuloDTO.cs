@@ -14,9 +14,9 @@ public record ArticuloDTO
     public string Descripcion { get; init; } = null!;
     public decimal Costo { get; init; }
     public int MargenGanancia { get; init; }
-    public ViewCategoriaDTO? Categoria { get; set; }
-    public ViewMarcaDTO? Marca { get; set; }
-    public ViewTipoTalleDTO? TipoTalle { get; set; }
+    public ViewCategoriaDTO? Categoria { get; init; }
+    public ViewMarcaDTO? Marca { get; init; }
+    public ViewTipoTalleDTO? TipoTalle { get; init; }
 }
 
 public record CreateArticuloDTO

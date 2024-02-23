@@ -6,19 +6,19 @@ namespace Domain.DTOs;
 
 public record RolDTO
 {
-    public int IdRol { get; set; }
-    public string? Descripcion { get; set; }
+    public int IdRol { get; init; }
+    public string? Descripcion { get; init; }
 
-    public virtual ICollection<UsuarioDTO> Usuarios { get; set; } = new List<UsuarioDTO>();
+    public virtual ICollection<UsuarioDTO> Usuarios { get; init; } = new List<UsuarioDTO>();
 }
 
 public record CreateRolDTO
 {
-    public string? Descripcion { get; set; }
+    public string? Descripcion { get; init; }
 }
 
 public record ViewRolDTO
 {
-    public int IdRol { get; set; }
-    public string? Descripcion { get; set; }
+    public int IdRol { get; init; }
+    public string? Descripcion { get; init; }
 }

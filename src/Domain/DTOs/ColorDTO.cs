@@ -6,11 +6,11 @@ namespace Domain.DTOs;
 
 public record ColorDTO
 {
-    public int IdColor { get; set; }
-    public string Nombre { get; set; } = null!;
+    public int IdColor { get; init; }
+    public string Nombre { get; init; } = null!;
 }
 
 public record CreateColorDTO
 {
-    public string Nombre { get; set; } = null!;
+    public string Nombre { get; init; } = null!;
 }

@@ -8,25 +8,25 @@ namespace Domain.DTOs;
 
 public record TalleDTO
 {
-    public int IdTalle { get; set; }
-    public string Medida { get; set; } = null!;
+    public int IdTalle { get; init; }
+    public string Medida { get; init; } = null!;
     
-    public virtual ViewTipoTalleDTO? TipoTalle { get; set; }
+    public virtual ViewTipoTalleDTO? TipoTalle { get; init; }
     
-    //public virtual ICollection<Inventario> Inventarios { get; set; } = new List<Inventario>();
+    //public virtual ICollection<Inventario> Inventarios { get; init; } = new List<Inventario>();
 }
 
 public record CreateTalleDTO
 {
-    [Required] public string Medida { get; set; } = null!;
+    [Required] public string Medida { get; init; } = null!;
     
-    public virtual int? IdTipoTalle { get; set; }
+    public virtual int? IdTipoTalle { get; init; }
 }
 
 public record ViewTalleDTO
 {
-    public int IdTalle { get; set; }
-    public string Medida { get; set; } = null!;
+    public int IdTalle { get; init; }
+    public string Medida { get; init; } = null!;
 
-    public int IdTipoTalle { get; set; }
+    public int IdTipoTalle { get; init; }
 }

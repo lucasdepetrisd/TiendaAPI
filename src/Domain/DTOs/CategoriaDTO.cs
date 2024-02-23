@@ -8,7 +8,7 @@ public record CategoriaDTO
 {
     public int IdCategoria { get; init; }
     public string Descripcion { get; init; } = null!;
-    public virtual ICollection<ViewArticuloDTO> Articulos { get; set; } = new List<ViewArticuloDTO>();
+    public virtual ICollection<ViewArticuloDTO> Articulos { get; init; } = new List<ViewArticuloDTO>();
 }
 
 public record CreateCategoriaDTO

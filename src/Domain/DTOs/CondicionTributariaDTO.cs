@@ -7,21 +7,21 @@ namespace Domain.DTOs;
 
 public record CondicionTributariaDTO
 {
-    public int IdCondicionTributaria { get; set; }
-    public string Descripcion { get; set; } = null!;
-    public virtual ViewTipoDeComprobanteDTO TipoDeComprobante { get; set; } = null!;
+    public int IdCondicionTributaria { get; init; }
+    public string Descripcion { get; init; } = null!;
+    public virtual ViewTipoDeComprobanteDTO TipoDeComprobante { get; init; } = null!;
 
-    //public virtual ICollection<ViewClienteDTO> Clientes { get; set; } = new List<ViewClienteDTO>();
+    //public virtual ICollection<ViewClienteDTO> Clientes { get; init; } = new List<ViewClienteDTO>();
 }
 
 public record CreateCondicionTributariaDTO
 {
-    public string Descripcion { get; set; } = null!;
-    public int IdTipoDeComprobante { get; set; }
+    public string Descripcion { get; init; } = null!;
+    public int IdTipoDeComprobante { get; init; }
 }
 
 public record ViewCondicionTributariaDTO
 {
-    public int IdCondicionTributaria { get; set; }
-    public string Descripcion { get; set; } = null!;
+    public int IdCondicionTributaria { get; init; }
+    public string Descripcion { get; init; } = null!;
 }

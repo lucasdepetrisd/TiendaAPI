@@ -7,43 +7,43 @@ namespace Domain.DTOs;
 
 public record EmpleadoDTO
 {
-    public int IdEmpleado { get; set; }
-    public int Legajo { get; set; }
-    public string Nombre { get; set; } = null!;
-    public string Apellido { get; set; } = null!;
-    public string? Email { get; set; }
-    public string? Domicilio { get; set; }
+    public int IdEmpleado { get; init; }
+    public int Legajo { get; init; }
+    public string Nombre { get; init; } = null!;
+    public string Apellido { get; init; } = null!;
+    public string? Email { get; init; }
+    public string? Domicilio { get; init; }
 
-    public virtual ViewSucursalDTO Sucursal { get; set; } = null!;
+    public virtual ViewSucursalDTO Sucursal { get; init; } = null!;
 
-    public virtual ViewUsuarioDTO Usuario { get; set; } = null!;
+    public virtual ViewUsuarioDTO Usuario { get; init; } = null!;
 
-    //public virtual ICollection<Venta> Ventas { get; set; } = new List<Venta>();
+    //public virtual ICollection<Venta> Ventas { get; init; } = new List<Venta>();
 }
 
 public record CreateEmpleadoDTO
 {
-    public int Legajo { get; set; }
-    public string Nombre { get; set; } = null!;
-    public string Apellido { get; set; } = null!;
-    public string? Email { get; set; }
-    public string? Domicilio { get; set; }
+    public int Legajo { get; init; }
+    public string Nombre { get; init; } = null!;
+    public string Apellido { get; init; } = null!;
+    public string? Email { get; init; }
+    public string? Domicilio { get; init; }
 
-    public int IdSucursal { get; set; }
+    public int IdSucursal { get; init; }
 
-    //public virtual ICollection<Venta> Ventas { get; set; } = new List<Venta>();
+    //public virtual ICollection<Venta> Ventas { get; init; } = new List<Venta>();
 }
 
 public record ViewEmpleadoDTO
 {
-    public int IdEmpleado { get; set; }
-    public int Legajo { get; set; }
-    public string Nombre { get; set; } = null!;
-    public string Apellido { get; set; } = null!;
-    public string? Email { get; set; }
-    public string? Domicilio { get; set; }
+    public int IdEmpleado { get; init; }
+    public int Legajo { get; init; }
+    public string Nombre { get; init; } = null!;
+    public string Apellido { get; init; } = null!;
+    public string? Email { get; init; }
+    public string? Domicilio { get; init; }
 
-    public int IdSucursal { get; set; }
+    public int IdSucursal { get; init; }
 
-    //public virtual ICollection<Venta> Ventas { get; set; } = new List<Venta>();
+    //public virtual ICollection<Venta> Ventas { get; init; } = new List<Venta>();
 }

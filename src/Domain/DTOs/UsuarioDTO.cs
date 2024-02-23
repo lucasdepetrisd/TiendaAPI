@@ -7,43 +7,43 @@ namespace Domain.DTOs;
 
 public record UsuarioDTO
 {
-    public int IdUsuario { get; set; }
+    public int IdUsuario { get; init; }
 
-    public string NombreUsuario { get; set; } = null!;
+    public string NombreUsuario { get; init; } = null!;
 
-    public string Contraseña { get; set; } = null!;
+    public string Contraseña { get; init; } = null!;
 
-    public virtual ViewSesionDTO? Sesion { get; set; }
+    public virtual ViewSesionDTO? Sesion { get; init; }
 
-    public virtual ViewRolDTO? Rol { get; set; }
+    public virtual ViewRolDTO? Rol { get; init; }
 
-    public virtual ViewEmpleadoDTO Empleado { get; set; } = null!;
+    public virtual ViewEmpleadoDTO Empleado { get; init; } = null!;
 
-    //public virtual ICollection<VentaDTO> Ventas { get; set; } = new List<VentaDTO>();
+    //public virtual ICollection<VentaDTO> Ventas { get; init; } = new List<VentaDTO>();
 }
 
 public record CreateUsuarioDTO
 {
-    public string NombreUsuario { get; set; } = null!;
+    public string NombreUsuario { get; init; } = null!;
 
-    public string Contraseña { get; set; } = null!;
+    public string Contraseña { get; init; } = null!;
 
-    public int IdRol { get; set; }
+    public int IdRol { get; init; }
 
-    public int IdEmpleado { get; set; }
+    public int IdEmpleado { get; init; }
 }
 
 public record ViewUsuarioDTO
 {
-    public int IdUsuario { get; set; }
-    public string NombreUsuario { get; set; } = null!;
-    public string Contraseña { get; set; } = null!;
+    public int IdUsuario { get; init; }
+    public string NombreUsuario { get; init; } = null!;
+    public string Contraseña { get; init; } = null!;
     
-    public int? IdSesion { get; set; }
+    public int? IdSesion { get; init; }
 
-    public int IdRol { get; set; }
+    public int IdRol { get; init; }
 
-    public int IdEmpleado { get; set; }
+    public int IdEmpleado { get; init; }
 
-    //public virtual ICollection<VentaDTO> Ventas { get; set; } = new List<VentaDTO>();
+    //public virtual ICollection<VentaDTO> Ventas { get; init; } = new List<VentaDTO>();
 }

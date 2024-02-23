@@ -7,17 +7,17 @@ namespace Domain.DTOs;
 
 public record TiendaDTO
 {
-    public int IdTienda { get; set; }
-    public string Cuit { get; set; } = null!;
+    public int IdTienda { get; init; }
+    public string Cuit { get; init; } = null!;
 
-    public virtual ViewCondicionTributariaDTO CondicionTributaria { get; set; } = null!;
+    public virtual ViewCondicionTributariaDTO CondicionTributaria { get; init; } = null!;
     
-    public virtual ICollection<ViewSucursalDTO> Sucursales { get; set; } = new List<ViewSucursalDTO>();
+    public virtual ICollection<ViewSucursalDTO> Sucursales { get; init; } = new List<ViewSucursalDTO>();
 }
 
 public record ViewTiendaDTO
 {
-    public int IdTienda { get; set; }
-    public string Cuit { get; set; } = null!;
-    public int IdCondicionTributaria { get; set; }
+    public int IdTienda { get; init; }
+    public string Cuit { get; init; } = null!;
+    public int IdCondicionTributaria { get; init; }
 }

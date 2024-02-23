@@ -6,19 +6,19 @@ namespace Domain.DTOs;
 
 public record TipoTalleDTO
 {
-    public int IdTipoTalle { get; set; }
-    public string Descripcion { get; set; } = null!;
+    public int IdTipoTalle { get; init; }
+    public string Descripcion { get; init; } = null!;
 
-    public virtual ICollection<ViewTalleDTO> Talles { get; set; } = new List<ViewTalleDTO>();
+    public virtual ICollection<ViewTalleDTO> Talles { get; init; } = new List<ViewTalleDTO>();
 }
 
 public record CreateTipoTalleDTO
 {
-    public string Descripcion { get; set; } = null!;
+    public string Descripcion { get; init; } = null!;
 }
 
 public record ViewTipoTalleDTO
 {
-    public int IdTipoTalle { get; set; }
-    public string Descripcion { get; set; } = null!;
+    public int IdTipoTalle { get; init; }
+    public string Descripcion { get; init; } = null!;
 }

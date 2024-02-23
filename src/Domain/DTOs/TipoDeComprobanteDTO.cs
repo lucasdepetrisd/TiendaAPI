@@ -8,18 +8,18 @@ namespace Domain.DTOs;
 
 public record TipoDeComprobanteDTO
 {
-    public int IdTipoDeComprobante { get; set; }
-    public string Nombre { get; set; } = null!;
-    public virtual ICollection<ViewCondicionTributariaDTO> CondicionesTributarias { get; set; } = new List<ViewCondicionTributariaDTO>();
+    public int IdTipoDeComprobante { get; init; }
+    public string Nombre { get; init; } = null!;
+    public virtual ICollection<ViewCondicionTributariaDTO> CondicionesTributarias { get; init; } = new List<ViewCondicionTributariaDTO>();
 }
 
 public record CreateTipoDeComprobanteDTO
 {
-    public string Nombre { get; set; } = null!;
+    public string Nombre { get; init; } = null!;
 }
 
 public record ViewTipoDeComprobanteDTO
 {
-    public int IdTipoDeComprobante { get; set; }
-    public string Nombre { get; set; } = null!;
+    public int IdTipoDeComprobante { get; init; }
+    public string Nombre { get; init; } = null!;
 }

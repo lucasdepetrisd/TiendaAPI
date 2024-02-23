@@ -8,34 +8,34 @@ namespace Domain.DTOs;
 
 public record PagoDTO
 {
-    public int IdPago { get; set; }
-    public DateTime Fecha { get; set; }
-    public decimal Monto { get; set; }
-    public int Ticket { get; set; }
-    public string? Estado { get; set; }
-    public string? Observaciones { get; set; }
+    public int IdPago { get; init; }
+    public DateTime Fecha { get; init; }
+    public decimal Monto { get; init; }
+    public int Ticket { get; init; }
+    public string? Estado { get; init; }
+    public string? Observaciones { get; init; }
 
-    public virtual ViewVentaDTO Venta { get; set; } = null!;
+    public virtual ViewVentaDTO Venta { get; init; } = null!;
 }
 
 public record CreatePagoDTO
 {
-    public DateTime Fecha { get; set; }
-    public decimal Monto { get; set; }
-    public int Ticket { get; set; }
-    public string? Estado { get; set; }
-    public string? Observaciones { get; set; }
+    public DateTime Fecha { get; init; }
+    public decimal Monto { get; init; }
+    public int Ticket { get; init; }
+    public string? Estado { get; init; }
+    public string? Observaciones { get; init; }
     
-    public int IdVenta { get; set; }
+    public int IdVenta { get; init; }
 }
 
 public record ViewPagoDTO
 {
-    public int IdPago { get; set; }
-    public DateTime Fecha { get; set; }
-    public decimal Monto { get; set; }
-    public int Ticket { get; set; }
-    public string? Estado { get; set; }
-    public string? Observaciones { get; set; }
-    public int IdVenta { get; set; }
+    public int IdPago { get; init; }
+    public DateTime Fecha { get; init; }
+    public decimal Monto { get; init; }
+    public int Ticket { get; init; }
+    public string? Estado { get; init; }
+    public string? Observaciones { get; init; }
+    public int IdVenta { get; init; }
 }
