@@ -14,15 +14,13 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? configuration.GetConnectionString("AzureSQL");
+        var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? configuration.GetConnectionString("localSQL");
 
         Console.WriteLine(connectionString);
 
-        //services.AddDbContext<TiendaContext>(options => options.UseSqlServer(configuration.GetConnectionString("Database")));
         services.AddDbContext<TiendaContext>(options => options.UseSqlServer(connectionString));
 
         services.AddScoped<ITiendaContext, TiendaContext>();
-        //services.AddScoped<ITiendaContext>(sp => sp.GetRequiredService<TiendaContext>());
 
         var mapperConfiguration = new MapperConfiguration(configuration =>
         {
