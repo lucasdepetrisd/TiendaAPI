@@ -7,6 +7,15 @@ namespace Domain.Models;
 
 public partial class Usuario
 {
+    /*public Usuario(int idUsuario, string nombreUsuario, string contraseña, int? idRol, int idEmpleado)
+    {
+        IdUsuario = idUsuario;
+        NombreUsuario = nombreUsuario ?? throw new ArgumentNullException(nameof(nombreUsuario));
+        Contraseña = contraseña ?? throw new ArgumentNullException(nameof(contraseña));
+        IdRol = idRol;
+        IdEmpleado = idEmpleado;
+    }*/
+
     [Key]
     public int IdUsuario { get; set; }
 
