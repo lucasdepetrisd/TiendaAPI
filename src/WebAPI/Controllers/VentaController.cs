@@ -1,23 +1,40 @@
-using Microsoft.AspNetCore.Mvc;
-using Application.Data;
-using AutoMapper;
 using Domain.DTOs;
-using System.Linq.Expressions;
-using Domain.Models;
-using WebAPI.Controllers;
+using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Data.Common;
 
-namespace Domain.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VentaController : BaseController<Venta, VentaDTO, CreateVentaDTO>
+    public class VentaController : BaseController<CreateVentaDTO, VentaDTO>
     {
-        public VentaController(ITiendaContext context, IMapper mapper)
-            : base(context, mapper)
+        private readonly IVentaService _ventaService;
+
+        public VentaController(IVentaService ventaService)
+            : base(ventaService)
         {
+            _ventaService = ventaService;
         }
 
-        /*protected override Expression<Func<Venta, object>>[] NavigationPropertiesToLoad
-        => [a => a.Articulos];*/
+        public async Task<IActionResult> IniciarVentaAsync(int usuarioId, int puntoDeVentaId)
+        {
+            try
+            {
+                var venta = await _ventaService.IniciarVenta(usuarioId, puntoDeVentaId);
+
+                return Ok(venta);
+            }
+            catch (DbException ex)
+            {
+                string? errorMessage = ex.InnerException?.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating {typeof(VentaDTO).Name}. Error: {errorMessage}");
+            }
+            /*catch (Exception ex)
+            {
+                string? errorMessage = ex.InnerException?.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
+            }*/
+        }
     }
 }

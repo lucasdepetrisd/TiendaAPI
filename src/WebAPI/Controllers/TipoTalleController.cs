@@ -1,23 +1,19 @@
-using Microsoft.AspNetCore.Mvc;
-using Application.Data;
-using Domain.Models;
-using AutoMapper;
 using Domain.DTOs;
-using System.Linq.Expressions;
-using WebAPI.Controllers;
+using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Domain.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TipoTalleController : BaseController<TipoTalle, TipoTalleDTO, CreateTipoTalleDTO>
+    public class TipoTalleController : BaseController<CreateTipoTalleDTO, TipoTalleDTO>
     {
-        public TipoTalleController(ITiendaContext context, IMapper mapper)
-            : base(context, mapper)
-        {
-        }
+        private readonly ITipoTalleService _tipoTalleService;
 
-        protected override Expression<Func<TipoTalle, object>>[] NavigationPropertiesToLoad
-        => [a => a.Talles];
+        public TipoTalleController(ITipoTalleService tipoTalleService)
+            : base(tipoTalleService)
+        {
+            _tipoTalleService = tipoTalleService;
+        }
     }
 }

@@ -1,23 +1,19 @@
-using Microsoft.AspNetCore.Mvc;
-using Application.Data;
-using AutoMapper;
 using Domain.DTOs;
-using System.Linq.Expressions;
-using Domain.Models;
-using WebAPI.Controllers;
+using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Domain.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController : BaseController<Usuario, UsuarioDTO, CreateUsuarioDTO>
+    public class UsuarioController : BaseController<CreateUsuarioDTO, UsuarioDTO>
     {
-        public UsuarioController(ITiendaContext context, IMapper mapper)
-            : base(context, mapper)
-        {
-        }
+        private readonly IUsuarioService _usuarioService;
 
-        protected override Expression<Func<Usuario, object>>[] NavigationPropertiesToLoad
-        => [a => a.Empleado, a => a.Rol];
+        public UsuarioController(IUsuarioService usuarioService)
+            : base(usuarioService)
+        {
+            _usuarioService = usuarioService;
+        }
     }
 }

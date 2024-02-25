@@ -1,20 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Application.Data;
-using Domain.Models;
-using AutoMapper;
-using Domain.DTOs;
-using System.Linq.Expressions;
-using WebAPI.Controllers;
+﻿using Domain.DTOs;
+using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Domain.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ColorController : BaseController<Color, ColorDTO, CreateColorDTO>
+    public class ColorController : BaseController<CreateColorDTO, ColorDTO>
     {
-        public ColorController(ITiendaContext context, IMapper mapper)
-            : base(context, mapper)
+        private readonly IColorService _colorService;
+
+        public ColorController(IColorService colorService)
+            : base(colorService)
         {
+            _colorService = colorService;
         }
     }
 }

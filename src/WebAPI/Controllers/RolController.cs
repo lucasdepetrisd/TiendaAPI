@@ -1,23 +1,19 @@
-using Microsoft.AspNetCore.Mvc;
-using Application.Data;
-using AutoMapper;
 using Domain.DTOs;
-using System.Linq.Expressions;
-using Domain.Models;
-using WebAPI.Controllers;
+using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Domain.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RolController : BaseController<Rol, RolDTO, CreateRolDTO>
+    public class RolController : BaseController<CreateRolDTO, RolDTO>
     {
-        public RolController(ITiendaContext context, IMapper mapper)
-            : base(context, mapper)
-        {
-        }
+        private readonly IRolService _rolService;
 
-        protected override Expression<Func<Rol, object>>[] NavigationPropertiesToLoad
-        => [a => a.Usuarios];
+        public RolController(IRolService rolService)
+            : base(rolService)
+        {
+            _rolService = rolService;
+        }
     }
 }

@@ -1,23 +1,18 @@
-using Microsoft.AspNetCore.Mvc;
-using Application.Data;
-using AutoMapper;
 using Domain.DTOs;
-using System.Linq.Expressions;
-using Domain.Models;
-using WebAPI.Controllers;
+using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Domain.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClienteController : BaseController<Cliente, ClienteDTO, CreateClienteDTO>
+    public class ClienteController : BaseController<CreateClienteDTO, ClienteDTO>
     {
-        public ClienteController(ITiendaContext context, IMapper mapper)
-            : base(context, mapper)
+        private readonly IClienteService _clienteService;
+        public ClienteController(IClienteService clienteService)
+            : base(clienteService)
         {
+            _clienteService = clienteService;
         }
-
-        /*protected override Expression<Func<Cliente, object>>[] NavigationPropertiesToLoad
-        => [a => a.Articulos];*/
     }
 }

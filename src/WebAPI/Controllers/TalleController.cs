@@ -1,23 +1,19 @@
-using Microsoft.AspNetCore.Mvc;
-using Application.Data;
-using AutoMapper;
 using Domain.DTOs;
-using System.Linq.Expressions;
-using Domain.Models;
-using WebAPI.Controllers;
+using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Domain.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TalleController : BaseController<Talle, TalleDTO, CreateTalleDTO>
+    public class TalleController : BaseController<CreateTalleDTO, TalleDTO>
     {
-        public TalleController(ITiendaContext context, IMapper mapper)
-            : base(context, mapper)
-        {
-        }
+        private readonly ITalleService _talleService;
 
-        protected override Expression<Func<Talle, object>>[] NavigationPropertiesToLoad
-        => [a => a.TipoTalle];
+        public TalleController(ITalleService talleService)
+            : base(talleService)
+        {
+            _talleService = talleService;
+        }
     }
 }

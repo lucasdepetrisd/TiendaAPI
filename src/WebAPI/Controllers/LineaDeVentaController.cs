@@ -1,23 +1,20 @@
-using Microsoft.AspNetCore.Mvc;
-using Application.Data;
-using AutoMapper;
 using Domain.DTOs;
-using System.Linq.Expressions;
-using Domain.Models;
-using WebAPI.Controllers;
+using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Domain.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LineaDeVentaController : BaseController<LineaDeVenta, LineaDeVentaDTO, CreateLineaDeVentaDTO>
+    public class LineaDeVentaController : BaseController<CreateLineaDeVentaDTO, LineaDeVentaDTO>
     {
-        public LineaDeVentaController(ITiendaContext context, IMapper mapper)
-            : base(context, mapper)
+        private readonly ILineaDeVentaService _lineaDeVentaService;
+
+        public LineaDeVentaController(ILineaDeVentaService lineaDeVentaService)
+            : base(lineaDeVentaService)
         {
+            _lineaDeVentaService = lineaDeVentaService;
         }
 
-        /*protected override Expression<Func<LineaDeVenta, object>>[] NavigationPropertiesToLoad
-        => [a => a.Articulos];*/
     }
 }

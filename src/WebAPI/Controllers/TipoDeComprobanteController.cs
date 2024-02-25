@@ -1,23 +1,19 @@
-using Microsoft.AspNetCore.Mvc;
-using Application.Data;
-using Domain.Models;
-using AutoMapper;
 using Domain.DTOs;
-using System.Linq.Expressions;
-using WebAPI.Controllers;
+using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Domain.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TipoDeComprobanteController : BaseController<TipoDeComprobante, TipoDeComprobanteDTO, CreateTipoDeComprobanteDTO>
+    public class TipoDeComprobanteController : BaseController<CreateTipoDeComprobanteDTO, TipoDeComprobanteDTO>
     {
-        public TipoDeComprobanteController(ITiendaContext context, IMapper mapper)
-            : base(context, mapper)
-        {
-        }
+        private readonly ITipoDeComprobanteService _tipoDeComprobanteService;
 
-        protected override Expression<Func<TipoDeComprobante, object>>[] NavigationPropertiesToLoad
-        => [a => a.CondicionesTributarias];
+        public TipoDeComprobanteController(ITipoDeComprobanteService tipoDeComprobanteService)
+            : base(tipoDeComprobanteService)
+        {
+            _tipoDeComprobanteService = tipoDeComprobanteService;
+        }
     }
 }

@@ -1,236 +1,130 @@
-﻿using Application.Data;
-using Application.Repositories;
-using AutoMapper;
-using Domain.DTOs;
-using Domain.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
+using System.Data.Common;
 
 namespace WebAPI.Controllers
 {
-    public abstract class BaseController<TEntity, TEntityDTO, TCreateDTO> : ControllerBase
-        where TEntity : class
-        where TEntityDTO : class
-        where TCreateDTO : class
+    public abstract class BaseController<TRequestDTO, TResponseDTO> : ControllerBase
+        where TRequestDTO : class
+        where TResponseDTO : class
     {
-        //protected readonly IRepository<TEntity> _repository;
-        protected readonly ITiendaContext _context;
-        protected readonly IMapper _mapper;
+        protected readonly IBaseService<TRequestDTO, TResponseDTO> _service;
 
-        protected virtual Expression<Func<TEntity, bool>> PrimaryKeyPredicate(int id)
+        public BaseController(IBaseService<TRequestDTO, TResponseDTO> service)
         {
-            var primaryKeyProperty = GetPrimaryKeyProperty<TEntity>();
-
-            var parameter = Expression.Parameter(typeof(TEntity), "entity");
-            var member = Expression.PropertyOrField(parameter, primaryKeyProperty.Name);
-            var constant = Expression.Constant(id);
-            var body = Expression.Equal(member, constant);
-
-            return Expression.Lambda<Func<TEntity, bool>>(body, parameter);
-        }
-
-        protected virtual Expression<Func<TEntity, object>>[] NavigationPropertiesToLoad => Array.Empty<Expression<Func<TEntity, object>>>();
-
-        public BaseController(ITiendaContext context, IMapper mapper)
-        {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         // GET: api/Entity
         [HttpGet]
-        public virtual async Task<ActionResult<IEnumerable<TEntityDTO>>> Get()
+        public virtual async Task<ActionResult<IEnumerable<TResponseDTO>>> GetAllAsync()
         {
-            var query = _context.Set<TEntity>().AsQueryable();
+            var listaDTOs = await _service.GetAllAsync();
 
-            foreach (var property in NavigationPropertiesToLoad)
-            {
-                query = query.Include(property);
-            }
-
-            var entitiesDB = await query.ToListAsync();
-
-            if (entitiesDB == null)
+            if (listaDTOs == null)
             {
                 return NotFound();
             }
 
-            var listaDTOs = _mapper.Map<List<TEntityDTO>>(entitiesDB);
-
-            return listaDTOs;
+            return Ok(listaDTOs);
         }
 
         // GET: api/Entity/5
         [HttpGet("{id}")]
-        public virtual async Task<ActionResult<TEntityDTO>> GetSingle(int id)
+        public virtual async Task<ActionResult<TResponseDTO>> GetByIdAsync(int id)
         {
-            var query = _context.Set<TEntity>().AsQueryable();
+            var entityDTO = await _service.GetByIdAsync(id);
 
-            query = query.Where(PrimaryKeyPredicate(id));
-
-            foreach (var property in NavigationPropertiesToLoad)
-            {
-                query = query.Include(property);
-            }
-
-            var entityDB = await query.FirstOrDefaultAsync();
-
-            if (entityDB == null)
+            if (entityDTO == null)
             {
                 return NotFound();
             }
 
-            var entityDTO = _mapper.Map<TEntityDTO>(entityDB);
-            // Set related collections to null to avoid recursion
-            /*articuloDTO.Categoria?.Articulos.Clear();
-            articuloDTO.Marca?.Articulos.Clear();*/
-
-            return entityDTO;
-        }
-
-        // PUT: api/Entity/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public virtual async Task<IActionResult> Put(int id, TCreateDTO createDTO)
-        {
-            var entityDB = await _context.Set<TEntity>().FindAsync(id);
-
-            if (entityDB == null)
-            {
-                return NotFound();
-            }
-
-            _mapper.Map(createDTO, entityDB);
-
-            var primaryKeyProperty = GetPrimaryKeyProperty<TEntity>();
-
-            primaryKeyProperty?.SetValue(entityDB, id);
-
-            _context.Set<TEntity>().Entry(entityDB).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await EntityExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(entityDTO);
         }
 
         // POST: api/Entity
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public virtual async Task<ActionResult<TEntityDTO>> Post(TCreateDTO entityDTO) 
+        public virtual async Task<ActionResult<TResponseDTO>> Post(TRequestDTO entityDTO)
         {
-            var entityDB = _mapper.Map<TEntity>(entityDTO);
-
-            _context.Set<TEntity>().Add(entityDB);
-
             try
             {
-                await _context.SaveChangesAsync();
+                var responseDTO = await _service.AddAsync(entityDTO);
+
+                if (responseDTO == null)
+                {
+                    return BadRequest($"The entity was not created.");
+                }
+
+                return Ok(responseDTO);
             }
-            catch (DbUpdateException ex)
+            catch (DbException ex)
             {
                 string? errorMessage = ex.InnerException?.Message;
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating {typeof(TEntity).Name}. Error: {errorMessage}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating {typeof(TRequestDTO).Name}. Error: {errorMessage}");
             }
-
-            var primaryKeyProperty = GetPrimaryKeyProperty<TEntity>();
-
-            var primaryKeyValue = primaryKeyProperty?.GetValue(entityDB);
-
-            if (primaryKeyValue != null && primaryKeyValue is int id)
+            /*catch (Exception ex)
             {
-                var response = await GetSingle(id);
-                var entityCreatedDTO = response.Value;
+                string? errorMessage = ex.InnerException?.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
+            }*/
+        }
 
-                return CreatedAtAction(nameof(GetSingle), new { id = primaryKeyValue }, entityCreatedDTO);
-            }
-            else
+        // PUT: api/Entity/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public virtual async Task<ActionResult<TResponseDTO?>> Put(int id, TRequestDTO requestDTO)
+        {
+            try
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating {typeof(TEntity).Name}: Primary key value not found");
+                var responseDTO = await _service.UpdateAsync(id, requestDTO);
+
+                if (responseDTO == null)
+                {
+                    return NotFound($"The entity of ID {id} that you meant to update was not found.");
+                }
+
+                return Ok(responseDTO);
             }
+            catch (DbException ex)
+            {
+                string? errorMessage = ex.InnerException?.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating {typeof(TRequestDTO).Name}. Error: {errorMessage}");
+            }
+            /*catch (Exception ex)
+            {
+                string? errorMessage = ex.InnerException?.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
+            }*/
         }
 
         // DELETE: api/Entity/5
         [HttpDelete("{id}")]
         public virtual async Task<IActionResult> Delete(int id)
         {
-            var entity = await _context.Set<TEntity>().FindAsync(id);
-            
-            if (entity == null)
-            {
-                return NotFound();
-            }
-
             try
             {
-                _context.Set<TEntity>().Remove(entity);
+                bool success = await _service.RemoveAsync(id);
 
-                await _context.SaveChangesAsync();
+                if (!success)
+                {
+                    return NotFound($"The entity with ID {id} that you meant to delete was not found.");
+                }
+
+                return NoContent();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting {typeof(TEntity).Name}");
+                string? errorMessage = ex.InnerException?.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting {typeof(TRequestDTO).Name}");
             }
-
-            return NoContent();
-        }
-
-        private async Task<bool> EntityExists(int id)
-        {
-            var entity = await _context.Set<TEntity>().FindAsync(id);
-            return entity != null;
-        }
-
-        private static PropertyInfo? GetPrimaryKeyProperty<T>()
-        {
-            // Get the primary key property using reflection
-            var entityType = typeof(TEntity);
-            var primaryKeyProperty = typeof(T).GetProperties()
-                .FirstOrDefault(prop => Attribute.IsDefined(prop, typeof(KeyAttribute)));
-
-            if (primaryKeyProperty == null)
+            /*catch (Exception ex)
             {
-                throw new InvalidOperationException("Primary key property not found.");
-            }
-
-            return primaryKeyProperty;
+                string? errorMessage = ex.InnerException?.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
+            }*/
         }
-
-        /* public virtual IEnumerable<TEntity> GetAll(params string[] propertyNames)
-         {
-             if (propertyNames == null)
-                 throw new ArgumentNullException(nameof(propertyNames));
-
-             var query = _context.Set<TEntity>().AsQueryable();
-
-             foreach (var propertyName in propertyNames)
-             {
-                 query = query.Include(propertyName);
-             }
-
-             return query.AsNoTracking().ToList();
-         }*/
     }
 }

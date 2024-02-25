@@ -1,23 +1,19 @@
-using Microsoft.AspNetCore.Mvc;
-using Application.Data;
-using AutoMapper;
 using Domain.DTOs;
-using System.Linq.Expressions;
-using Domain.Models;
-using WebAPI.Controllers;
+using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Domain.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PagoController : BaseController<Pago, PagoDTO, CreatePagoDTO>
+    public class PagoController : BaseController<CreatePagoDTO, PagoDTO>
     {
-        public PagoController(ITiendaContext context, IMapper mapper)
-            : base(context, mapper)
-        {
-        }
+        private readonly IPagoService _pagoService;
 
-        /*protected override Expression<Func<Pago, object>>[] NavigationPropertiesToLoad
-        => [a => a.Articulos];*/
+        public PagoController(IPagoService pagoService)
+            : base(pagoService)
+        {
+            _pagoService = pagoService;
+        }
     }
 }

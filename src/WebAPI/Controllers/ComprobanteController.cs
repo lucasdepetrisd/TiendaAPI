@@ -1,23 +1,19 @@
-using Microsoft.AspNetCore.Mvc;
-using Application.Data;
-using AutoMapper;
 using Domain.DTOs;
-using System.Linq.Expressions;
-using Domain.Models;
-using WebAPI.Controllers;
+using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Domain.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ComprobanteController : BaseController<Comprobante, ComprobanteDTO, CreateComprobanteDTO>
+    public class ComprobanteController : BaseController<CreateComprobanteDTO, ComprobanteDTO>
     {
-        public ComprobanteController(ITiendaContext context, IMapper mapper)
-            : base(context, mapper)
-        {
-        }
+        private readonly IComprobanteService _comprobanteService;
 
-        /*protected override Expression<Func<Comprobante, object>>[] NavigationPropertiesToLoad
-        => [a => a.Articulos];*/
+        public ComprobanteController(IComprobanteService comprobanteService)
+            : base(comprobanteService)
+        {
+            _comprobanteService = comprobanteService;
+        }
     }
 }

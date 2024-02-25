@@ -1,23 +1,19 @@
-using Microsoft.AspNetCore.Mvc;
-using Application.Data;
-using AutoMapper;
 using Domain.DTOs;
-using System.Linq.Expressions;
-using Domain.Models;
-using WebAPI.Controllers;
+using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Domain.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SucursalController : BaseController<Sucursal, SucursalDTO, CreateSucursalDTO>
+    public class SucursalController : BaseController<CreateSucursalDTO, SucursalDTO>
     {
-        public SucursalController(ITiendaContext context, IMapper mapper)
-            : base(context, mapper)
-        {
-        }
+        private readonly ISucursalService _sucursalService;
 
-        protected override Expression<Func<Sucursal, object>>[] NavigationPropertiesToLoad
-        => [a => a.Tienda, a => a.Empleados, a => a.PuntosDeVentas];
+        public SucursalController(ISucursalService sucursalService)
+            : base(sucursalService)
+        {
+            _sucursalService = sucursalService;
+        }
     }
 }

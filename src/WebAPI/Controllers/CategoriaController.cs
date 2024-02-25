@@ -1,23 +1,19 @@
-using Microsoft.AspNetCore.Mvc;
-using Application.Data;
-using Domain.Models;
-using AutoMapper;
 using Domain.DTOs;
-using System.Linq.Expressions;
-using WebAPI.Controllers;
+using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Domain.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriaController : BaseController<Categoria, CategoriaDTO, CreateCategoriaDTO>
+    public class CategoriaController : BaseController<CreateCategoriaDTO, CategoriaDTO>
     {
-        public CategoriaController(ITiendaContext context, IMapper mapper)
-            : base(context, mapper)
-        {
-        }
+        private readonly ICategoriaService _categoriaService;
 
-        protected override Expression<Func<Categoria, object>>[] NavigationPropertiesToLoad
-        => [a => a.Articulos];
+        public CategoriaController(ICategoriaService categoriaService)
+            : base(categoriaService)
+        {
+            _categoriaService = categoriaService;
+        }
     }
 }

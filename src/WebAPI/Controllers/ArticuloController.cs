@@ -1,28 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Domain.Models;
-using Application.Data;
-using AutoMapper;
-using Domain.DTOs;
-using WebAPI.Controllers;
-using System.Linq.Expressions;
+﻿using Domain.DTOs;
+using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Domain.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ArticuloController : BaseController<Articulo, ArticuloDTO, CreateArticuloDTO>
+    public class ArticuloController : BaseController<CreateArticuloDTO, ArticuloDTO>
     {
-        public ArticuloController(ITiendaContext context, IMapper mapper)
-            : base(context, mapper)
+        private readonly IArticuloService _articuloService;
+
+        public ArticuloController(IArticuloService articuloService)
+            : base(articuloService)
         {
+            _articuloService = articuloService;
         }
-
-        /*protected override Expression<Func<Articulo, bool>> PrimaryKeyPredicate(int id)
-        {
-            return articulo => articulo.IdArticulo == id;
-        }*/
-
-        protected override Expression<Func<Articulo, object>>[] NavigationPropertiesToLoad
-        => [a => a.Categoria, a => a.Marca, a => a.TipoTalle];
     }
 }

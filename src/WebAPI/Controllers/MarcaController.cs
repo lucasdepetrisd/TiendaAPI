@@ -1,23 +1,19 @@
-using Microsoft.AspNetCore.Mvc;
-using Application.Data;
-using AutoMapper;
 using Domain.DTOs;
-using System.Linq.Expressions;
-using Domain.Models;
-using WebAPI.Controllers;
+using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Domain.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MarcaController : BaseController<Marca, MarcaDTO, CreateMarcaDTO>
+    public class MarcaController : BaseController<CreateMarcaDTO, MarcaDTO>
     {
-        public MarcaController(ITiendaContext context, IMapper mapper)
-            : base(context, mapper)
-        {
-        }
+        private readonly IMarcaService _marcaService;
 
-        protected override Expression<Func<Marca, object>>[] NavigationPropertiesToLoad
-        => [a => a.Articulos];
+        public MarcaController(IMarcaService marcaService)
+            : base(marcaService)
+        {
+            _marcaService = marcaService;
+        }
     }
 }

@@ -1,23 +1,19 @@
-using Microsoft.AspNetCore.Mvc;
-using Application.Data;
-using AutoMapper;
 using Domain.DTOs;
-using System.Linq.Expressions;
-using Domain.Models;
-using WebAPI.Controllers;
+using Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Domain.Controllers
+namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SesionController : BaseController<Sesion, SesionDTO, CreateSesionDTO>
+    public class SesionController : BaseController<CreateSesionDTO, SesionDTO>
     {
-        public SesionController(ITiendaContext context, IMapper mapper)
-            : base(context, mapper)
-        {
-        }
+        private readonly ISesionService _sesionService;
 
-        protected override Expression<Func<Sesion, object>>[] NavigationPropertiesToLoad
-        => [a => a.Usuario, a => a.PuntoDeVenta];
+        public SesionController(ISesionService sesionService)
+            : base(sesionService)
+        {
+            _sesionService = sesionService;
+        }
     }
 }
