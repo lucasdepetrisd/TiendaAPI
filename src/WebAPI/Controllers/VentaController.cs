@@ -31,11 +31,11 @@ namespace WebAPI.Controllers
                 string? errorMessage = ex.InnerException?.Message;
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating {typeof(VentaDTO).Name}. Error: {errorMessage}");
             }
-            /*catch (Exception ex)
+            catch (Exception ex)
             {
                 string? errorMessage = ex.InnerException?.Message;
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
-            }*/
+            }
         }
     }
 }
