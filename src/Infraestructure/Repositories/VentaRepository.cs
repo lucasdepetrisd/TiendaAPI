@@ -1,13 +1,6 @@
 ﻿using Domain.Models;
-using Domain.Repositories;
 using Infraestructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories
 {
@@ -17,5 +10,8 @@ namespace Infraestructure.Repositories
             : base(context)
         {
         }
+
+        protected override Expression<Func<Venta, object>>[] NavigationPropertiesToLoad
+        => [v => v.TipoDeComprobante!, v => v.Cliente!, v => v.PuntoDeVenta!, v => v.Usuario!];
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Data.Common;
 
 namespace WebAPI.Controllers
 {
@@ -60,16 +59,16 @@ namespace WebAPI.Controllers
 
                 return Ok(responseDTO);
             }
-            catch (DbException ex)
+            catch (DbUpdateException ex)
             {
                 string? errorMessage = ex.InnerException?.Message;
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating {typeof(TRequestDTO).Name}. Error: {errorMessage}");
             }
-            /*catch (Exception ex)
+            catch (Exception ex)
             {
                 string? errorMessage = ex.InnerException?.Message;
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
-            }*/
+            }
         }
 
         // PUT: api/Entity/5
@@ -88,16 +87,16 @@ namespace WebAPI.Controllers
 
                 return Ok(responseDTO);
             }
-            catch (DbException ex)
+            catch (DbUpdateException ex)
             {
                 string? errorMessage = ex.InnerException?.Message;
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating {typeof(TRequestDTO).Name}. Error: {errorMessage}");
             }
-            /*catch (Exception ex)
+            catch (Exception ex)
             {
                 string? errorMessage = ex.InnerException?.Message;
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
-            }*/
+            }
         }
 
         // DELETE: api/Entity/5
@@ -120,11 +119,11 @@ namespace WebAPI.Controllers
                 string? errorMessage = ex.InnerException?.Message;
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting {typeof(TRequestDTO).Name}");
             }
-            /*catch (Exception ex)
+            catch (Exception ex)
             {
                 string? errorMessage = ex.InnerException?.Message;
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
-            }*/
+            }
         }
     }
 }

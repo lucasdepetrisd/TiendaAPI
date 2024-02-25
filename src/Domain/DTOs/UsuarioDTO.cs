@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Domain.DTOs;
+﻿namespace Domain.DTOs;
 
 public record UsuarioDTO
 {
     public int IdUsuario { get; init; }
 
     public string NombreUsuario { get; init; } = null!;
-
-    public string Contraseña { get; init; } = null!;
 
     public virtual ViewSesionDTO? Sesion { get; init; }
 
@@ -37,8 +30,7 @@ public record ViewUsuarioDTO
 {
     public int IdUsuario { get; init; }
     public string NombreUsuario { get; init; } = null!;
-    public string Contraseña { get; init; } = null!;
-    
+
     public int? IdSesion { get; init; }
 
     public int IdRol { get; init; }

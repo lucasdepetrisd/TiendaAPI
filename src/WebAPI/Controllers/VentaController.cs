@@ -17,6 +17,7 @@ namespace WebAPI.Controllers
             _ventaService = ventaService;
         }
 
+        [HttpPost("{usuarioId}/{puntoDeVentaId}")]
         public async Task<IActionResult> IniciarVentaAsync(int usuarioId, int puntoDeVentaId)
         {
             try
