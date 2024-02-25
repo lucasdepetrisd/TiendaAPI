@@ -19,3 +19,14 @@ def modify_files(directory):
 # Replace 'directory_path' with the path to your directory containing the .cs files
 directory_path = 'src/WebAPI/Controllers/'
 modify_files(directory_path)
+
+
+# Print text
+
+# entities = ['Sesion', 'Talle', 'CondicionTributaria', 'Cliente', 'Empleado',
+#                 'Venta', 'TipoTalle', 'Usuario', 'Comprobante', 'Tienda', 'Marca', 'Pago', 'Rol',
+#                 'Color', 'LineaDeVenta', 'Inventario', 'Categoria', 'Articulo', 'PuntoDeVenta',
+#                 'TipoDeComprobante', 'Sucursal']
+
+# for entity in sorted(entities):
+#     print(f"services.AddScoped<IRepository<{entity}>, {entity}Repository>();")
