@@ -9,7 +9,7 @@ public partial class Venta
     [Key]
     public int IdVenta { get; private set; }
 
-    public DateTime Fecha { get; private set; } = DateTime.Now;
+    public DateTime Fecha { get; private set; } = DateTime.UtcNow;
 
     [Precision(18, 2)]
     public decimal Monto { get; private set; }

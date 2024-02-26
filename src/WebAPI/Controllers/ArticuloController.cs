@@ -21,7 +21,7 @@ namespace WebAPI.Controllers
 
         [ApiExplorerSettings(GroupName = "UseCases")]
         public virtual async Task<ActionResult<ArticuloDTO>> GetByCodigoAsync(
-            [StringLength(maximumLength: 30, MinimumLength = 3)] string codigo)
+            [Required][StringLength(maximumLength: 30, MinimumLength = 3)] string codigo)
         {
             var entityDTO = await _articuloService.GetByCodigoAsync(codigo);
 

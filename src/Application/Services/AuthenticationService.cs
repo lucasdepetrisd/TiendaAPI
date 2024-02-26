@@ -48,7 +48,7 @@ namespace Application.Services
             {
                 Usuario = usuario,
                 PuntoDeVenta = puntoDeVenta,
-                FechaInicio = DateTime.Now
+                FechaInicio = DateTime.UtcNow
             };
 
             await _sesionRepository.AddAsync(nuevaSesion);
@@ -64,7 +64,7 @@ namespace Application.Services
 
             if (sesion != null)
             {
-                sesion.FechaFin = DateTime.Now;
+                sesion.FechaFin = DateTime.UtcNow;
 
                 await _sesionRepository.UpdateAsync(sesion);
 

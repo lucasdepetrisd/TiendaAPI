@@ -37,7 +37,7 @@ namespace WebAPI.Controllers
         [HttpPut("CerrarSesion")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> CerrarSesion(
-            [FromQuery][Range(0, int.MaxValue, ErrorMessage = "sesionId debe ser mayor que cero.")] int sesionId)
+            [FromQuery][Range(0, int.MaxValue, ErrorMessage = "sesionId debe ser mayor que cero.")][Required] int sesionId)
         {
             var sesion = await _authenticationService.CerrarSesion(sesionId);
 
