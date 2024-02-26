@@ -1,11 +1,10 @@
-﻿using Application.Data;
-using AutoMapper;
+﻿using AutoMapper;
+using Domain.Data;
 using Domain.Models;
 using Domain.Repositories;
 using Infraestructure.Data;
 using Infraestructure.Profiles;
 using Infraestructure.Repositories;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,13 +16,16 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL") ?? configuration.GetConnectionString("tiendaDb");
-
-        Console.WriteLine(connectionString);
-
-        services.AddDbContext<TiendaContext>(options => options.UseSqlServer(connectionString));
-
-        services.AddScoped<ITiendaContext, TiendaContext>();
+        if (Environment.GetEnvironmentVariable("localDb") != null)
+        {
+            services.AddDbContext<TiendaContext>();
+            services.AddScoped<ITiendaContext, TiendaContext>();
+        }
+        else if (Environment.GetEnvironmentVariable("AzureSQL") != null)
+        {
+            services.AddDbContext<AzureTiendaContext>();
+            services.AddScoped<ITiendaContext, AzureTiendaContext>();
+        }
 
         services.AddScoped<IArticuloRepository, ArticuloRepository>();
 

@@ -1,20 +1,12 @@
-﻿using Domain.Models;
-using Domain.Repositories;
-using Infraestructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Domain.Data;
+using Domain.Models;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Infraestructure.Repositories
 {
     internal class TiendaRepository : BaseRepository<Tienda>
     {
-        public TiendaRepository(TiendaContext context)
+        public TiendaRepository(ITiendaContext context)
             : base(context)
         {
         }

@@ -16,8 +16,8 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("Crud", new OpenApiInfo { Title = "La Tienda API: CRUD", Version = "v1.2" });
-    c.SwaggerDoc("UseCases", new OpenApiInfo { Title = "La Tienda API: Casos de Uso", Version = "v1.2" });
+    c.SwaggerDoc("Crud", new OpenApiInfo { Title = "La Tienda API: CRUD", Version = "v1.3", Description = $"Entorno: {builder.Environment.EnvironmentName}" });
+    c.SwaggerDoc("UseCases", new OpenApiInfo { Title = "La Tienda API: Casos de Uso", Version = "v1.3", Description = $"Entorno: {builder.Environment.EnvironmentName}" });
 
     string[] methodsOrder = ["get", "post", "put", "patch", "delete", "options", "trace"];
     c.OrderActionsBy((apiDesc) =>
@@ -29,6 +29,15 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Configuration.AddEnvironmentVariables();
+
+if (builder.Environment.IsDevelopment() && Environment.GetEnvironmentVariable("localDb") == null)
+{
+    Environment.SetEnvironmentVariable("localDb", builder.Configuration.GetConnectionString("localDb"));
+}
+else if (builder.Environment.IsProduction() && Environment.GetEnvironmentVariable("AzureSQL") == null)
+{
+    Environment.SetEnvironmentVariable("AzureSQL", builder.Configuration.GetConnectionString("AzureSQL"));
+}
 
 // Layers DI
 builder.Services

@@ -1,12 +1,12 @@
-﻿using Domain.Models;
-using Infraestructure.Data;
+﻿using Domain.Data;
+using Domain.Models;
 using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories
 {
     internal class LineaDeVentaRepository : BaseRepository<LineaDeVenta>
     {
-        public LineaDeVentaRepository(TiendaContext context)
+        public LineaDeVentaRepository(ITiendaContext context)
             : base(context)
         {
         }

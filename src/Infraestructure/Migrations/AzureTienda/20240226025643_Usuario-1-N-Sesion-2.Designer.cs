@@ -4,16 +4,19 @@ using Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infraestructure.Migrations
+namespace Infraestructure.Migrations.AzureTienda
 {
-    [DbContext(typeof(TiendaContext))]
-    partial class TiendaContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(AzureTiendaContext))]
+    [Migration("20240226025643_Usuario-1-N-Sesion-2")]
+    partial class Usuario1NSesion2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,10 +56,6 @@ namespace Infraestructure.Migrations
 
                     b.Property<int>("MargenGanancia")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("PorcentajeIVA")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IdArticulo");
 
@@ -281,6 +280,10 @@ namespace Infraestructure.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("NetoGravado")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PorcentajeIVA")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 

@@ -1,11 +1,11 @@
-﻿using Domain.Models;
-using Infraestructure.Data;
+﻿using Domain.Data;
+using Domain.Models;
 
 namespace Infraestructure.Repositories
 {
     internal class ComprobanteRepository : BaseRepository<Comprobante>
     {
-        public ComprobanteRepository(TiendaContext context)
+        public ComprobanteRepository(ITiendaContext context)
             : base(context)
         {
         }

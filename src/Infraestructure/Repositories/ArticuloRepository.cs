@@ -1,6 +1,6 @@
-﻿using Domain.Models;
+﻿using Domain.Data;
+using Domain.Models;
 using Domain.Repositories;
-using Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -8,7 +8,7 @@ namespace Infraestructure.Repositories
 {
     internal class ArticuloRepository : BaseRepository<Articulo>, IArticuloRepository
     {
-        public ArticuloRepository(TiendaContext context)
+        public ArticuloRepository(ITiendaContext context)
             : base(context)
         {
         }

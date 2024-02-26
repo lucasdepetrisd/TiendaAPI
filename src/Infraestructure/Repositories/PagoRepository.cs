@@ -1,11 +1,11 @@
-﻿using Domain.Models;
-using Infraestructure.Data;
+﻿using Domain.Data;
+using Domain.Models;
 
 namespace Infraestructure.Repositories
 {
     internal class PagoRepository : BaseRepository<Pago>
     {
-        public PagoRepository(TiendaContext context)
+        public PagoRepository(ITiendaContext context)
             : base(context)
         {
         }

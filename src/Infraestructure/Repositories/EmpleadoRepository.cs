@@ -1,12 +1,12 @@
-﻿using Domain.Models;
-using Infraestructure.Data;
+﻿using Domain.Data;
+using Domain.Models;
 using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories
 {
     internal class EmpleadoRepository : BaseRepository<Empleado>
     {
-        public EmpleadoRepository(TiendaContext context)
+        public EmpleadoRepository(ITiendaContext context)
             : base(context)
         {
         }

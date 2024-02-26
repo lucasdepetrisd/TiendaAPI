@@ -1,5 +1,5 @@
-﻿using Domain.Repositories;
-using Infraestructure.Data;
+﻿using Domain.Data;
+using Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -9,10 +9,10 @@ namespace Infraestructure.Repositories;
 internal abstract class BaseRepository<TEntity> : IRepository<TEntity>
     where TEntity : class
 {
-    protected readonly TiendaContext _tiendaContext;
+    protected readonly ITiendaContext _tiendaContext;
     private readonly PropertyInfo _idProperty;
 
-    protected BaseRepository(TiendaContext tiendaContext)
+    protected BaseRepository(ITiendaContext tiendaContext)
     {
         _tiendaContext = tiendaContext;
         _idProperty = typeof(TEntity).GetProperty($"Id{typeof(TEntity).Name}")

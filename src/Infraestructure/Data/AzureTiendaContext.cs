@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infraestructure.Data;
 
-public partial class TiendaContext : DbContext, ITiendaContext
+public partial class AzureTiendaContext : DbContext, ITiendaContext
 {
-    public TiendaContext(DbContextOptions<TiendaContext> options) : base(options)
+    public AzureTiendaContext(DbContextOptions<AzureTiendaContext> options) : base(options)
     {
 
     }
@@ -56,14 +56,14 @@ public partial class TiendaContext : DbContext, ITiendaContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         //base.OnConfiguring(optionsBuilder);
-        optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("localDb"));
+        optionsBuilder.UseSqlServer(Environment.GetEnvironmentVariable("AzureSQL"));
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //base.OnModelCreating(modelBuilder);
 
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(TiendaContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AzureTiendaContext).Assembly);
 
         var ventaConfig = modelBuilder.Entity<Venta>(venta =>
         {

@@ -1,12 +1,12 @@
-﻿using Domain.Models;
-using Infraestructure.Data;
+﻿using Domain.Data;
+using Domain.Models;
 using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories
 {
     internal class CondicionTributariaRepository : BaseRepository<CondicionTributaria>
     {
-        public CondicionTributariaRepository(TiendaContext context)
+        public CondicionTributariaRepository(ITiendaContext context)
             : base(context)
         {
         }

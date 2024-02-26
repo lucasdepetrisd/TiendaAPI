@@ -1,10 +1,7 @@
-﻿using Application.Data;
-using Domain.Models;
+﻿using Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System.Diagnostics.CodeAnalysis;
 
-namespace Application.Data
+namespace Domain.Data
 {
     public interface ITiendaContext
     {

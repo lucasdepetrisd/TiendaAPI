@@ -38,6 +38,16 @@
       },
       "publishAllPorts": true,
       "useSSL": true
+    },
+    "https Azure": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7296;http://localhost:5155"
     }
   },
   "$schema": "https://json.schemastore.org/launchsettings.json",

@@ -4,16 +4,19 @@ using Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infraestructure.Migrations
+namespace Infraestructure.Migrations.AzureTienda
 {
-    [DbContext(typeof(TiendaContext))]
-    partial class TiendaContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(AzureTiendaContext))]
+    [Migration("20240220223822_Agrego-columnas-lindeventa")]
+    partial class Agregocolumnaslindeventa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +33,8 @@ namespace Infraestructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdArticulo"));
 
-                    b.Property<string>("Codigo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Codigo")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Costo")
                         .HasPrecision(18, 2)
@@ -53,10 +55,6 @@ namespace Infraestructure.Migrations
 
                     b.Property<int>("MargenGanancia")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("PorcentajeIVA")
-                        .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("IdArticulo");
 
@@ -284,6 +282,10 @@ namespace Infraestructure.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<decimal>("PorcentajeIVA")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal>("Subtotal")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -409,7 +411,8 @@ namespace Infraestructure.Migrations
 
                     b.HasIndex("IdPuntoDeVenta");
 
-                    b.HasIndex("IdUsuario");
+                    b.HasIndex("IdUsuario")
+                        .IsUnique();
 
                     b.ToTable("Sesion", "Admin");
                 });
@@ -577,13 +580,13 @@ namespace Infraestructure.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("IdCliente")
+                    b.Property<int>("IdCliente")
                         .HasColumnType("int");
 
                     b.Property<int>("IdPuntoVenta")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdTipoDeComprobante")
+                    b.Property<int>("IdTipoDeComprobante")
                         .HasColumnType("int");
 
                     b.Property<int>("IdUsuario")
@@ -755,8 +758,8 @@ namespace Infraestructure.Migrations
                         .HasForeignKey("IdPuntoDeVenta");
 
                     b.HasOne("Domain.Models.Usuario", "Usuario")
-                        .WithMany("Sesiones")
-                        .HasForeignKey("IdUsuario")
+                        .WithOne("Sesion")
+                        .HasForeignKey("Domain.Models.Sesion", "IdUsuario")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -817,7 +820,9 @@ namespace Infraestructure.Migrations
                 {
                     b.HasOne("Domain.Models.Cliente", "Cliente")
                         .WithMany("Ventas")
-                        .HasForeignKey("IdCliente");
+                        .HasForeignKey("IdCliente")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Domain.Models.PuntoDeVenta", "PuntoDeVenta")
                         .WithMany("Ventas")
@@ -826,7 +831,8 @@ namespace Infraestructure.Migrations
 
                     b.HasOne("Domain.Models.TipoDeComprobante", "TipoDeComprobante")
                         .WithMany("Ventas")
-                        .HasForeignKey("IdTipoDeComprobante");
+                        .HasForeignKey("IdTipoDeComprobante")
+                        .IsRequired();
 
                     b.HasOne("Domain.Models.Usuario", "Usuario")
                         .WithMany("Ventas")
@@ -931,7 +937,7 @@ namespace Infraestructure.Migrations
 
             modelBuilder.Entity("Domain.Models.Usuario", b =>
                 {
-                    b.Navigation("Sesiones");
+                    b.Navigation("Sesion");
 
                     b.Navigation("Ventas");
                 });

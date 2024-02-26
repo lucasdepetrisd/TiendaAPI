@@ -1,12 +1,12 @@
-﻿using Domain.Models;
-using Infraestructure.Data;
+﻿using Domain.Data;
+using Domain.Models;
 using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories
 {
     internal class SucursalRepository : BaseRepository<Sucursal>
     {
-        public SucursalRepository(TiendaContext context)
+        public SucursalRepository(ITiendaContext context)
             : base(context)
         {
         }
