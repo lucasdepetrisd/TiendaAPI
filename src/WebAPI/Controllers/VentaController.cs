@@ -1,6 +1,7 @@
 using Domain.DTOs;
 using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
 
 namespace WebAPI.Controllers
@@ -19,23 +20,23 @@ namespace WebAPI.Controllers
 
         [HttpPost("Iniciar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
-        public async Task<IActionResult> IniciarVentaAsync([FromQuery] int usuarioId, [FromQuery] int puntoDeVentaId)
+        public async Task<IActionResult> IniciarVentaAsync([FromQuery] IniciarVentaRequest iniciarVentaRequest)
         {
             try
             {
-                if (usuarioId <= 0 || puntoDeVentaId <= 0)
+                /*if (usuarioId <= 0 || puntoDeVentaId <= 0)
                 {
                     return BadRequest("Invalid usuarioId or puntoDeVentaId.");
-                }
+                }*/
 
-                var venta = await _ventaService.IniciarVenta(usuarioId, puntoDeVentaId);
+                var venta = await _ventaService.IniciarVenta(iniciarVentaRequest.UsuarioId, iniciarVentaRequest.PuntoDeVentaId);
 
                 return Ok(venta);
             }
             catch (DbException ex)
             {
                 string? errorMessage = ex.InnerException?.Message;
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating {typeof(VentaDTO).Name}. Error: {errorMessage}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error iniciando la Venta. Error: {errorMessage}");
             }
             catch (Exception ex)
             {
@@ -46,27 +47,27 @@ namespace WebAPI.Controllers
 
         [HttpPost("LineaDeVenta/Agregar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
-        public async Task<ActionResult<LineaDeVentaDTO>> AgregarLineaDeVenta([FromQuery] int ventaId, [FromQuery] int cantidad, [FromQuery] int inventarioId, [FromQuery] decimal porcentajeIVA)
+        public async Task<ActionResult<LineaDeVentaDTO>> AgregarLineaDeVenta(
+            [FromQuery] AgregarLineaDeVentaRequest agregarLineaDeVentaRequest)
         {
             try
             {
-                if (ventaId <= 0 || inventarioId <= 0)
+                if (agregarLineaDeVentaRequest.Cantidad <= 0)
                 {
-                    return BadRequest("Invalid ventaId or inventarioId.");
-                }
-                else if (cantidad <= 0)
-                {
-                    return BadRequest("Invalid cantidad, select a cantidad higher than 0.");
+                    return BadRequest("Cantidad inválida. Ingrese una cantidad mayor a 0.");
                 }
 
-                var lineaDeVentaDTO = await _ventaService.AgregarLineaDeVenta(ventaId, cantidad, inventarioId, porcentajeIVA);
+                var lineaDeVentaDTO = await _ventaService.AgregarLineaDeVenta(
+                    agregarLineaDeVentaRequest.VentaId,
+                    agregarLineaDeVentaRequest.Cantidad,
+                    agregarLineaDeVentaRequest.InventarioId);
 
                 return Ok(lineaDeVentaDTO);
             }
             catch (DbException ex)
             {
                 string? errorMessage = ex.InnerException?.Message;
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error adding {typeof(LineaDeVentaDTO).Name} to Venta. Error: {errorMessage}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al añadir una LineaDeVenta a la Venta. Error: {errorMessage}");
             }
             catch (Exception ex)
             {
@@ -74,5 +75,30 @@ namespace WebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
             }
         }
+    }
+
+    public record IniciarVentaRequest
+    {
+        [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "UsuarioId debe ser mayor que cero.")]
+        public int UsuarioId { get; init; }
+
+        [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "PuntoDeVentaId debe ser mayor que cero.")]
+        public int PuntoDeVentaId { get; init; }
+    }
+
+    public record AgregarLineaDeVentaRequest
+    {
+        [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "VentaId debe ser mayor que cero.")]
+        public int VentaId { get; init; }
+
+        [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "Cantidad debe ser mayor que cero.")]
+        public int Cantidad { get; init; }
+
+        [Required]
+        public int InventarioId { get; init; }
     }
 }

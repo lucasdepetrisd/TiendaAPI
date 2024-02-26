@@ -1,6 +1,7 @@
 ﻿using Domain.DTOs;
 using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebAPI.Controllers
 {
@@ -19,7 +20,8 @@ namespace WebAPI.Controllers
         [HttpGet("codigo/{codigo}")]
 
         [ApiExplorerSettings(GroupName = "UseCases")]
-        public virtual async Task<ActionResult<ArticuloDTO>> GetByCodigoAsync(string codigo)
+        public virtual async Task<ActionResult<ArticuloDTO>> GetByCodigoAsync(
+            [StringLength(maximumLength: 30, MinimumLength = 3)] string codigo)
         {
             var entityDTO = await _articuloService.GetByCodigoAsync(codigo);
 
