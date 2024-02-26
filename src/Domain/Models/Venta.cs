@@ -53,9 +53,14 @@ public partial class Venta
         PuntoDeVenta = puntoDeVenta;
     }
 
-    public LineaDeVenta CrearLineaDeVenta(int cantidad, Inventario inventario, decimal porcentajeIVA)
+    public LineaDeVenta AgregarLineaDeVenta(int cantidad, Inventario inventario)
     {
-        LineaDeVenta lineaDeVenta = new LineaDeVenta(cantidad, inventario, this, porcentajeIVA);
+        if (cantidad > inventario.Cantidad)
+        {
+            throw new InvalidOperationException($"La cantidad solicitada ({cantidad}) excede la cantidad disponible en el inventario ({inventario.Cantidad}).");
+        }
+
+        LineaDeVenta lineaDeVenta = new LineaDeVenta(cantidad, inventario, this);
 
         Monto += lineaDeVenta.CalcularSubtotal();
 

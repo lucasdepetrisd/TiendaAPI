@@ -15,9 +15,6 @@ public partial class LineaDeVenta
     public decimal NetoGravado { get; private set; }
 
     [Precision(18, 2)]
-    public decimal PorcentajeIVA { get; private set; } = 21;
-
-    [Precision(18, 2)]
     public decimal MontoIVA { get; private set; }
 
     [Precision(18, 2)]
@@ -33,14 +30,6 @@ public partial class LineaDeVenta
 
     private LineaDeVenta() { }
 
-    public LineaDeVenta(int cantidad, Inventario inventario, Venta venta, decimal porcentajeIVA)
-    {
-        Cantidad = cantidad;
-        Inventario = inventario;
-        Venta = venta;
-        PorcentajeIVA = porcentajeIVA;
-    }
-
     public LineaDeVenta(int cantidad, Inventario inventario, Venta venta)
     {
         Cantidad = cantidad;
@@ -53,7 +42,7 @@ public partial class LineaDeVenta
         if (Inventario.Articulo != null)
         {
             NetoGravado = Inventario.Articulo.Costo * (1 + Inventario.Articulo.MargenGanancia / 100);
-            MontoIVA = NetoGravado * (PorcentajeIVA / 100);
+            MontoIVA = NetoGravado * (Inventario.Articulo.PorcentajeIVA / 100);
             Subtotal = NetoGravado + MontoIVA;
         }
         else

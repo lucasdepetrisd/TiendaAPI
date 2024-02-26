@@ -50,7 +50,7 @@ namespace Application.Services
             return nuevaVenta;
         }
 
-        public async Task<LineaDeVentaDTO> AgregarLineaDeVenta(int ventaId, int cantidad, int inventarioId, decimal porcentajeIVA)
+        public async Task<LineaDeVentaDTO> AgregarLineaDeVenta(int ventaId, int cantidad, int inventarioId)
         {
             var venta = await _ventaRepository.GetByIdAsync(ventaId);
             var inventario = await _inventarioRepository.GetByIdAsync(inventarioId);
@@ -64,7 +64,7 @@ namespace Application.Services
                 throw new InvalidOperationException($"Inventario with ID {inventarioId} not found.");
             }
 
-            var lineaDeVenta = venta.CrearLineaDeVenta(cantidad, inventario, porcentajeIVA);
+            var lineaDeVenta = venta.AgregarLineaDeVenta(cantidad, inventario);
 
             await _ventaRepository.UpdateAsync(venta);
 

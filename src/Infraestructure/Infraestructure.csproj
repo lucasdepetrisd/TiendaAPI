@@ -9,11 +9,15 @@
   <ItemGroup>
     <Compile Remove="Migrations\20240226024947_Usuario-1-N-Sesion - Copy.cs" />
     <Compile Remove="Migrations\20240226024947_Usuario-1-N-Sesion - Copy.Designer.cs" />
+    <Compile Remove="Migrations\AzureTienda\20240226024947_Usuario-1-N-Sesion - Copy.cs" />
+    <Compile Remove="Migrations\AzureTienda\20240226024947_Usuario-1-N-Sesion - Copy.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Migrations\20240226024947_Usuario-1-N-Sesion - Copy.cs" />
     <None Include="Migrations\20240226024947_Usuario-1-N-Sesion - Copy.Designer.cs" />
+    <None Include="Migrations\AzureTienda\20240226024947_Usuario-1-N-Sesion - Copy.cs" />
+    <None Include="Migrations\AzureTienda\20240226024947_Usuario-1-N-Sesion - Copy.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
