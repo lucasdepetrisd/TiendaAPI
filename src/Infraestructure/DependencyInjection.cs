@@ -24,7 +24,9 @@ public static class DependencyInjection
         services.AddDbContext<TiendaContext>(options => options.UseSqlServer(connectionString));
 
         services.AddScoped<ITiendaContext, TiendaContext>();
-        services.AddScoped<IRepository<Articulo>, ArticuloRepository>();
+
+        services.AddScoped<IArticuloRepository, ArticuloRepository>();
+
         services.AddScoped<IRepository<Categoria>, CategoriaRepository>();
         services.AddScoped<IRepository<Cliente>, ClienteRepository>();
         services.AddScoped<IRepository<Color>, ColorRepository>();
@@ -43,7 +45,9 @@ public static class DependencyInjection
         services.AddScoped<IRepository<Tienda>, TiendaRepository>();
         services.AddScoped<IRepository<TipoDeComprobante>, TipoDeComprobanteRepository>();
         services.AddScoped<IRepository<TipoTalle>, TipoTalleRepository>();
-        services.AddScoped<IRepository<Usuario>, UsuarioRepository>();
+
+        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+
         services.AddScoped<IRepository<Venta>, VentaRepository>();
 
         var mapperConfiguration = new MapperConfiguration(configuration =>

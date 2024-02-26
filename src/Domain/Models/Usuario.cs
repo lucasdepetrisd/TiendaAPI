@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models;
@@ -23,8 +21,6 @@ public partial class Usuario
 
     public string Contraseña { get; set; } = null!;
 
-    public virtual Sesion? Sesion { get; set; }
-
     public int? IdRol { get; set; }
     [ForeignKey("IdRol")]
     public virtual Rol? Rol { get; set; }
@@ -33,4 +29,5 @@ public partial class Usuario
     [ForeignKey("IdEmpleado")]
     public virtual Empleado Empleado { get; set; } = null!;
     public virtual ICollection<Venta> Ventas { get; set; } = new List<Venta>();
+    public virtual ICollection<Sesion> Sesiones { get; set; } = new List<Sesion>();
 }

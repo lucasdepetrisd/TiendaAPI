@@ -1,6 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-using Domain.Models;
 using Application.Data;
+using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infraestructure.Data;
 
@@ -79,6 +79,12 @@ public partial class TiendaContext : DbContext, ITiendaContext
             venta.HasOne(d => d.PuntoDeVenta).WithMany(p => p.Ventas)
                 .HasForeignKey(d => d.IdPuntoVenta)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
+        modelBuilder.Entity<LineaDeVenta>(lineaDeVenta =>
+        {
+            lineaDeVenta.HasOne(d => d.Venta).WithMany(p => p.LineasDeVentas)
+                .HasForeignKey(d => d.IdVenta);
         });
 
         modelBuilder.Entity<LineaDeVenta>(lineaDeVenta =>

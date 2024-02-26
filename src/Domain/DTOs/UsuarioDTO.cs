@@ -12,6 +12,8 @@ public record UsuarioDTO
 
     public virtual ViewEmpleadoDTO Empleado { get; init; } = null!;
 
+    public virtual ICollection<ViewSesionDTO> Sesiones { get; init; } = new List<ViewSesionDTO>();
+
     //public virtual ICollection<VentaDTO> Ventas { get; init; } = new List<VentaDTO>();
 }
 
@@ -30,8 +32,6 @@ public record ViewUsuarioDTO
 {
     public int IdUsuario { get; init; }
     public string NombreUsuario { get; init; } = null!;
-
-    public int? IdSesion { get; init; }
 
     public int IdRol { get; init; }
 

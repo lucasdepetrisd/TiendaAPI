@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20240226024947_Usuario-1-N-Sesion - Copy.cs" />
+    <Compile Remove="Migrations\20240226024947_Usuario-1-N-Sesion - Copy.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Migrations\20240226024947_Usuario-1-N-Sesion - Copy.cs" />
+    <None Include="Migrations\20240226024947_Usuario-1-N-Sesion - Copy.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
