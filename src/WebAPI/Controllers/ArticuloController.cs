@@ -15,5 +15,20 @@ namespace WebAPI.Controllers
         {
             _articuloService = articuloService;
         }
+
+        [HttpGet("codigo/{codigo}")]
+
+        [ApiExplorerSettings(GroupName = "UseCases")]
+        public virtual async Task<ActionResult<ArticuloDTO>> GetByCodigoAsync(string codigo)
+        {
+            var entityDTO = await _articuloService.GetByCodigoAsync(codigo);
+
+            if (entityDTO == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(entityDTO);
+        }
     }
 }

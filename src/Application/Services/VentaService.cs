@@ -9,42 +9,68 @@ namespace Application.Services
     public class VentaService : BaseService<Venta, CreateVentaDTO, VentaDTO>, IVentaService
     {
         private readonly IRepository<Venta> _ventaRepository;
-        private readonly IRepository<Usuario> _usuarioRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
         private readonly IRepository<PuntoDeVenta> _puntoDeVentaRepository;
+        private readonly IRepository<Inventario> _inventarioRepository;
 
         public VentaService(
             IRepository<Venta> ventaRepository,
-            IRepository<Usuario> usuarioRepository,
+            IUsuarioRepository usuarioRepository,
             IRepository<PuntoDeVenta> puntoDeVentaRepository,
+            IRepository<Inventario> inventarioRepository,
             IMapper mapper)
             : base(ventaRepository, mapper)
         {
             _ventaRepository = ventaRepository ?? throw new ArgumentNullException(nameof(ventaRepository));
             _usuarioRepository = usuarioRepository;
             _puntoDeVentaRepository = puntoDeVentaRepository;
+            _inventarioRepository = inventarioRepository;
         }
 
         public async Task<VentaDTO> IniciarVenta(int usuarioId, int puntoDeVentaId)
         {
-            // Retrieve Usuario and PuntoDeVenta from repositories
             var usuario = await _usuarioRepository.GetByIdAsync(usuarioId);
             var puntoDeVenta = await _puntoDeVentaRepository.GetByIdAsync(puntoDeVentaId);
 
-            // Check if Usuario and PuntoDeVenta exist
-            if (usuario == null || puntoDeVenta == null)
+            if (usuario == null)
             {
-                throw new InvalidOperationException("Usuario or PuntoDeVenta not found.");
+                throw new InvalidOperationException($"Usuario with ID {usuarioId} not found.");
+            }
+            else if (puntoDeVenta == null)
+            {
+                throw new InvalidOperationException($"Punto de Venta with ID {puntoDeVentaId} not found.");
             }
 
-            // Create a new Venta entity
             var venta = new Venta(usuario, puntoDeVenta);
 
-            // Add the Venta entity to the repository
             await _ventaRepository.AddAsync(venta);
 
             VentaDTO nuevaVenta = _mapper.Map<VentaDTO>(venta);
 
             return nuevaVenta;
+        }
+
+        public async Task<LineaDeVentaDTO> AgregarLineaDeVenta(int ventaId, int cantidad, int inventarioId, decimal porcentajeIVA)
+        {
+            var venta = await _ventaRepository.GetByIdAsync(ventaId);
+            var inventario = await _inventarioRepository.GetByIdAsync(inventarioId);
+
+            if (venta == null)
+            {
+                throw new InvalidOperationException($"Venta with ID {ventaId} not found.");
+            }
+            else if (inventario == null)
+            {
+                throw new InvalidOperationException($"Inventario with ID {inventarioId} not found.");
+            }
+
+            var lineaDeVenta = venta.CrearLineaDeVenta(cantidad, inventario, porcentajeIVA);
+
+            await _ventaRepository.UpdateAsync(venta);
+
+            LineaDeVentaDTO lineaDeVentaDTO = _mapper.Map<LineaDeVentaDTO>(lineaDeVenta);
+
+            return lineaDeVentaDTO;
         }
     }
 }

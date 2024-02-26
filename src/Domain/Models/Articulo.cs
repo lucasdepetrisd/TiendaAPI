@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Models;
 
@@ -10,12 +8,12 @@ public partial class Articulo
 {
     [Key]
     public int IdArticulo { get; set; }
-    public int Codigo { get; set; }
+    public string Codigo { get; set; } = null!;
     public string Descripcion { get; set; } = null!;
     [Precision(18, 2)]
     public decimal Costo { get; set; }
     public int MargenGanancia { get; set; }
-    
+
     public int? IdCategoria { get; set; }
     [ForeignKey("IdCategoria")]
     public virtual Categoria? Categoria { get; set; }

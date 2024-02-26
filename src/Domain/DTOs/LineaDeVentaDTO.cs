@@ -1,10 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Domain.DTOs;
+﻿namespace Domain.DTOs;
 
 public record LineaDeVentaDTO
 {
@@ -27,4 +21,16 @@ public record CreateLineaDeVentaDTO
 
     public int IdInventario { get; init; }
     public int IdVenta { get; init; }
+}
+
+public record ViewLineaDeVentaDTO
+{
+    public int IdLineaDeVenta { get; init; }
+    public int Cantidad { get; init; }
+    public decimal NetoGravado { get; init; }
+    public decimal PorcentajeIVA { get; init; }
+    public decimal MontoIVA { get; init; }
+    public decimal Subtotal { get; init; }
+
+    public int IdInventario { get; init; }
 }

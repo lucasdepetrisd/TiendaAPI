@@ -28,7 +28,7 @@ public record CreateInventarioDTO
     public int IdArticulo { get; init; }
 }
 
-public record ShowInventarioDTO
+public record ViewInventarioDTO
 {
     public int IdInventario { get; init; }
     public int Cantidad { get; init; }

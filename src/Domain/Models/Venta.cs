@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -55,12 +53,14 @@ public partial class Venta
         PuntoDeVenta = puntoDeVenta;
     }
 
-    public void NuevaLineaDeVenta(int cantidad, decimal porcentajeIVA, Inventario inventario)
+    public LineaDeVenta CrearLineaDeVenta(int cantidad, Inventario inventario, decimal porcentajeIVA)
     {
-        LineaDeVenta lineaDeVenta = new LineaDeVenta(cantidad, porcentajeIVA, inventario, this);
+        LineaDeVenta lineaDeVenta = new LineaDeVenta(cantidad, inventario, this, porcentajeIVA);
 
         Monto += lineaDeVenta.CalcularSubtotal();
 
         LineasDeVentas.Add(lineaDeVenta);
+
+        return lineaDeVenta;
     }
 }

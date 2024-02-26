@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -17,7 +15,7 @@ public partial class LineaDeVenta
     public decimal NetoGravado { get; private set; }
 
     [Precision(18, 2)]
-    public decimal PorcentajeIVA { get; private set; }
+    public decimal PorcentajeIVA { get; private set; } = 21;
 
     [Precision(18, 2)]
     public decimal MontoIVA { get; private set; }
@@ -35,12 +33,19 @@ public partial class LineaDeVenta
 
     private LineaDeVenta() { }
 
-    public LineaDeVenta(int cantidad, decimal porcentajeIVA, Inventario inventario, Venta venta)
+    public LineaDeVenta(int cantidad, Inventario inventario, Venta venta, decimal porcentajeIVA)
     {
+        Cantidad = cantidad;
         Inventario = inventario;
         Venta = venta;
-        Cantidad = cantidad;
         PorcentajeIVA = porcentajeIVA;
+    }
+
+    public LineaDeVenta(int cantidad, Inventario inventario, Venta venta)
+    {
+        Cantidad = cantidad;
+        Inventario = inventario;
+        Venta = venta;
     }
 
     public decimal CalcularSubtotal()

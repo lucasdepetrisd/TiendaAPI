@@ -17,6 +17,7 @@ namespace WebAPI.Controllers
 
         // GET: api/Entity
         [HttpGet]
+        [ApiExplorerSettings(GroupName = "Crud")]
         public virtual async Task<ActionResult<IEnumerable<TResponseDTO>>> GetAllAsync()
         {
             var listaDTOs = await _service.GetAllAsync();
@@ -31,6 +32,7 @@ namespace WebAPI.Controllers
 
         // GET: api/Entity/5
         [HttpGet("{id}")]
+        [ApiExplorerSettings(GroupName = "Crud")]
         public virtual async Task<ActionResult<TResponseDTO>> GetByIdAsync(int id)
         {
             var entityDTO = await _service.GetByIdAsync(id);
@@ -46,6 +48,7 @@ namespace WebAPI.Controllers
         // POST: api/Entity
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [ApiExplorerSettings(GroupName = "Crud")]
         public virtual async Task<ActionResult<TResponseDTO>> Post(TRequestDTO entityDTO)
         {
             try
@@ -66,7 +69,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                string? errorMessage = ex.InnerException?.Message;
+                string? errorMessage = ex.Message;
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
             }
         }
@@ -74,6 +77,7 @@ namespace WebAPI.Controllers
         // PUT: api/Entity/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [ApiExplorerSettings(GroupName = "Crud")]
         public virtual async Task<ActionResult<TResponseDTO?>> Put(int id, TRequestDTO requestDTO)
         {
             try
@@ -94,13 +98,14 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                string? errorMessage = ex.InnerException?.Message;
+                string? errorMessage = ex.Message;
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
             }
         }
 
         // DELETE: api/Entity/5
         [HttpDelete("{id}")]
+        [ApiExplorerSettings(GroupName = "Crud")]
         public virtual async Task<IActionResult> Delete(int id)
         {
             try
@@ -117,11 +122,11 @@ namespace WebAPI.Controllers
             catch (DbUpdateException ex)
             {
                 string? errorMessage = ex.InnerException?.Message;
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting {typeof(TRequestDTO).Name}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error deleting {typeof(TRequestDTO).Name}. Error: {errorMessage}");
             }
             catch (Exception ex)
             {
-                string? errorMessage = ex.InnerException?.Message;
+                string? errorMessage = ex.Message;
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
             }
         }

@@ -1,10 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Domain.DTOs;
+﻿namespace Domain.DTOs;
 
 public record VentaDTO
 {
@@ -16,12 +10,12 @@ public record VentaDTO
 
     public virtual ViewPagoDTO? Pago { get; init; }
     public virtual ComprobanteDTO? Comprobante { get; init; }
-    
+
     public virtual ViewTipoDeComprobanteDTO TipoDeComprobante { get; init; } = null!;
     public virtual ViewClienteDTO Cliente { get; init; } = null!;
     public virtual ViewUsuarioDTO Usuario { get; init; } = null!;
     public virtual ViewPuntoDeVentaDTO PuntoDeVenta { get; init; } = null!;
-    public virtual ICollection<LineaDeVentaDTO> LineasDeVentas { get; init; } = new List<LineaDeVentaDTO>();
+    public virtual ICollection<ViewLineaDeVentaDTO> LineasDeVentas { get; init; } = new List<ViewLineaDeVentaDTO>();
 }
 
 public record CreateVentaDTO

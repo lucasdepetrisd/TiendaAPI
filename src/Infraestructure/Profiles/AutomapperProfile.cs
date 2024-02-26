@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Domain.Models;
 using Domain.DTOs;
+using Domain.Models;
 
 namespace Infraestructure.Profiles
 {
@@ -31,7 +31,7 @@ namespace Infraestructure.Profiles
 
             CreateMap<Inventario, InventarioDTO>().ReverseMap();
             CreateMap<Inventario, CreateInventarioDTO>().ReverseMap();
-            CreateMap<Inventario, ShowInventarioDTO>().ReverseMap();
+            CreateMap<Inventario, ViewInventarioDTO>().ReverseMap();
 
             CreateMap<Color, ColorDTO>().ReverseMap();
             CreateMap<Color, CreateColorDTO>().ReverseMap();
@@ -43,11 +43,11 @@ namespace Infraestructure.Profiles
             CreateMap<Sucursal, SucursalDTO>().ReverseMap();
             CreateMap<Sucursal, CreateSucursalDTO>().ReverseMap();
             CreateMap<Sucursal, ViewSucursalDTO>().ReverseMap();
-            
+
             CreateMap<CondicionTributaria, CondicionTributariaDTO>().ReverseMap();
             CreateMap<CondicionTributaria, CreateCondicionTributariaDTO>().ReverseMap();
             CreateMap<CondicionTributaria, ViewCondicionTributariaDTO>().ReverseMap();
-            
+
             CreateMap<Empleado, EmpleadoDTO>().ReverseMap();
             CreateMap<Empleado, CreateEmpleadoDTO>().ReverseMap();
             CreateMap<Empleado, ViewEmpleadoDTO>().ReverseMap();
@@ -79,6 +79,7 @@ namespace Infraestructure.Profiles
 
             CreateMap<LineaDeVenta, LineaDeVentaDTO>().ReverseMap();
             CreateMap<LineaDeVenta, CreateLineaDeVentaDTO>().ReverseMap();
+            CreateMap<LineaDeVenta, ViewLineaDeVentaDTO>().ReverseMap();
 
             CreateMap<Pago, PagoDTO>().ReverseMap();
             CreateMap<Pago, CreatePagoDTO>().ReverseMap();

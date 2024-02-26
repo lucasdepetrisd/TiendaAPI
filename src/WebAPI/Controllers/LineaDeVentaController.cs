@@ -15,6 +15,5 @@ namespace WebAPI.Controllers
         {
             _lineaDeVentaService = lineaDeVentaService;
         }
-
     }
 }

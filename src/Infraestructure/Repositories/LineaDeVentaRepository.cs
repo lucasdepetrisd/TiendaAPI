@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using Infraestructure.Data;
+using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories
 {
@@ -10,7 +11,7 @@ namespace Infraestructure.Repositories
         {
         }
 
-        /*protected override Expression<Func<LineaDeVenta, object>>[] NavigationPropertiesToLoad
-        => [a => a.Articulos];*/
+        protected override Expression<Func<LineaDeVenta, object>>[] NavigationPropertiesToLoad
+        => [a => a.Inventario];
     }
 }

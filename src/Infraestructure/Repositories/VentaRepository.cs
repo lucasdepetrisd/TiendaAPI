@@ -12,6 +12,13 @@ namespace Infraestructure.Repositories
         }
 
         protected override Expression<Func<Venta, object>>[] NavigationPropertiesToLoad
-        => [v => v.TipoDeComprobante!, v => v.Cliente!, v => v.PuntoDeVenta!, v => v.Usuario!];
+            => new Expression<Func<Venta, object>>[]
+            {
+                v => v.TipoDeComprobante!,
+                v => v.Cliente!,
+                v => v.PuntoDeVenta!,
+                v => v.Usuario!,
+                v => v.LineasDeVentas
+            };
     }
 }
