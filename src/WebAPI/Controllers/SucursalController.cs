@@ -1,5 +1,5 @@
 using Domain.DTOs;
-using Domain.Services;
+using Application.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers

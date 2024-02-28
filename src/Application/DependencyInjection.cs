@@ -1,5 +1,5 @@
 ﻿using Application.Services;
-using Domain.Services;
+using Application.Contracts;
 using FluentValidation;
 using Infraestructure;
 using Microsoft.Extensions.Configuration;

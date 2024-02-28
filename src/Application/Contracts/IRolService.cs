@@ -1,7 +1,7 @@
 ﻿using Domain.DTOs;
 using Domain.Models;
 
-namespace Domain.Services
+namespace Application.Contracts
 {
     public interface IRolService : IBaseService<CreateRolDTO, RolDTO>
     {

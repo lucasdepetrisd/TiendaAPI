@@ -1,6 +1,6 @@
 ﻿using Domain.DTOs;
 
-namespace Domain.Services
+namespace Application.Contracts
 {
     public interface IAuthenticationService
     {
