@@ -63,6 +63,24 @@ public partial class TiendaContext : DbContext, ITiendaContext
     {
         //base.OnModelCreating(modelBuilder);
 
+        var condTribConfig = modelBuilder.Entity<CondicionTributaria>(condTrib =>
+        {
+            condTrib
+                .Property(e => e.Nombre)
+                .HasConversion<string>();
+        });
+
+        var tipCompConfig = modelBuilder.Entity<TipoDeComprobante>(condTrib =>
+        {
+            condTrib.HasOne(t => t.Emisor)
+                .WithMany(c => c.TiposDeComprobantesEmisor)
+                .HasForeignKey(t => t.IdCondicionTributariaEmisor);
+
+            condTrib.HasOne(t => t.Receptor)
+                .WithMany(c => c.TiposDeComprobantesReceptor)
+                .HasForeignKey(t => t.IdCondicionTributariaReceptor);
+        });
+
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(TiendaContext).Assembly);
 
         var ventaConfig = modelBuilder.Entity<Venta>(venta =>
