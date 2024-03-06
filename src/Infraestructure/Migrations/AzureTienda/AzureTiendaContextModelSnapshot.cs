@@ -51,8 +51,9 @@ namespace Infraestructure.Migrations.AzureTienda
                     b.Property<int?>("IdTipoTalle")
                         .HasColumnType("int");
 
-                    b.Property<int>("MargenGanancia")
-                        .HasColumnType("int");
+                    b.Property<decimal>("MargenGanancia")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("PorcentajeIVA")
                         .HasPrecision(18, 2)

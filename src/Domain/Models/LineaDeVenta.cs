@@ -41,8 +41,14 @@ public partial class LineaDeVenta
     {
         if (Inventario.Articulo != null)
         {
-            NetoGravado = Inventario.Articulo.Costo * (1 + Inventario.Articulo.MargenGanancia / 100);
+            decimal costoTotal = Cantidad * Inventario.Articulo.Costo;
+
+            NetoGravado = costoTotal * (1 + Inventario.Articulo.MargenGanancia / 100);
             MontoIVA = NetoGravado * (Inventario.Articulo.PorcentajeIVA / 100);
+
+            NetoGravado = decimal.Round(NetoGravado, 2);
+            MontoIVA = decimal.Round(MontoIVA, 2);
+
             Subtotal = NetoGravado + MontoIVA;
         }
         else
