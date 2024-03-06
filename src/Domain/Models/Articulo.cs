@@ -16,7 +16,8 @@ public partial class Articulo
 
     [Precision(18, 2)]
     public decimal Costo { get; set; }
-    public int MargenGanancia { get; set; }
+    [Precision(18, 2)]
+    public decimal MargenGanancia { get; set; }
 
     public int? IdCategoria { get; set; }
     [ForeignKey("IdCategoria")]
