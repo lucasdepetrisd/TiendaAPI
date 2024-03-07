@@ -14,7 +14,7 @@ public partial class Venta
     [Precision(18, 2)]
     public decimal Monto { get; private set; }
 
-    public string Estado { get; private set; } = "Pendiente";
+    public string Estado { get; private set; } = "Pendiente"; //TODO: Convertir a enum. Leer values objects
 
     public string? Observaciones { get; private set; } = "Ninguna";
 
@@ -51,6 +51,16 @@ public partial class Venta
     {
         Usuario = usuario;
         PuntoDeVenta = puntoDeVenta;
+    }
+
+    public void Cancelar()
+    {
+        if (Estado != "Pendiente")
+        {
+            throw new InvalidOperationException("La venta solo se puede cancelar si esta en estado Pendiente.");
+        }
+
+        Estado = "Cancelada";
     }
 
     public LineaDeVenta AgregarLineaDeVenta(int cantidad, Inventario inventario)

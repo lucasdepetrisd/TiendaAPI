@@ -115,6 +115,29 @@ namespace WebAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
             }
         }
+
+        [HttpPost("Cancelar")]
+        [ApiExplorerSettings(GroupName = "UseCases")]
+        public async Task<IActionResult> CancelarVentaAsync([FromQuery] int idVenta)
+        {
+            try
+            {
+                VentaDTO ventaCanceladaDTO = await _ventaService.CancelarVenta(idVenta);
+
+                return Ok(ventaCanceladaDTO);
+            }
+            catch (DbException ex)
+            {
+                string? errorMessage = ex.InnerException?.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al cancelar la venta. Error: {errorMessage}");
+            }
+            catch (Exception ex)
+            {
+                string? errorMessage = ex.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
+            }
+        }
+
     }
 
     public record IniciarVentaRequest
