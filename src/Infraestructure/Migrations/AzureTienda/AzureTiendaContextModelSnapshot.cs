@@ -170,23 +170,42 @@ namespace Infraestructure.Migrations.AzureTienda
             modelBuilder.Entity("Domain.Models.CondicionTributaria", b =>
                 {
                     b.Property<int>("IdCondicionTributaria")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCondicionTributaria"));
-
-                    b.Property<string>("Descripcion")
+                    b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IdTipoDeComprobante")
-                        .HasColumnType("int");
-
                     b.HasKey("IdCondicionTributaria");
 
-                    b.HasIndex("IdTipoDeComprobante");
-
                     b.ToTable("CondicionTributaria", "Admin");
+
+                    b.HasData(
+                        new
+                        {
+                            IdCondicionTributaria = 0,
+                            Nombre = "ResponsableInscripto"
+                        },
+                        new
+                        {
+                            IdCondicionTributaria = 1,
+                            Nombre = "Monotributista"
+                        },
+                        new
+                        {
+                            IdCondicionTributaria = 2,
+                            Nombre = "Exento"
+                        },
+                        new
+                        {
+                            IdCondicionTributaria = 3,
+                            Nombre = "NoResponsable"
+                        },
+                        new
+                        {
+                            IdCondicionTributaria = 4,
+                            Nombre = "ConsumidorFinal"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Models.Empleado", b =>
@@ -505,11 +524,21 @@ namespace Infraestructure.Migrations.AzureTienda
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTipoDeComprobante"));
 
+                    b.Property<int>("IdCondicionTributariaEmisor")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdCondicionTributariaReceptor")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdTipoDeComprobante");
+
+                    b.HasIndex("IdCondicionTributariaEmisor");
+
+                    b.HasIndex("IdCondicionTributariaReceptor");
 
                     b.ToTable("TipoDeComprobante", "Ventas");
                 });
@@ -651,17 +680,6 @@ namespace Infraestructure.Migrations.AzureTienda
                     b.Navigation("Venta");
                 });
 
-            modelBuilder.Entity("Domain.Models.CondicionTributaria", b =>
-                {
-                    b.HasOne("Domain.Models.TipoDeComprobante", "TipoDeComprobante")
-                        .WithMany("CondicionesTributarias")
-                        .HasForeignKey("IdTipoDeComprobante")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TipoDeComprobante");
-                });
-
             modelBuilder.Entity("Domain.Models.Empleado", b =>
                 {
                     b.HasOne("Domain.Models.Sucursal", "Sucursal")
@@ -797,6 +815,23 @@ namespace Infraestructure.Migrations.AzureTienda
                     b.Navigation("CondicionTributaria");
                 });
 
+            modelBuilder.Entity("Domain.Models.TipoDeComprobante", b =>
+                {
+                    b.HasOne("Domain.Models.CondicionTributaria", "CondicionTributariaEmisor")
+                        .WithMany("TiposDeComprobantesEmisor")
+                        .HasForeignKey("IdCondicionTributariaEmisor")
+                        .IsRequired();
+
+                    b.HasOne("Domain.Models.CondicionTributaria", "CondicionTributariaReceptor")
+                        .WithMany("TiposDeComprobantesReceptor")
+                        .HasForeignKey("IdCondicionTributariaReceptor")
+                        .IsRequired();
+
+                    b.Navigation("CondicionTributariaEmisor");
+
+                    b.Navigation("CondicionTributariaReceptor");
+                });
+
             modelBuilder.Entity("Domain.Models.Usuario", b =>
                 {
                     b.HasOne("Domain.Models.Empleado", "Empleado")
@@ -868,6 +903,10 @@ namespace Infraestructure.Migrations.AzureTienda
                     b.Navigation("Clientes");
 
                     b.Navigation("Tienda");
+
+                    b.Navigation("TiposDeComprobantesEmisor");
+
+                    b.Navigation("TiposDeComprobantesReceptor");
                 });
 
             modelBuilder.Entity("Domain.Models.Empleado", b =>
@@ -918,8 +957,6 @@ namespace Infraestructure.Migrations.AzureTienda
 
             modelBuilder.Entity("Domain.Models.TipoDeComprobante", b =>
                 {
-                    b.Navigation("CondicionesTributarias");
-
                     b.Navigation("Ventas");
                 });
 

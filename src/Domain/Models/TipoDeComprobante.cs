@@ -9,11 +9,11 @@ public partial class TipoDeComprobante
 
     public string Nombre { get; private set; } = null!;
 
-    public int IdCondicionTributariaEmisor { get; set; }
-    public CondicionTributaria Emisor { get; set; } = null!;
+    public IdCondicionTributaria IdCondicionTributariaEmisor { get; set; }
+    public CondicionTributaria CondicionTributariaEmisor { get; set; } = null!;
 
-    public int IdCondicionTributariaReceptor { get; set; }
-    public CondicionTributaria Receptor { get; set; } = null!;
+    public IdCondicionTributaria IdCondicionTributariaReceptor { get; set; }
+    public CondicionTributaria CondicionTributariaReceptor { get; set; } = null!;
 
     public virtual ICollection<Venta> Ventas { get; set; } = new List<Venta>();
 
@@ -23,52 +23,51 @@ public partial class TipoDeComprobante
 
     public TipoDeComprobante(CondicionTributaria emisor, CondicionTributaria receptor)
     {
-        Emisor = emisor;
-        Receptor = receptor;
+        CondicionTributariaEmisor = emisor;
+        CondicionTributariaReceptor = receptor;
 
         Nombre = ObtenerNombre();
     }
 
     private string ObtenerNombre()
     {
-        switch (Emisor.Nombre)
+        switch (CondicionTributariaEmisor.Nombre)
         {
-            case TipoCondicionTributaria.ResponsableInscripto:
-                switch (Receptor.Nombre)
+            case "Responsable Inscripto":
+                switch (CondicionTributariaReceptor.Nombre)
                 {
-                    case TipoCondicionTributaria.ResponsableInscripto:
-                    case TipoCondicionTributaria.Monotributista:
+                    case "ResponsableInscripto":
+                    case "Monotributista":
                         Nombre = "Factura A";
                         break;
-                    case TipoCondicionTributaria.Exento:
-                    case TipoCondicionTributaria.ConsumidorFinal:
-                    case TipoCondicionTributaria.NoResponsable:
+                    case "Exento":
+                    case "ConsumidorFinal":
+                    case "NoResponsable":
                         Nombre = "Factura B";
                         break;
                     default:
-                        throw new InvalidOperationException("Condición Emisor Invalida. Debe ser RI, M, E, CF o NR.");
+                        throw new InvalidOperationException("Condición Receptor Inválida. Debe ser RI, M, E, CF o NR.");
                 }
                 break;
-            case TipoCondicionTributaria.Monotributista:
-            case TipoCondicionTributaria.Exento:
-                switch (Receptor.Nombre)
+            case "Monotributista":
+            case "Exento":
+                switch (CondicionTributariaReceptor.Nombre)
                 {
-                    case TipoCondicionTributaria.ResponsableInscripto:
-                    case TipoCondicionTributaria.Monotributista:
+                    case "ResponsableInscripto":
+                    case "Monotributista":
                         Nombre = "Factura C";
                         break;
-                    case TipoCondicionTributaria.Exento:
-                    case TipoCondicionTributaria.ConsumidorFinal:
-                    case TipoCondicionTributaria.NoResponsable:
+                    case "Exento":
+                    case "ConsumidorFinal":
+                    case "NoResponsable":
                         Nombre = "Factura C";
                         break;
                     default:
-                        throw new InvalidOperationException("Condición Emisor Invalida. Debe ser RI, M, E, CF o NR.");
+                        throw new InvalidOperationException("Condición Receptor Inválida. Debe ser RI, M, E, CF o NR.");
                 }
                 break;
             default:
-                throw new InvalidOperationException("Condición Emisor Invalida. Debe ser RI, M o E.");
-
+                throw new InvalidOperationException("Condición Emisor Inválida. Debe ser RI, M o E.");
         }
         return Nombre;
     }

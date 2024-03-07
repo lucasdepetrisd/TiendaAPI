@@ -63,27 +63,58 @@ public partial class TiendaContext : DbContext, ITiendaContext
     {
         //base.OnModelCreating(modelBuilder);
 
-        var condTribConfig = modelBuilder.Entity<CondicionTributaria>(condTrib =>
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(TiendaContext).Assembly);
+
+        modelBuilder.Entity<CondicionTributaria>(condTrib =>
         {
             condTrib
                 .Property(e => e.Nombre)
                 .HasConversion<string>();
+
+            condTrib
+                .Property(e => e.IdCondicionTributaria)
+                .HasConversion<int>();
+
+            condTrib.HasData(
+                Enum.GetValues(typeof(IdCondicionTributaria))
+                    .Cast<IdCondicionTributaria>()
+                    .Select(c => new CondicionTributaria()
+                    {
+                        IdCondicionTributaria = c,
+                        Nombre = c.ToString()
+                    })
+                );
         });
 
-        var tipCompConfig = modelBuilder.Entity<TipoDeComprobante>(condTrib =>
+        /*modelBuilder.Entity<CondicionTributaria>(condTribConfig =>
         {
-            condTrib.HasOne(t => t.Emisor)
-                .WithMany(c => c.TiposDeComprobantesEmisor)
-                .HasForeignKey(t => t.IdCondicionTributariaEmisor);
+            condTribConfig
+                .Property(e => e.Nombre)
+                .HasConversion<string>();
+        });*/
 
-            condTrib.HasOne(t => t.Receptor)
+        modelBuilder.Entity<TipoDeComprobante>(tipCompConfig =>
+        {
+            tipCompConfig.HasOne(t => t.CondicionTributariaEmisor)
+                .WithMany(c => c.TiposDeComprobantesEmisor)
+                .HasForeignKey(t => t.IdCondicionTributariaEmisor)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            tipCompConfig
+                .Property(c => c.IdCondicionTributariaEmisor)
+                .HasConversion<int>();
+
+            tipCompConfig.HasOne(t => t.CondicionTributariaReceptor)
                 .WithMany(c => c.TiposDeComprobantesReceptor)
-                .HasForeignKey(t => t.IdCondicionTributariaReceptor);
+                .HasForeignKey(t => t.IdCondicionTributariaReceptor)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            tipCompConfig
+                .Property(c => c.IdCondicionTributariaReceptor)
+                .HasConversion<int>();
         });
 
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(TiendaContext).Assembly);
-
-        var ventaConfig = modelBuilder.Entity<Venta>(venta =>
+        modelBuilder.Entity<Venta>(venta =>
         {
             venta.HasOne(d => d.TipoDeComprobante).WithMany(p => p.Ventas)
                 .HasForeignKey(d => d.IdTipoDeComprobante)
@@ -104,10 +135,18 @@ public partial class TiendaContext : DbContext, ITiendaContext
                 .HasForeignKey(d => d.IdVenta);
         });
 
-        modelBuilder.Entity<LineaDeVenta>(lineaDeVenta =>
+        modelBuilder.Entity<Cliente>(cliente =>
         {
-            lineaDeVenta.HasOne(d => d.Venta).WithMany(p => p.LineasDeVentas)
-                .HasForeignKey(d => d.IdVenta);
+            cliente
+                .Property(c => c.IdCondicionTributaria)
+                .HasConversion<int>();
+        });
+
+        modelBuilder.Entity<Tienda>(tienda =>
+        {
+            tienda
+                .Property(c => c.IdCondicionTributaria)
+                .HasConversion<int>();
         });
 
         // Define a list of entity types

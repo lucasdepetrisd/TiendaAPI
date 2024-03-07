@@ -65,7 +65,56 @@ public partial class AzureTiendaContext : DbContext, ITiendaContext
 
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AzureTiendaContext).Assembly);
 
-        var ventaConfig = modelBuilder.Entity<Venta>(venta =>
+        modelBuilder.Entity<CondicionTributaria>(condTrib =>
+        {
+            condTrib
+                .Property(e => e.Nombre)
+                .HasConversion<string>();
+
+            condTrib
+                .Property(e => e.IdCondicionTributaria)
+                .HasConversion<int>();
+
+            condTrib.HasData(
+                Enum.GetValues(typeof(IdCondicionTributaria))
+                    .Cast<IdCondicionTributaria>()
+                    .Select(c => new CondicionTributaria()
+                    {
+                        IdCondicionTributaria = c,
+                        Nombre = c.ToString()
+                    })
+                );
+        });
+
+        /*var condTribConfig = modelBuilder.Entity<CondicionTributaria>(condTrib =>
+         {
+             condTrib
+                 .Property(e => e.Nombre)
+                 .HasConversion<string>();
+         });*/
+
+        modelBuilder.Entity<TipoDeComprobante>(tipCompConfig =>
+        {
+            tipCompConfig.HasOne(t => t.CondicionTributariaEmisor)
+                .WithMany(c => c.TiposDeComprobantesEmisor)
+                .HasForeignKey(t => t.IdCondicionTributariaEmisor)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            tipCompConfig
+                .Property(c => c.IdCondicionTributariaEmisor)
+                .HasConversion<int>();
+
+            tipCompConfig.HasOne(t => t.CondicionTributariaReceptor)
+                .WithMany(c => c.TiposDeComprobantesReceptor)
+                .HasForeignKey(t => t.IdCondicionTributariaReceptor)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            tipCompConfig
+                .Property(c => c.IdCondicionTributariaReceptor)
+                .HasConversion<int>();
+        });
+
+        modelBuilder.Entity<Venta>(venta =>
         {
             venta.HasOne(d => d.TipoDeComprobante).WithMany(p => p.Ventas)
                 .HasForeignKey(d => d.IdTipoDeComprobante)
@@ -86,10 +135,18 @@ public partial class AzureTiendaContext : DbContext, ITiendaContext
                 .HasForeignKey(d => d.IdVenta);
         });
 
-        modelBuilder.Entity<LineaDeVenta>(lineaDeVenta =>
+        modelBuilder.Entity<Cliente>(cliente =>
         {
-            lineaDeVenta.HasOne(d => d.Venta).WithMany(p => p.LineasDeVentas)
-                .HasForeignKey(d => d.IdVenta);
+            cliente
+                .Property(c => c.IdCondicionTributaria)
+                .HasConversion<int>();
+        });
+
+        modelBuilder.Entity<Tienda>(tienda =>
+        {
+            tienda
+                .Property(c => c.IdCondicionTributaria)
+                .HasConversion<int>();
         });
 
         // Define a list of entity types

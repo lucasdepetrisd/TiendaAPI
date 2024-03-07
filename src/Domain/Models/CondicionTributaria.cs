@@ -6,25 +6,26 @@ namespace Domain.Models;
 public partial class CondicionTributaria
 {
     [Key]
-    public int IdCondicionTributaria { get; set; }
+    public IdCondicionTributaria IdCondicionTributaria { get; set; }
 
-    public TipoCondicionTributaria Nombre { get; set; }
+    public string Nombre { get; set; } = null!;
 
     public virtual Tienda? Tienda { get; set; }
 
     //public int IdTipoDeComprobante { get; set; }
     //[ForeignKey("IdTipoDeComprobante")]
     //public virtual TipoDeComprobante TipoDeComprobante { get; set; } = null!;
+
     public virtual ICollection<TipoDeComprobante> TiposDeComprobantesEmisor { get; set; } = new List<TipoDeComprobante>();
     public virtual ICollection<TipoDeComprobante> TiposDeComprobantesReceptor { get; set; } = new List<TipoDeComprobante>();
     public virtual ICollection<Cliente> Clientes { get; set; } = new List<Cliente>();
 }
 
-public enum TipoCondicionTributaria
+public enum IdCondicionTributaria : int
 {
-    ResponsableInscripto = 1,
-    Monotributista = 2,
-    Exento = 3,
-    NoResponsable = 4,
-    ConsumidorFinal = 5,
+    ResponsableInscripto = 0,
+    Monotributista = 1,
+    Exento = 2,
+    NoResponsable = 3,
+    ConsumidorFinal = 4
 }

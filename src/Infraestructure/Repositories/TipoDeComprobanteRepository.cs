@@ -12,6 +12,6 @@ namespace Infraestructure.Repositories
         }
 
         protected override Expression<Func<TipoDeComprobante, object>>[] NavigationPropertiesToLoad
-        => [a => a.Emisor, a => a.Receptor];
+        => [a => a.CondicionTributariaEmisor, a => a.CondicionTributariaReceptor];
     }
 }

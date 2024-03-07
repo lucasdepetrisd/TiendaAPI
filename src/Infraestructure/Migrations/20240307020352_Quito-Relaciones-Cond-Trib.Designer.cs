@@ -4,6 +4,7 @@ using Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infraestructure.Migrations
 {
     [DbContext(typeof(TiendaContext))]
-    partial class TiendaContextModelSnapshot : ModelSnapshot
+    [Migration("20240307020352_Quito-Relaciones-Cond-Trib")]
+    partial class QuitoRelacionesCondTrib
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -114,9 +117,6 @@ namespace Infraestructure.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("IdCondicionTributaria")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -125,8 +125,6 @@ namespace Infraestructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdCliente");
-
-                    b.HasIndex("IdCondicionTributaria");
 
                     b.ToTable("Cliente", "Admin");
                 });
@@ -170,7 +168,10 @@ namespace Infraestructure.Migrations
             modelBuilder.Entity("Domain.Models.CondicionTributaria", b =>
                 {
                     b.Property<int>("IdCondicionTributaria")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdCondicionTributaria"));
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -179,33 +180,6 @@ namespace Infraestructure.Migrations
                     b.HasKey("IdCondicionTributaria");
 
                     b.ToTable("CondicionTributaria", "Admin");
-
-                    b.HasData(
-                        new
-                        {
-                            IdCondicionTributaria = 0,
-                            Nombre = "ResponsableInscripto"
-                        },
-                        new
-                        {
-                            IdCondicionTributaria = 1,
-                            Nombre = "Monotributista"
-                        },
-                        new
-                        {
-                            IdCondicionTributaria = 2,
-                            Nombre = "Exento"
-                        },
-                        new
-                        {
-                            IdCondicionTributaria = 3,
-                            Nombre = "NoResponsable"
-                        },
-                        new
-                        {
-                            IdCondicionTributaria = 4,
-                            Nombre = "ConsumidorFinal"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Models.Empleado", b =>
@@ -505,13 +479,7 @@ namespace Infraestructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IdCondicionTributaria")
-                        .HasColumnType("int");
-
                     b.HasKey("IdTienda");
-
-                    b.HasIndex("IdCondicionTributaria")
-                        .IsUnique();
 
                     b.ToTable("Tienda", "Admin");
                 });
@@ -524,21 +492,11 @@ namespace Infraestructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdTipoDeComprobante"));
 
-                    b.Property<int>("IdCondicionTributariaEmisor")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdCondicionTributariaReceptor")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdTipoDeComprobante");
-
-                    b.HasIndex("IdCondicionTributariaEmisor");
-
-                    b.HasIndex("IdCondicionTributariaReceptor");
 
                     b.ToTable("TipoDeComprobante", "Ventas");
                 });
@@ -658,15 +616,6 @@ namespace Infraestructure.Migrations
                     b.Navigation("Marca");
 
                     b.Navigation("TipoTalle");
-                });
-
-            modelBuilder.Entity("Domain.Models.Cliente", b =>
-                {
-                    b.HasOne("Domain.Models.CondicionTributaria", "CondicionTributaria")
-                        .WithMany("Clientes")
-                        .HasForeignKey("IdCondicionTributaria");
-
-                    b.Navigation("CondicionTributaria");
                 });
 
             modelBuilder.Entity("Domain.Models.Comprobante", b =>
@@ -804,34 +753,6 @@ namespace Infraestructure.Migrations
                     b.Navigation("TipoTalle");
                 });
 
-            modelBuilder.Entity("Domain.Models.Tienda", b =>
-                {
-                    b.HasOne("Domain.Models.CondicionTributaria", "CondicionTributaria")
-                        .WithOne("Tienda")
-                        .HasForeignKey("Domain.Models.Tienda", "IdCondicionTributaria")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CondicionTributaria");
-                });
-
-            modelBuilder.Entity("Domain.Models.TipoDeComprobante", b =>
-                {
-                    b.HasOne("Domain.Models.CondicionTributaria", "CondicionTributariaEmisor")
-                        .WithMany("TiposDeComprobantesEmisor")
-                        .HasForeignKey("IdCondicionTributariaEmisor")
-                        .IsRequired();
-
-                    b.HasOne("Domain.Models.CondicionTributaria", "CondicionTributariaReceptor")
-                        .WithMany("TiposDeComprobantesReceptor")
-                        .HasForeignKey("IdCondicionTributariaReceptor")
-                        .IsRequired();
-
-                    b.Navigation("CondicionTributariaEmisor");
-
-                    b.Navigation("CondicionTributariaReceptor");
-                });
-
             modelBuilder.Entity("Domain.Models.Usuario", b =>
                 {
                     b.HasOne("Domain.Models.Empleado", "Empleado")
@@ -896,17 +817,6 @@ namespace Infraestructure.Migrations
             modelBuilder.Entity("Domain.Models.Color", b =>
                 {
                     b.Navigation("Inventarios");
-                });
-
-            modelBuilder.Entity("Domain.Models.CondicionTributaria", b =>
-                {
-                    b.Navigation("Clientes");
-
-                    b.Navigation("Tienda");
-
-                    b.Navigation("TiposDeComprobantesEmisor");
-
-                    b.Navigation("TiposDeComprobantesReceptor");
                 });
 
             modelBuilder.Entity("Domain.Models.Empleado", b =>

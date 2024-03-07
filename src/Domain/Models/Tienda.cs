@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models;
@@ -12,7 +10,7 @@ public partial class Tienda
 
     public string Cuit { get; set; } = null!;
 
-    public int IdCondicionTributaria { get; set; }
+    public IdCondicionTributaria IdCondicionTributaria { get; set; }
     [ForeignKey("IdCondicionTributaria")]
     public virtual CondicionTributaria CondicionTributaria { get; set; } = null!;
 
