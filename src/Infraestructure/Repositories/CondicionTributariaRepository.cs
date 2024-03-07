@@ -12,5 +12,15 @@ namespace Infraestructure.Repositories
         }
         protected override Expression<Func<CondicionTributaria, object>>[] NavigationPropertiesToLoad
         => [a => a.TiposDeComprobantesEmisor, a => a.TiposDeComprobantesReceptor];
+
+        public override Task AddAsync(CondicionTributaria condicionTributaria)
+        {
+            throw new NotSupportedException("AddAsync method is not supported in CondicionTributariaRepository.");
+        }
+
+        public override Task RemoveAsync(CondicionTributaria condicionTributaria)
+        {
+            throw new NotSupportedException("RemoveAsync method is not supported in CondicionTributariaRepository.");
+        }
     }
 }

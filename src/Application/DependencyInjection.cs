@@ -1,5 +1,7 @@
-﻿using Application.Services;
-using Application.Contracts;
+﻿using Application.Contracts;
+using Application.Services;
+using AutoMapper;
+using Domain.Profiles;
 using FluentValidation;
 using Infraestructure;
 using Microsoft.Extensions.Configuration;
@@ -40,6 +42,14 @@ public static class DependencyInjection
         services.AddScoped<IVentaService, VentaService>();
 
         services.AddInfraestructure(configuration);
+
+        var mapperConfiguration = new MapperConfiguration(configuration =>
+        {
+            configuration.AddProfile(new AutomapperProfile());
+        });
+
+        var mapper = mapperConfiguration.CreateMapper();
+        services.AddSingleton(mapper);
 
         return services;
     }

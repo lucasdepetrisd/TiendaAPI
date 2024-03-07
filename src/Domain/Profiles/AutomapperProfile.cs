@@ -2,7 +2,7 @@
 using Domain.DTOs;
 using Domain.Models;
 
-namespace Infraestructure.Profiles
+namespace Domain.Profiles
 {
     public class AutomapperProfile : Profile
     {
@@ -44,8 +44,10 @@ namespace Infraestructure.Profiles
             CreateMap<Sucursal, CreateSucursalDTO>().ReverseMap();
             CreateMap<Sucursal, ViewSucursalDTO>().ReverseMap();
 
-            CreateMap<CondicionTributaria, CondicionTributariaDTO>().ReverseMap();
-            CreateMap<CondicionTributaria, CreateCondicionTributariaDTO>().ReverseMap();
+            CreateMap<CondicionTributaria, CondicionTributariaDTO>()
+                .ForMember(dest => dest.IdCondicionTributaria, opt => opt.MapFrom(src => (int)src.IdCondicionTributaria))
+                .ReverseMap();
+
             CreateMap<CondicionTributaria, ViewCondicionTributariaDTO>().ReverseMap();
 
             CreateMap<Empleado, EmpleadoDTO>().ReverseMap();

@@ -1,12 +1,12 @@
-using Domain.DTOs;
 using Application.Contracts;
+using Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CondicionTributariaController : BaseController<CreateCondicionTributariaDTO, CondicionTributariaDTO>
+    public class CondicionTributariaController : BaseController<CondicionTributariaDTO, CondicionTributariaDTO>
     {
         private readonly ICondicionTributariaService _condicionTributariaService;
 
@@ -14,6 +14,20 @@ namespace WebAPI.Controllers
             : base(condicionTributariaService)
         {
             _condicionTributariaService = condicionTributariaService;
+        }
+
+        [NonAction]
+        [HttpPost]
+        public override Task<ActionResult<CondicionTributariaDTO>> Post(CondicionTributariaDTO condicionTributariaDTO)
+        {
+            throw new NotImplementedException("Post method is not supported for CondicionTributariaController.");
+        }
+
+        [NonAction]
+        [HttpDelete]
+        public override Task<IActionResult> Delete(int id)
+        {
+            throw new NotImplementedException("Delete method is not supported for CondicionTributariaController.");
         }
     }
 }

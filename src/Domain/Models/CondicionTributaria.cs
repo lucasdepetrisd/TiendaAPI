@@ -2,7 +2,6 @@
 
 namespace Domain.Models;
 
-// TODO: Plantear conversion a Complex Value Object
 public partial class CondicionTributaria
 {
     [Key]
@@ -11,10 +10,6 @@ public partial class CondicionTributaria
     public string Nombre { get; set; } = null!;
 
     public virtual Tienda? Tienda { get; set; }
-
-    //public int IdTipoDeComprobante { get; set; }
-    //[ForeignKey("IdTipoDeComprobante")]
-    //public virtual TipoDeComprobante TipoDeComprobante { get; set; } = null!;
 
     public virtual ICollection<TipoDeComprobante> TiposDeComprobantesEmisor { get; set; } = new List<TipoDeComprobante>();
     public virtual ICollection<TipoDeComprobante> TiposDeComprobantesReceptor { get; set; } = new List<TipoDeComprobante>();

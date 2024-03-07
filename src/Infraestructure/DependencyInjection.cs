@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-using Domain.Data;
+﻿using Domain.Data;
 using Domain.Models;
 using Domain.Repositories;
 using Infraestructure.Data;
-using Infraestructure.Profiles;
 using Infraestructure.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,14 +49,6 @@ public static class DependencyInjection
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
         services.AddScoped<IRepository<Venta>, VentaRepository>();
-
-        var mapperConfiguration = new MapperConfiguration(configuration =>
-        {
-            configuration.AddProfile(new AutomapperProfile());
-        });
-
-        var mapper = mapperConfiguration.CreateMapper();
-        services.AddSingleton(mapper);
 
         return services;
     }

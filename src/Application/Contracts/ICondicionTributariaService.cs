@@ -1,9 +1,8 @@
 ﻿using Domain.DTOs;
-using Domain.Models;
 
 namespace Application.Contracts
 {
-    public interface ICondicionTributariaService : IBaseService<CreateCondicionTributariaDTO, CondicionTributariaDTO>
+    public interface ICondicionTributariaService : IBaseService<CondicionTributariaDTO, CondicionTributariaDTO>
     {
     }
 }
