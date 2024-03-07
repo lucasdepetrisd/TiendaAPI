@@ -138,6 +138,7 @@ namespace WebAPI.Controllers
             }
         }
 
+        [NonAction]
         [HttpPost("Finalizar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> FinalizarVenta([FromBody] FinalizarVentaRequest request)
