@@ -1,8 +1,8 @@
-﻿using AutoMapper;
+﻿using Application.Contracts;
+using AutoMapper;
 using Domain.DTOs;
 using Domain.Models;
 using Domain.Repositories;
-using Application.Contracts;
 
 namespace Application.Services
 {
@@ -34,11 +34,11 @@ namespace Application.Services
 
             if (usuario == null)
             {
-                throw new InvalidOperationException($"Usuario with ID {usuarioId} not found.");
+                throw new InvalidOperationException($"Usuario con ID {usuarioId} no encontrado.");
             }
             else if (puntoDeVenta == null)
             {
-                throw new InvalidOperationException($"Punto de Venta with ID {puntoDeVentaId} not found.");
+                throw new InvalidOperationException($"Punto de Venta con ID {puntoDeVentaId} no encontrado.");
             }
 
             var venta = new Venta(usuario, puntoDeVenta);
@@ -57,11 +57,11 @@ namespace Application.Services
 
             if (venta == null)
             {
-                throw new InvalidOperationException($"Venta with ID {ventaId} not found.");
+                throw new InvalidOperationException($"Venta con ID {ventaId} no encontrado.");
             }
             else if (inventario == null)
             {
-                throw new InvalidOperationException($"Inventario with ID {inventarioId} not found.");
+                throw new InvalidOperationException($"Inventario con ID {inventarioId} no encontrado.");
             }
 
             var lineaDeVenta = venta.AgregarLineaDeVenta(cantidad, inventario);
@@ -71,6 +71,42 @@ namespace Application.Services
             LineaDeVentaDTO lineaDeVentaDTO = _mapper.Map<LineaDeVentaDTO>(lineaDeVenta);
 
             return lineaDeVentaDTO;
+        }
+
+        public async Task<VentaDTO> QuitarLineaDeVenta(int idVenta, int idLineaDeVenta)
+        {
+            var venta = await _ventaRepository.GetByIdAsync(idVenta);
+
+            if (venta == null)
+            {
+                throw new InvalidOperationException("Venta con ID {ventaId} no encontrado.");
+            }
+
+            venta.QuitarLineaDeVenta(idLineaDeVenta);
+
+            await _ventaRepository.UpdateAsync(venta);
+
+            VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(venta);
+
+            return nuevaVentaDTO;
+        }
+
+        public async Task<VentaDTO> ActualizarMonto(int idVenta)
+        {
+            var venta = await _ventaRepository.GetByIdAsync(idVenta);
+
+            if (venta == null)
+            {
+                throw new InvalidOperationException("Venta con ID {ventaId} no encontrado.");
+            }
+
+            venta.ActualizarMonto();
+
+            await _ventaRepository.UpdateAsync(venta);
+
+            VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(venta);
+
+            return nuevaVentaDTO;
         }
     }
 }

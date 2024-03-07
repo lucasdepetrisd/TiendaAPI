@@ -1,5 +1,5 @@
-using Domain.DTOs;
 using Application.Contracts;
+using Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
@@ -37,7 +37,7 @@ namespace WebAPI.Controllers
         [HttpPut("CerrarSesion")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> CerrarSesion(
-            [FromQuery][Range(0, int.MaxValue, ErrorMessage = "sesionId debe ser mayor que cero.")][Required] int sesionId)
+            [FromQuery][Range(0, int.MaxValue, ErrorMessage = "sesionId debe ser igual o mayor a cero.")][Required] int sesionId)
         {
             var sesion = await _authenticationService.CerrarSesion(sesionId);
 
@@ -63,7 +63,7 @@ namespace WebAPI.Controllers
         public required string Password { get; init; }
 
         [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "PuntoDeVentaId debe ser mayor que cero.")]
+        [Range(0, int.MaxValue, ErrorMessage = "PuntoDeVentaId debe ser igual o mayor a cero.")]
         public required int PuntoDeVentaId { get; init; }
     }
 }

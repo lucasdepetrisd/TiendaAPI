@@ -68,4 +68,30 @@ public partial class Venta
 
         return lineaDeVenta;
     }
+
+    public void QuitarLineaDeVenta(int idLineaDeVenta)
+    {
+        var lineaDeVenta = LineasDeVentas.FirstOrDefault(l => l.IdLineaDeVenta == idLineaDeVenta);
+
+        if (lineaDeVenta != null)
+        {
+            Monto -= lineaDeVenta.Subtotal;
+
+            LineasDeVentas.Remove(lineaDeVenta);
+        }
+        else
+        {
+            throw new InvalidOperationException("La línea de venta especificada no pertenece a esta venta.");
+        }
+    }
+
+    public void ActualizarMonto()
+    {
+        Monto = 0;
+
+        foreach (LineaDeVenta lineaDeVenta in LineasDeVentas)
+        {
+            Monto += lineaDeVenta.Subtotal;
+        }
+    }
 }

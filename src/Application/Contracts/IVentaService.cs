@@ -6,5 +6,7 @@ namespace Application.Contracts
     {
         Task<VentaDTO> IniciarVenta(int usuarioId, int puntoDeVentaId);
         Task<LineaDeVentaDTO> AgregarLineaDeVenta(int ventaId, int cantidad, int inventarioId);
+        Task<VentaDTO> QuitarLineaDeVenta(int idVenta, int idLineaDeVenta);
+        Task<VentaDTO> ActualizarMonto(int idVenta);
     }
 }
