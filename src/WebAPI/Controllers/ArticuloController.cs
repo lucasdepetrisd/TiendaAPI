@@ -1,5 +1,5 @@
-﻿using Domain.DTOs;
-using Application.Contracts;
+﻿using Application.Contracts;
+using Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 

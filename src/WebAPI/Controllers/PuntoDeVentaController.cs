@@ -1,4 +1,4 @@
-using Domain.DTOs;
+using Application.DTOs;
 using Application.Contracts;
 using Microsoft.AspNetCore.Mvc;
 

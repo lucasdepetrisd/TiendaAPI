@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Domain.DTOs;
+namespace Application.DTOs;
 
 public record RolDTO
 {

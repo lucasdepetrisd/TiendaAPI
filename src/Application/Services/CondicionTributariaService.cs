@@ -1,6 +1,6 @@
 ﻿using Application.Contracts;
 using AutoMapper;
-using Domain.DTOs;
+using Application.DTOs;
 using Domain.Models;
 using Domain.Repositories;
 

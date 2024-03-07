@@ -1,4 +1,4 @@
-﻿using Domain.DTOs;
+﻿using Application.DTOs;
 
 namespace Application.Contracts
 {

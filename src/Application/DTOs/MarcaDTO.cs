@@ -2,22 +2,22 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Domain.DTOs;
+namespace Application.DTOs;
 
-public record CategoriaDTO
+public record MarcaDTO
 {
-    public int IdCategoria { get; init; }
+    public int IdMarca { get; init; }
     public string Descripcion { get; init; } = null!;
     public virtual ICollection<ViewArticuloDTO> Articulos { get; init; } = new List<ViewArticuloDTO>();
 }
 
-public record CreateCategoriaDTO
+public record CreateMarcaDTO
 {
     public string Descripcion { get; init; } = null!;
 }
 
-public record ViewCategoriaDTO
+public record ViewMarcaDTO
 {
-    public int IdCategoria { get; init; }
+    public int IdMarca { get; init; }
     public string Descripcion { get; init; } = null!;
 }

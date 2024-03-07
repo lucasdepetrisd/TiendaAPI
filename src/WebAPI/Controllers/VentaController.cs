@@ -1,5 +1,5 @@
 using Application.Contracts;
-using Domain.DTOs;
+using Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
@@ -20,13 +20,13 @@ namespace WebAPI.Controllers
 
         [HttpPost("Iniciar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
-        public async Task<IActionResult> IniciarVenta([FromQuery] IniciarVentaRequest iniciarVentaRequest)
+        public async Task<IActionResult> IniciarVenta([FromQuery] IniciarVentaRequest request)
         {
             try
             {
                 var venta = await _ventaService.IniciarVenta(
-                    iniciarVentaRequest.UsuarioId,
-                    iniciarVentaRequest.PuntoDeVentaId);
+                    request.UsuarioId,
+                    request.PuntoDeVentaId);
 
                 return Ok(venta);
             }
@@ -45,14 +45,14 @@ namespace WebAPI.Controllers
         [HttpPost("LineaDeVenta/Agregar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> AgregarLineaDeVenta(
-            [FromQuery] AgregarLineaDeVentaRequest agregarLineaDeVentaRequest)
+            [FromQuery] AgregarLineaDeVentaRequest request)
         {
             try
             {
                 var lineaDeVentaDTO = await _ventaService.AgregarLineaDeVenta(
-                    agregarLineaDeVentaRequest.VentaId,
-                    agregarLineaDeVentaRequest.Cantidad,
-                    agregarLineaDeVentaRequest.InventarioId);
+                    request.VentaId,
+                    request.Cantidad,
+                    request.InventarioId);
 
                 return Ok(lineaDeVentaDTO);
             }
@@ -68,16 +68,16 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost("LineaDeVenta/Quitar")]
+        [HttpDelete("LineaDeVenta/Quitar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> QuitarLineaDeVenta(
-            [FromQuery] QuitarLineaDeVentaRequest quitarLineaDeVentaRequest)
+            [FromQuery] QuitarLineaDeVentaRequest request)
         {
             try
             {
                 var ventaDTO = await _ventaService.QuitarLineaDeVenta(
-                    quitarLineaDeVentaRequest.VentaId,
-                    quitarLineaDeVentaRequest.LineaDeVentaId);
+                    request.VentaId,
+                    request.LineaDeVentaId);
 
                 return Ok(ventaDTO);
             }
@@ -116,7 +116,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost("Cancelar")]
+        [HttpPut("Cancelar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> CancelarVentaAsync([FromQuery] int idVenta)
         {
@@ -138,6 +138,43 @@ namespace WebAPI.Controllers
             }
         }
 
+        [HttpPost("Finalizar")]
+        [ApiExplorerSettings(GroupName = "UseCases")]
+        public async Task<IActionResult> FinalizarVenta([FromBody] FinalizarVentaRequest request)
+        {
+            try
+            {
+                //await _ventaService.FinalizarVenta(request.VentaId, request.MontoPago, request.EsTarjeta, request.DatosTarjeta);
+
+                return Ok($"Venta con ID {request.VentaId} finalizada correctamente.");
+            }
+            catch (DbException ex)
+            {
+                string? errorMessage = ex.InnerException?.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al finalizar la venta. Error: {errorMessage}");
+            }
+            catch (Exception ex)
+            {
+                string? errorMessage = ex.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
+            }
+        }
+    }
+
+    public record FinalizarVentaRequest
+    {
+        public int VentaId { get; init; }
+        public decimal MontoPago { get; init; }
+        public bool EsTarjeta { get; init; }
+        public TarjetaDTORequest? DatosTarjeta { get; init; } // DTO que representa los datos de la tarjeta, si corresponde
+    }
+
+    public record TarjetaDTORequest
+    {
+        public required string NumeroTarjeta { get; set; }
+        public required string Titular { get; set; }
+        public required string FechaExpiracion { get; set; }
+        public required string CVV { get; set; }
     }
 
     public record IniciarVentaRequest

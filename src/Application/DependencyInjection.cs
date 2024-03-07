@@ -1,7 +1,7 @@
 ﻿using Application.Contracts;
+using Application.Profiles;
 using Application.Services;
 using AutoMapper;
-using Domain.Profiles;
 using FluentValidation;
 using Infraestructure;
 using Microsoft.Extensions.Configuration;
