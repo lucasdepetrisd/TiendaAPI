@@ -1,6 +1,7 @@
 ﻿using Domain.Data;
 using Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -65,9 +66,30 @@ internal abstract class BaseRepository<TEntity> : IRepository<TEntity>
         await _tiendaContext.SaveChangesAsync();
     }
 
-    public virtual async Task RemoveAsync(TEntity entity)
+    public virtual async Task RemoveAsync(int id)
     {
-        _tiendaContext.Set<TEntity>().Remove(entity);
-        await _tiendaContext.SaveChangesAsync();
+        var entity = await GetByIdAsync(id);
+
+        if (entity != null)
+        {
+            var keyProperty = typeof(TEntity).GetProperties()
+                .FirstOrDefault(prop => prop.IsDefined(typeof(KeyAttribute), false));
+
+            if (keyProperty != null)
+            {
+                var keyValue = Convert.ChangeType(id, keyProperty.PropertyType);
+                keyProperty.SetValue(entity, keyValue);
+
+                _tiendaContext.Set<TEntity>().Remove(entity);
+                await _tiendaContext.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException("Primary key not found for the entity.");
+            }
+        }
+
+        /*_tiendaContext.Set<TEntity>().Remove(entity);
+        await _tiendaContext.SaveChangesAsync();*/
     }
 }

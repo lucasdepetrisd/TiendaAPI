@@ -1,6 +1,6 @@
-﻿using AutoMapper;
+﻿using Application.Contracts;
+using AutoMapper;
 using Domain.Repositories;
-using Application.Contracts;
 
 namespace Application.Services;
 
@@ -71,7 +71,7 @@ public abstract class BaseService<TEntity, TRequestDTO, TResponseDTO> : IBaseSer
             return false;
         }
 
-        await _entityRepository.RemoveAsync(entityDB);
+        await _entityRepository.RemoveAsync(id);
         return true;
     }
 

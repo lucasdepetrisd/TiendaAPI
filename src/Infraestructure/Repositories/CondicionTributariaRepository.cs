@@ -18,7 +18,7 @@ namespace Infraestructure.Repositories
             throw new NotSupportedException("AddAsync method is not supported in CondicionTributariaRepository.");
         }
 
-        public override Task RemoveAsync(CondicionTributaria condicionTributaria)
+        public override Task RemoveAsync(int id)
         {
             throw new NotSupportedException("RemoveAsync method is not supported in CondicionTributariaRepository.");
         }

@@ -1,11 +1,4 @@
-﻿using Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Repositories
+﻿namespace Domain.Repositories
 {
     public interface IRepository<TEntity>
     {
@@ -13,6 +6,6 @@ namespace Domain.Repositories
         Task<TEntity?> GetByIdAsync(int id);
         Task AddAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
-        Task RemoveAsync(TEntity entity);
+        Task RemoveAsync(int id);
     }
 }

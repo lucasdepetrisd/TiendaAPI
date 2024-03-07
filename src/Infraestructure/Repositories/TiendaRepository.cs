@@ -19,7 +19,7 @@ namespace Infraestructure.Repositories
             throw new NotSupportedException("AddAsync method is not supported in TiendaRepository.");
         }
 
-        public override Task RemoveAsync(Tienda entity)
+        public override Task RemoveAsync(int id)
         {
             throw new NotSupportedException("RemoveAsync method is not supported in TiendaRepository.");
         }
