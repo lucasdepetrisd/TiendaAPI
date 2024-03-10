@@ -31,7 +31,6 @@ public partial class Venta
 
     public int IdUsuario { get; private set; }
     [ForeignKey("IdUsuario")]
-    [DeleteBehavior(DeleteBehavior.ClientSetNull)]
     public virtual Usuario Usuario { get; private set; } = null!;
 
     public int IdPuntoVenta { get; private set; }

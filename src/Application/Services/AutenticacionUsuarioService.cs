@@ -1,19 +1,19 @@
-﻿using AutoMapper;
+﻿using Application.Contracts;
 using Application.DTOs;
+using AutoMapper;
 using Domain.Models;
 using Domain.Repositories;
-using Application.Contracts;
 
 namespace Application.Services
 {
-    public class AuthenticationService : IAuthenticationService
+    public class AutenticacionUsuarioService : IAutenticacionUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IRepository<Sesion> _sesionRepository;
         private readonly IRepository<PuntoDeVenta> _puntoDeVentaRepository;
         private readonly IMapper _mapper;
 
-        public AuthenticationService(IUsuarioRepository usuarioRepository, IRepository<Sesion> sesionRepository, IRepository<PuntoDeVenta> puntoDeVentaRepository, IMapper mapper)
+        public AutenticacionUsuarioService(IUsuarioRepository usuarioRepository, IRepository<Sesion> sesionRepository, IRepository<PuntoDeVenta> puntoDeVentaRepository, IMapper mapper)
         {
             _usuarioRepository = usuarioRepository;
             _sesionRepository = sesionRepository;

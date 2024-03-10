@@ -10,9 +10,9 @@ namespace WebAPI.Controllers
     public class SesionController : BaseController<CreateSesionDTO, SesionDTO>
     {
         private readonly ISesionService _sesionService;
-        private readonly IAuthenticationService _authenticationService;
+        private readonly IAutenticacionUsuarioService _authenticationService;
 
-        public SesionController(ISesionService sesionService, IAuthenticationService authenticationService)
+        public SesionController(ISesionService sesionService, IAutenticacionUsuarioService authenticationService)
             : base(sesionService)
         {
             _sesionService = sesionService;

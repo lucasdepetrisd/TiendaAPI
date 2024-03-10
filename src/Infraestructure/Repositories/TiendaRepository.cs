@@ -12,7 +12,7 @@ namespace Infraestructure.Repositories
         }
 
         protected override Expression<Func<Tienda, object>>[] NavigationPropertiesToLoad
-        => [a => a.Sucursales];
+        => [t => t.Sucursales, t => t.CondicionTributaria];
 
         public override Task AddAsync(Tienda entity)
         {

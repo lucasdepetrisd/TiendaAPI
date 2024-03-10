@@ -2,7 +2,7 @@
 
 namespace Application.Contracts
 {
-    public interface IAuthenticationService
+    public interface IAutenticacionUsuarioService
     {
         Task<SesionDTO?> CerrarSesion(int sesionId);
         Task<SesionDTO?> IniciarSesion(int puntoDeVentaId, string username, string password);
