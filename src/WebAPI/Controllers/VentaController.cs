@@ -8,7 +8,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VentaController : BaseController<CreateVentaDTO, VentaDTO>
+    public class VentaController : CrudController<CreateVentaDTO, VentaDTO>
     {
         private readonly IVentaService _ventaService;
         private readonly ILineaDeVentaService _lineaDeVentaService;
@@ -22,7 +22,7 @@ namespace WebAPI.Controllers
 
         [HttpPost("iniciar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
-        public async Task<IActionResult> IniciarVenta([FromQuery] IniciarVentaRequest request)
+        public async Task<IActionResult> IniciarVenta([FromBody] IniciarVentaRequest request)
         {
             try
             {
@@ -44,15 +44,21 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost("lineadeventa/agregar")]
+        [HttpPost("{ventaId}/lineadeventa/agregar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> AgregarLineaDeVenta(
-            [FromQuery] AgregarLineaDeVentaRequest request)
+            [FromQuery][Required][Range(0, int.MaxValue)] int ventaId,
+            [FromBody] AgregarLineaDeVentaRequest request)
         {
+            if (ventaId < 0)
+            {
+                return BadRequest("VentaId debe ser mayor o igual a 0.");
+            }
+
             try
             {
                 var lineaDeVentaDTO = await _lineaDeVentaService.AgregarLineaDeVenta(
-                    request.VentaId,
+                    ventaId,
                     request.Cantidad,
                     request.InventarioId);
 
@@ -70,16 +76,22 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpDelete("lineadeventa/quitar")]
+        [HttpDelete("{ventaId}/lineadeventa/quitar/{lineaDeVentaId}")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> QuitarLineaDeVenta(
-            [FromQuery] QuitarLineaDeVentaRequest request)
+            [Required][Range(0, int.MaxValue)] int ventaId,
+            [Required][Range(0, int.MaxValue)] int lineaDeVentaId)
         {
+            if (ventaId < 0 || lineaDeVentaId < 0)
+            {
+                return BadRequest("ventaId y lineaDeVentaId deben ser mayor o igual a 0.");
+            }
+
             try
             {
                 var ventaDTO = await _lineaDeVentaService.QuitarLineaDeVenta(
-                    request.VentaId,
-                    request.LineaDeVentaId);
+                    ventaId,
+                    lineaDeVentaId);
 
                 return Ok(ventaDTO);
             }
@@ -95,14 +107,14 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost("lineadeventa/actualizarmonto")]
+        [HttpPost("actualizarmonto/{ventaId}")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> ActualizarMonto(
-           [FromQuery][Required][Range(0, int.MaxValue, ErrorMessage = "VentaId debe ser igual o mayor que cero.")] int idVenta)
+           [FromQuery][Required][Range(0, int.MaxValue)] int ventaId)
         {
             try
             {
-                var ventaDTO = await _ventaService.ActualizarMonto(idVenta);
+                var ventaDTO = await _ventaService.ActualizarMonto(ventaId);
 
                 return Ok(ventaDTO.Monto);
             }
@@ -120,11 +132,11 @@ namespace WebAPI.Controllers
 
         [HttpPut("cancelar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
-        public async Task<IActionResult> CancelarVentaAsync([FromQuery] int idVenta)
+        public async Task<IActionResult> CancelarVenta([FromQuery] int ventaId)
         {
             try
             {
-                VentaDTO ventaCanceladaDTO = await _ventaService.CancelarVenta(idVenta);
+                VentaDTO ventaCanceladaDTO = await _ventaService.CancelarVenta(ventaId);
 
                 return Ok(ventaCanceladaDTO);
             }
@@ -142,13 +154,20 @@ namespace WebAPI.Controllers
 
         [HttpPost("finalizar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
-        public async Task<IActionResult> FinalizarVenta([FromBody] FinalizarVentaRequest request)
+        public async Task<IActionResult> FinalizarVenta(
+            int ventaId,
+            [FromBody] FinalizarVentaRequest request)
         {
+            if (ventaId < 0)
+            {
+                return BadRequest("VentaId debe ser mayor o igual a 0.");
+            }
+
             try
             {
-                await _ventaService.FinalizarVenta(request.VentaId, request.EsTarjeta, request.DatosTarjeta);
+                await _ventaService.FinalizarVenta(ventaId, request.EsTarjeta, request.DatosTarjeta);
 
-                return Ok($"Venta con ID {request.VentaId} finalizada correctamente.");
+                return Ok($"Venta con ID {ventaId} finalizada correctamente.");
             }
             catch (DbException ex)
             {
@@ -165,9 +184,6 @@ namespace WebAPI.Controllers
 
     public record FinalizarVentaRequest
     {
-        [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "VentaId debe ser mayor igual o que cero.")]
-        public int VentaId { get; init; }
         [Required]
         public bool EsTarjeta { get; init; }
         public TarjetaDTO? DatosTarjeta { get; init; }
@@ -187,25 +203,10 @@ namespace WebAPI.Controllers
     public record AgregarLineaDeVentaRequest
     {
         [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "VentaId debe ser igual o mayor que cero.")]
-        public int VentaId { get; init; }
-
-        [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Cantidad debe ser mayor que cero.")]
         public int Cantidad { get; init; }
 
         [Required]
         public int InventarioId { get; init; }
-    }
-
-    public record QuitarLineaDeVentaRequest
-    {
-        [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "VentaId debe ser igual o mayor que cero.")]
-        public int VentaId { get; init; }
-
-        [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "LineaDeVentaId debe ser igual o mayor que cero.")]
-        public int LineaDeVentaId { get; init; }
     }
 }

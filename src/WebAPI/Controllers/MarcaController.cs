@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MarcaController : BaseController<CreateMarcaDTO, MarcaDTO>
+    public class MarcaController : CrudController<CreateMarcaDTO, MarcaDTO>
     {
         private readonly IMarcaService _marcaService;
 

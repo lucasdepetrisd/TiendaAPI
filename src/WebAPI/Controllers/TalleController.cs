@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TalleController : BaseController<CreateTalleDTO, TalleDTO>
+    public class TalleController : CrudController<CreateTalleDTO, TalleDTO>
     {
         private readonly ITalleService _talleService;
 

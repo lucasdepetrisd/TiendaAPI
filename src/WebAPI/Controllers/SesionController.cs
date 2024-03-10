@@ -7,7 +7,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SesionController : BaseController<CreateSesionDTO, SesionDTO>
+    public class SesionController : CrudController<CreateSesionDTO, SesionDTO>
     {
         private readonly ISesionService _sesionService;
         private readonly IAutenticacionUsuarioService _authenticationService;

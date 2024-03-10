@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InventarioController : BaseController<CreateInventarioDTO, InventarioDTO>
+    public class InventarioController : CrudController<CreateInventarioDTO, InventarioDTO>
     {
         private readonly IInventarioService _inventarioService;
 

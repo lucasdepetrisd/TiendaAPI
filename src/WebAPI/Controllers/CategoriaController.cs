@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriaController : BaseController<CreateCategoriaDTO, CategoriaDTO>
+    public class CategoriaController : CrudController<CreateCategoriaDTO, CategoriaDTO>
     {
         private readonly ICategoriaService _categoriaService;
 

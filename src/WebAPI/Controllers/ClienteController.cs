@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClienteController : BaseController<CreateClienteDTO, ClienteDTO>
+    public class ClienteController : CrudController<CreateClienteDTO, ClienteDTO>
     {
         private readonly IClienteService _clienteService;
         public ClienteController(IClienteService clienteService)

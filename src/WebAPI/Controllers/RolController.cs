@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RolController : BaseController<CreateRolDTO, RolDTO>
+    public class RolController : CrudController<CreateRolDTO, RolDTO>
     {
         private readonly IRolService _rolService;
 

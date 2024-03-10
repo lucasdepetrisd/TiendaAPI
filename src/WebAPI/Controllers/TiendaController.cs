@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TiendaController : BaseController<TiendaDTO, TiendaDTO>
+    public class TiendaController : CrudController<TiendaDTO, TiendaDTO>
     {
         private readonly ITiendaService _tiendaService;
 

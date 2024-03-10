@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ColorController : BaseController<CreateColorDTO, ColorDTO>
+    public class ColorController : CrudController<CreateColorDTO, ColorDTO>
     {
         private readonly IColorService _colorService;
 

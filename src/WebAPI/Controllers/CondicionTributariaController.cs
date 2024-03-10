@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CondicionTributariaController : BaseController<CondicionTributariaDTO, CondicionTributariaDTO>
+    public class CondicionTributariaController : CrudController<CondicionTributariaDTO, CondicionTributariaDTO>
     {
         private readonly ICondicionTributariaService _condicionTributariaService;
 

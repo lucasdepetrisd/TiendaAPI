@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TipoTalleController : BaseController<CreateTipoTalleDTO, TipoTalleDTO>
+    public class TipoTalleController : CrudController<CreateTipoTalleDTO, TipoTalleDTO>
     {
         private readonly ITipoTalleService _tipoTalleService;
 

@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TipoDeComprobanteController : BaseController<CreateTipoDeComprobanteDTO, TipoDeComprobanteDTO>
+    public class TipoDeComprobanteController : CrudController<CreateTipoDeComprobanteDTO, TipoDeComprobanteDTO>
     {
         private readonly ITipoDeComprobanteService _tipoDeComprobanteService;
 

@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PagoController : BaseController<CreatePagoDTO, PagoDTO>
+    public class PagoController : CrudController<CreatePagoDTO, PagoDTO>
     {
         private readonly IPagoService _pagoService;
 

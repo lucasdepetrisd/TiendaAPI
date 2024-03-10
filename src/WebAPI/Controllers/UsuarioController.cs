@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController : BaseController<CreateUsuarioDTO, UsuarioDTO>
+    public class UsuarioController : CrudController<CreateUsuarioDTO, UsuarioDTO>
     {
         private readonly IUsuarioService _usuarioService;
 

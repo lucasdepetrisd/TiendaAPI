@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmpleadoController : BaseController<CreateEmpleadoDTO, EmpleadoDTO>
+    public class EmpleadoController : CrudController<CreateEmpleadoDTO, EmpleadoDTO>
     {
         private readonly IEmpleadoService _empleadoService;
 

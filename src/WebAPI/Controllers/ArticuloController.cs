@@ -7,7 +7,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ArticuloController : BaseController<CreateArticuloDTO, ArticuloDTO>
+    public class ArticuloController : CrudController<CreateArticuloDTO, ArticuloDTO>
     {
         private readonly IArticuloService _articuloService;
 

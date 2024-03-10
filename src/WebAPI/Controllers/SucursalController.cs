@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SucursalController : BaseController<CreateSucursalDTO, SucursalDTO>
+    public class SucursalController : CrudController<CreateSucursalDTO, SucursalDTO>
     {
         private readonly ISucursalService _sucursalService;
 

@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PuntoDeVentaController : BaseController<CreatePuntoDeVentaDTO, PuntoDeVentaDTO>
+    public class PuntoDeVentaController : CrudController<CreatePuntoDeVentaDTO, PuntoDeVentaDTO>
     {
         private readonly IPuntoDeVentaService _puntoDeVentaService;
 
