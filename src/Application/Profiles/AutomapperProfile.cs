@@ -75,7 +75,9 @@ namespace Application.Profiles
             CreateMap<Sesion, ViewSesionDTO>().ReverseMap();
 
             //*---------------------Venta------------------------*
-            CreateMap<Venta, VentaDTO>().ReverseMap();
+            CreateMap<Venta, VentaDTO>()
+                .ForMember(vdto => vdto.Monto, opt => opt.MapFrom(v => v.CalcularTotal()))
+                .ReverseMap();
             CreateMap<Venta, CreateVentaDTO>().ReverseMap();
             CreateMap<Venta, ViewVentaDTO>().ReverseMap();
 

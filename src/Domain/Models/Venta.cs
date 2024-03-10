@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models;
@@ -10,9 +9,6 @@ public partial class Venta
     public int IdVenta { get; private set; }
 
     public DateTime Fecha { get; private set; } = DateTime.UtcNow;
-
-    [Precision(18, 2)]
-    public decimal Monto { get; private set; }
 
     public string Estado { get; private set; } = "Pendiente"; //TODO: Convertir a enum. Leer values objects
 
@@ -71,8 +67,6 @@ public partial class Venta
 
         LineaDeVenta lineaDeVenta = new LineaDeVenta(cantidad, inventario, this);
 
-        Monto += lineaDeVenta.CalcularSubtotal();
-
         LineasDeVentas.Add(lineaDeVenta);
 
         return lineaDeVenta;
@@ -84,8 +78,6 @@ public partial class Venta
 
         if (lineaDeVenta != null)
         {
-            Monto -= lineaDeVenta.Subtotal;
-
             LineasDeVentas.Remove(lineaDeVenta);
         }
         else
@@ -94,13 +86,15 @@ public partial class Venta
         }
     }
 
-    public void ActualizarMonto()
+    public decimal CalcularTotal()
     {
-        Monto = 0;
+        decimal monto = 0;
 
         foreach (LineaDeVenta lineaDeVenta in LineasDeVentas)
         {
-            Monto += lineaDeVenta.Subtotal;
+            monto += lineaDeVenta.CalcularSubtotal();
         }
+
+        return monto;
     }
 }

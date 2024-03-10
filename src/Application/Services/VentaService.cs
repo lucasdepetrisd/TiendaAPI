@@ -80,7 +80,7 @@ namespace Application.Services
                 throw new InvalidOperationException($"Venta con ID {ventaId} no encontrado.");
             }
 
-            venta.ActualizarMonto();
+            venta.CalcularTotal();
 
             await _ventaRepository.UpdateAsync(venta);
 
