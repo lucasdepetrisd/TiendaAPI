@@ -18,7 +18,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("Crud", new OpenApiInfo { Title = "La Tienda API: CRUD", Version = "v1.4", Description = $"Entorno: {builder.Environment.EnvironmentName}" });
-    c.SwaggerDoc("UseCases", new OpenApiInfo { Title = "La Tienda API: Casos de Uso", Version = "v1.5", Description = $"Entorno: {builder.Environment.EnvironmentName}" });
+    c.SwaggerDoc("UseCases", new OpenApiInfo { Title = "La Tienda API: Casos de Uso", Version = "v1.5.2", Description = $"Entorno: {builder.Environment.EnvironmentName}" });
 
     string[] methodsOrder = ["get", "post", "put", "patch", "delete", "options", "trace"];
     c.OrderActionsBy((apiDesc) =>
@@ -28,6 +28,8 @@ builder.Services.AddSwaggerGen(c =>
         return $"{order}_{apiDesc.ActionDescriptor.RouteValues["controller"]}_{apiDesc.RelativePath}";
     });
 });
+
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Configuration.AddEnvironmentVariables();
 
@@ -42,6 +44,8 @@ else if (builder.Environment.IsProduction() && Environment.GetEnvironmentVariabl
 
 // Layers DI
 builder.Services.AddApplication(builder.Configuration);
+
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

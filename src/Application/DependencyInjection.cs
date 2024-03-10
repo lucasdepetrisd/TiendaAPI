@@ -11,37 +11,52 @@ namespace Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddApplication(
+        this IServiceCollection Services,
+        IConfiguration Configuration)
     {
         var assembly = typeof(DependencyInjection).Assembly;
 
-        services.AddValidatorsFromAssembly(assembly);
+        Services.AddValidatorsFromAssembly(assembly);
 
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        var DecidirApiSection = Configuration.GetSection("AutorizacionTarjetaApis:DecidirApi");
 
-        services.AddScoped<IArticuloService, ArticuloService>();
-        services.AddScoped<ICategoriaService, CategoriaService>();
-        services.AddScoped<IClienteService, ClienteService>();
-        services.AddScoped<IColorService, ColorService>();
-        services.AddScoped<IComprobanteService, ComprobanteService>();
-        services.AddScoped<ICondicionTributariaService, CondicionTributariaService>();
-        services.AddScoped<IEmpleadoService, EmpleadoService>();
-        services.AddScoped<IInventarioService, InventarioService>();
-        services.AddScoped<ILineaDeVentaService, LineaDeVentaService>();
-        services.AddScoped<IMarcaService, MarcaService>();
-        services.AddScoped<IPagoService, PagoService>();
-        services.AddScoped<IPuntoDeVentaService, PuntoDeVentaService>();
-        services.AddScoped<IRolService, RolService>();
-        services.AddScoped<ISesionService, SesionService>();
-        services.AddScoped<ISucursalService, SucursalService>();
-        services.AddScoped<ITalleService, TalleService>();
-        services.AddScoped<ITiendaService, TiendaService>();
-        services.AddScoped<ITipoDeComprobanteService, TipoDeComprobanteService>();
-        services.AddScoped<ITipoTalleService, TipoTalleService>();
-        services.AddScoped<IUsuarioService, UsuarioService>();
-        services.AddScoped<IVentaService, VentaService>();
+        Services.Configure<AutorizacionTarjetaApisSettings>(
+            AutorizacionTarjetaApisSettings.TokenEndpoint,
+            DecidirApiSection.GetSection("tokenEndpoint"));
 
-        services.AddInfraestructure(configuration);
+        Services.Configure<AutorizacionTarjetaApisSettings>(
+            AutorizacionTarjetaApisSettings.PaymentEndpoint,
+            DecidirApiSection.GetSection("paymentEndpoint"));
+
+        Services.AddHttpClient<IAutorizacionTarjetaService, AutorizacionTarjetaService>();
+
+        Services.AddScoped<IAutorizacionTarjetaService, AutorizacionTarjetaService>();
+        Services.AddScoped<IAutenticacionUsuarioService, AutenticacionUsuarioService>();
+
+        Services.AddScoped<IArticuloService, ArticuloService>();
+        Services.AddScoped<ICategoriaService, CategoriaService>();
+        Services.AddScoped<IClienteService, ClienteService>();
+        Services.AddScoped<IColorService, ColorService>();
+        Services.AddScoped<IComprobanteService, ComprobanteService>();
+        Services.AddScoped<ICondicionTributariaService, CondicionTributariaService>();
+        Services.AddScoped<IEmpleadoService, EmpleadoService>();
+        Services.AddScoped<IInventarioService, InventarioService>();
+        Services.AddScoped<ILineaDeVentaService, LineaDeVentaService>();
+        Services.AddScoped<IMarcaService, MarcaService>();
+        Services.AddScoped<IPagoService, PagoService>();
+        Services.AddScoped<IPuntoDeVentaService, PuntoDeVentaService>();
+        Services.AddScoped<IRolService, RolService>();
+        Services.AddScoped<ISesionService, SesionService>();
+        Services.AddScoped<ISucursalService, SucursalService>();
+        Services.AddScoped<ITalleService, TalleService>();
+        Services.AddScoped<ITiendaService, TiendaService>();
+        Services.AddScoped<ITipoDeComprobanteService, TipoDeComprobanteService>();
+        Services.AddScoped<ITipoTalleService, TipoTalleService>();
+        Services.AddScoped<IUsuarioService, UsuarioService>();
+        Services.AddScoped<IVentaService, VentaService>();
+
+        Services.AddInfraestructure(Configuration);
 
         var mapperConfiguration = new MapperConfiguration(configuration =>
         {
@@ -49,8 +64,8 @@ public static class DependencyInjection
         });
 
         var mapper = mapperConfiguration.CreateMapper();
-        services.AddSingleton(mapper);
+        Services.AddSingleton(mapper);
 
-        return services;
+        return Services;
     }
 }
