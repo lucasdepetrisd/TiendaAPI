@@ -8,26 +8,26 @@ namespace Application.Services
 {
     public class VentaService : BaseService<Venta, CreateVentaDTO, VentaDTO>, IVentaService
     {
-        private readonly IRepository<Venta> _ventaRepository;
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IRepository<Venta> _ventaRepository;
         private readonly IRepository<PuntoDeVenta> _puntoDeVentaRepository;
-        private readonly IRepository<Inventario> _inventarioRepository;
-        private readonly IRepository<LineaDeVenta> _lineaDeVentaRepository;
+
+        private readonly IPagoService _pagoService;
 
         public VentaService(
             IRepository<Venta> ventaRepository,
             IUsuarioRepository usuarioRepository,
             IRepository<PuntoDeVenta> puntoDeVentaRepository,
             IRepository<Inventario> inventarioRepository,
-            IRepository<LineaDeVenta> lineaDeVentaRepository,
-            IMapper mapper)
+            IMapper mapper,
+            IPagoService pagoService)
             : base(ventaRepository, mapper)
         {
             _ventaRepository = ventaRepository ?? throw new ArgumentNullException(nameof(ventaRepository));
             _usuarioRepository = usuarioRepository;
             _puntoDeVentaRepository = puntoDeVentaRepository;
-            _inventarioRepository = inventarioRepository;
-            _lineaDeVentaRepository = lineaDeVentaRepository;
+
+            _pagoService = pagoService;
         }
 
         public async Task<VentaDTO> IniciarVenta(int usuarioId, int puntoDeVentaId)
@@ -71,55 +71,13 @@ namespace Application.Services
             return nuevaVentaDTO;
         }
 
-        public async Task<LineaDeVentaDTO> AgregarLineaDeVenta(int ventaId, int cantidad, int inventarioId)
+        public async Task<VentaDTO> ActualizarMonto(int ventaId)
         {
             var venta = await _ventaRepository.GetByIdAsync(ventaId);
-            var inventario = await _inventarioRepository.GetByIdAsync(inventarioId);
 
             if (venta == null)
             {
                 throw new InvalidOperationException($"Venta con ID {ventaId} no encontrado.");
-            }
-            else if (inventario == null)
-            {
-                throw new InvalidOperationException($"Inventario con ID {inventarioId} no encontrado.");
-            }
-
-            var lineaDeVenta = venta.AgregarLineaDeVenta(cantidad, inventario);
-
-            await _ventaRepository.UpdateAsync(venta);
-
-            LineaDeVentaDTO lineaDeVentaDTO = _mapper.Map<LineaDeVentaDTO>(lineaDeVenta);
-
-            return lineaDeVentaDTO;
-        }
-
-        public async Task<VentaDTO> QuitarLineaDeVenta(int idVenta, int idLineaDeVenta)
-        {
-            var venta = await _ventaRepository.GetByIdAsync(idVenta);
-
-            if (venta == null)
-            {
-                throw new InvalidOperationException("Venta con ID {ventaId} no encontrado.");
-            }
-
-            venta.QuitarLineaDeVenta(idLineaDeVenta);
-
-            await _lineaDeVentaRepository.RemoveAsync(idLineaDeVenta);
-            await _ventaRepository.UpdateAsync(venta);
-
-            VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(venta);
-
-            return nuevaVentaDTO;
-        }
-
-        public async Task<VentaDTO> ActualizarMonto(int idVenta)
-        {
-            var venta = await _ventaRepository.GetByIdAsync(idVenta);
-
-            if (venta == null)
-            {
-                throw new InvalidOperationException("Venta con ID {ventaId} no encontrado.");
             }
 
             venta.ActualizarMonto();
@@ -129,6 +87,46 @@ namespace Application.Services
             VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(venta);
 
             return nuevaVentaDTO;
+        }
+
+        public async Task<VentaDTO?> FinalizarVenta(int ventaId, bool esTarjeta, TarjetaDTO? datosTarjeta)
+        {
+            var venta = await _ventaRepository.GetByIdAsync(ventaId);
+            bool pagoAprobado;
+
+            if (venta == null)
+            {
+                throw new InvalidOperationException($"Venta con ID {ventaId} no encontrado.");
+            }
+
+            if (esTarjeta)
+            {
+                if (datosTarjeta != null)
+                {
+                    pagoAprobado = await _pagoService.ProcesarPagoConTarjeta(venta, datosTarjeta);
+                }
+                else
+                {
+                    throw new InvalidOperationException($"datosTarjeta no debe ser null");
+                }
+            }
+            else
+            {
+                pagoAprobado = await _pagoService.ProcesarPagoEnEfectivo(venta);
+            }
+
+            if (pagoAprobado)
+            {
+                await _ventaRepository.UpdateAsync(venta);
+
+                VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(venta);
+
+                return nuevaVentaDTO;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

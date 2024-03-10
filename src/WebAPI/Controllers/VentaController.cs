@@ -140,14 +140,13 @@ namespace WebAPI.Controllers
             }
         }
 
-        [NonAction]
-        [HttpPost("Finalizar")]
+        [HttpPost("finalizar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
-        public async Task<IActionResult> FinalizarVenta([FromBody] FinalizarVentaRequest request)
+        public async Task<IActionResult> FinalizarVenta([FromQuery] FinalizarVentaRequest request)
         {
             try
             {
-                //await _ventaService.FinalizarVenta(request.VentaId, request.MontoPago, request.EsTarjeta, request.DatosTarjeta);
+                await _ventaService.FinalizarVenta(request.VentaId, request.EsTarjeta, request.DatosTarjeta);
 
                 return Ok($"Venta con ID {request.VentaId} finalizada correctamente.");
             }
@@ -166,18 +165,12 @@ namespace WebAPI.Controllers
 
     public record FinalizarVentaRequest
     {
+        [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "VentaId debe ser mayor igual o que cero.")]
         public int VentaId { get; init; }
-        public decimal MontoPago { get; init; }
+        [Required]
         public bool EsTarjeta { get; init; }
-        public TarjetaDTORequest? DatosTarjeta { get; init; } // DTO que representa los datos de la tarjeta, si corresponde
-    }
-
-    public record TarjetaDTORequest
-    {
-        public required string NumeroTarjeta { get; set; }
-        public required string Titular { get; set; }
-        public required string FechaExpiracion { get; set; }
-        public required string CVV { get; set; }
+        public TarjetaDTO? DatosTarjeta { get; init; }
     }
 
     public record IniciarVentaRequest

@@ -1,8 +1,8 @@
-﻿using AutoMapper;
+﻿using Application.Contracts;
 using Application.DTOs;
+using AutoMapper;
 using Domain.Models;
 using Domain.Repositories;
-using Application.Contracts;
 
 namespace Application.Services
 {
