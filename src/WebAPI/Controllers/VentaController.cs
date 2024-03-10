@@ -11,14 +11,16 @@ namespace WebAPI.Controllers
     public class VentaController : BaseController<CreateVentaDTO, VentaDTO>
     {
         private readonly IVentaService _ventaService;
+        private readonly ILineaDeVentaService _lineaDeVentaService;
 
-        public VentaController(IVentaService ventaService)
+        public VentaController(IVentaService ventaService, ILineaDeVentaService lineaDeVentaService)
             : base(ventaService)
         {
             _ventaService = ventaService;
+            _lineaDeVentaService = lineaDeVentaService;
         }
 
-        [HttpPost("Iniciar")]
+        [HttpPost("iniciar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> IniciarVenta([FromQuery] IniciarVentaRequest request)
         {
@@ -42,14 +44,14 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost("LineaDeVenta/Agregar")]
+        [HttpPost("lineadeventa/agregar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> AgregarLineaDeVenta(
             [FromQuery] AgregarLineaDeVentaRequest request)
         {
             try
             {
-                var lineaDeVentaDTO = await _ventaService.AgregarLineaDeVenta(
+                var lineaDeVentaDTO = await _lineaDeVentaService.AgregarLineaDeVenta(
                     request.VentaId,
                     request.Cantidad,
                     request.InventarioId);
@@ -68,14 +70,14 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpDelete("LineaDeVenta/Quitar")]
+        [HttpDelete("lineadeventa/quitar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> QuitarLineaDeVenta(
             [FromQuery] QuitarLineaDeVentaRequest request)
         {
             try
             {
-                var ventaDTO = await _ventaService.QuitarLineaDeVenta(
+                var ventaDTO = await _lineaDeVentaService.QuitarLineaDeVenta(
                     request.VentaId,
                     request.LineaDeVentaId);
 
@@ -93,7 +95,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPost("LineaDeVenta/ActualizarMonto")]
+        [HttpPost("lineadeventa/actualizarmonto")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> ActualizarMonto(
            [FromQuery][Required][Range(0, int.MaxValue, ErrorMessage = "VentaId debe ser igual o mayor que cero.")] int idVenta)
@@ -102,7 +104,7 @@ namespace WebAPI.Controllers
             {
                 var ventaDTO = await _ventaService.ActualizarMonto(idVenta);
 
-                return Ok(ventaDTO);
+                return Ok(ventaDTO.Monto);
             }
             catch (DbException ex)
             {
@@ -116,7 +118,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPut("Cancelar")]
+        [HttpPut("cancelar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> CancelarVentaAsync([FromQuery] int idVenta)
         {

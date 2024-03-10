@@ -18,7 +18,6 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("codigo/{codigo}")]
-
         [ApiExplorerSettings(GroupName = "UseCases")]
         public virtual async Task<ActionResult<ArticuloDTO>> GetByCodigoAsync(
             [Required][StringLength(maximumLength: 30, MinimumLength = 3)] string codigo)
