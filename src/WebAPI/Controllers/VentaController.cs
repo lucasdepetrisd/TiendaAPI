@@ -142,7 +142,7 @@ namespace WebAPI.Controllers
 
         [HttpPost("finalizar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
-        public async Task<IActionResult> FinalizarVenta([FromQuery] FinalizarVentaRequest request)
+        public async Task<IActionResult> FinalizarVenta([FromBody] FinalizarVentaRequest request)
         {
             try
             {
