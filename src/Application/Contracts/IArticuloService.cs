@@ -2,7 +2,7 @@
 
 namespace Application.Contracts
 {
-    public interface IArticuloService : IBaseService<CreateArticuloDTO, ArticuloDTO>
+    public interface IArticuloService : ICrudService<CreateArticuloDTO, ArticuloDTO>
     {
         Task<ArticuloDTO?> GetByCodigoAsync(string codigo);
     }

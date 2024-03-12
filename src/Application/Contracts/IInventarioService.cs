@@ -1,9 +1,8 @@
 ﻿using Application.DTOs;
-using Domain.Models;
 
 namespace Application.Contracts
 {
-    public interface IInventarioService : IBaseService<CreateInventarioDTO, InventarioDTO>
+    public interface IInventarioService : ICrudService<CreateInventarioDTO, InventarioDTO>
     {
     }
 }

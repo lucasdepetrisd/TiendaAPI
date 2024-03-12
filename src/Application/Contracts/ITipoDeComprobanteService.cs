@@ -1,9 +1,8 @@
 ﻿using Application.DTOs;
-using Domain.Models;
 
 namespace Application.Contracts
 {
-    public interface ITipoDeComprobanteService : IBaseService<CreateTipoDeComprobanteDTO, TipoDeComprobanteDTO>
+    public interface ITipoDeComprobanteService : ICrudService<CreateTipoDeComprobanteDTO, TipoDeComprobanteDTO>
     {
     }
 }

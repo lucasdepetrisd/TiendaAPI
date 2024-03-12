@@ -1,9 +1,8 @@
 ﻿using Application.DTOs;
-using Domain.Models;
 
 namespace Application.Contracts
 {
-    public interface ITiendaService : IBaseService<TiendaDTO, TiendaDTO>
+    public interface ITiendaService : IViewService<TiendaDTO>
     {
     }
 }

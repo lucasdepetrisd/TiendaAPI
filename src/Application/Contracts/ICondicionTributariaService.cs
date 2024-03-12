@@ -2,7 +2,7 @@
 
 namespace Application.Contracts
 {
-    public interface ICondicionTributariaService : IBaseService<CondicionTributariaDTO, CondicionTributariaDTO>
+    public interface ICondicionTributariaService : IViewService<CondicionTributariaDTO>
     {
     }
 }

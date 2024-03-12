@@ -3,7 +3,7 @@ using Domain.Models;
 
 namespace Application.Contracts
 {
-    public interface IPagoService : IBaseService<CreatePagoDTO, PagoDTO>
+    public interface IPagoService : IViewService<PagoDTO>
     {
         Task<bool> ProcesarPagoConTarjeta(Venta venta, TarjetaDTO datosTarjeta);
         Task<bool> ProcesarPagoEnEfectivo(Venta venta);

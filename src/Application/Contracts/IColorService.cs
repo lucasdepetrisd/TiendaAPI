@@ -3,7 +3,7 @@ using Domain.Models;
 
 namespace Application.Contracts
 {
-    public interface IColorService : IBaseService<CreateColorDTO, ColorDTO>
+    public interface IColorService : ICrudService<CreateColorDTO, ColorDTO>
     {
     }
 }
