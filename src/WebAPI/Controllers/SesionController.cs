@@ -2,6 +2,7 @@ using Application.Contracts;
 using Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Common;
 
 namespace WebAPI.Controllers
 {
@@ -21,14 +22,28 @@ namespace WebAPI.Controllers
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<ActionResult<SesionDTO>> IniciarSesion([FromQuery] LoginRequest request)
         {
-            var sesion = await _authenticationService.IniciarSesion(request.PuntoDeVentaId, request.Username, request.Password);
-            if (sesion != null)
+            try
             {
-                return Ok(sesion);
+                var sesion = await _authenticationService.IniciarSesion(request.PuntoDeVentaId, request.Username, request.Password);
+
+                if (sesion != null)
+                {
+                    return Ok(sesion);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
             }
-            else
+            catch (DbException ex)
             {
-                return Unauthorized();
+                string? errorMessage = ex.InnerException?.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocurrió un error iniciando sesión. Error: {errorMessage}");
+            }
+            catch (Exception ex)
+            {
+                string? errorMessage = ex.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
             }
         }
 
@@ -37,15 +52,28 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> CerrarSesion(
             [FromQuery][Range(0, int.MaxValue, ErrorMessage = "sesionId debe ser igual o mayor a cero.")][Required] int sesionId)
         {
-            var sesion = await _authenticationService.CerrarSesion(sesionId);
+            try
+            {
+                var sesion = await _authenticationService.CerrarSesion(sesionId);
 
-            if (sesion != null)
-            {
-                return Ok("Sesión cerrada correctamente.");
+                if (sesion != null)
+                {
+                    return Ok("Sesión cerrada correctamente.");
+                }
+                else
+                {
+                    return NotFound("No se encontró la sesión especificada.");
+                }
             }
-            else
+            catch (DbException ex)
             {
-                return NotFound("No se encontró la sesión especificada.");
+                string? errorMessage = ex.InnerException?.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Ocurrió un error cerrando la sesión. Error: {errorMessage}");
+            }
+            catch (Exception ex)
+            {
+                string? errorMessage = ex.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
             }
         }
     }

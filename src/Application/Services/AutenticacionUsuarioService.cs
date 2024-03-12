@@ -28,12 +28,15 @@ namespace Application.Services
 
             if (puntoDeVenta == null)
             {
-                return null;
+                throw new InvalidOperationException($"Punto de Venta con ID {puntoDeVentaId} no existente.");
             }
-
-            if (usuario == null || !VerifyPassword(usuario, contraseña))
+            else if (usuario == null || !VerifyPassword(usuario, contraseña))
             {
-                return null;
+                throw new UnauthorizedAccessException("Usuario o contraseña incorrectos.");
+            }
+            else if (usuario.Empleado.Sucursal.IdSucursal != puntoDeVenta.Sucursal.IdSucursal)
+            {
+                throw new InvalidOperationException($"Usuario {nombreUsuario} no pertenece a un empleado de la Sucursal {puntoDeVenta.Sucursal.Nombre}.");
             }
 
             // Chequeo que exista alguna sesion sin fecha de fin
