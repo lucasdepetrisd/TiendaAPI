@@ -26,9 +26,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var venta = await _ventaService.IniciarVenta(
-                    request.UsuarioId,
-                    request.PuntoDeVentaId);
+                var venta = await _ventaService.IniciarVenta(request.SesionId);
 
                 return Ok(venta);
             }
@@ -226,12 +224,8 @@ namespace WebAPI.Controllers
     public record IniciarVentaRequest
     {
         [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "UsuarioId debe ser mayor igual o que cero.")]
-        public int UsuarioId { get; init; }
-
-        [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "PuntoDeVentaId debe ser igual o mayor que cero.")]
-        public int PuntoDeVentaId { get; init; }
+        [Range(0, int.MaxValue, ErrorMessage = "SesionId debe ser mayor igual o que cero.")]
+        public int SesionId { get; init; }
     }
 
     public record AgregarLineaDeVentaRequest

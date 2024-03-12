@@ -42,7 +42,7 @@ namespace Application.Services
             if (venta.CalcularTotal() > afipLimite)
             {
                 // Si supera el limite de la compra y es el cliente por defecto entonces deberá agregar un cliente
-                if (venta.Cliente != null && venta.Cliente.IdCliente != 0)
+                if (venta.Cliente != null && venta.Cliente.IdCliente == 0)
                 {
                     throw new InvalidOperationException("Monto máximo de AFIP para comprobante anónimo alcanzado. Agregue un cliente a la venta para continuar.");
                 }
@@ -138,12 +138,12 @@ namespace Application.Services
                 case "ConsumidorFinal":
                     return parsedNumeroDocumento;
                 case "dni":
-                    if (numeroDocumento.Length != 7 && numeroDocumento.Length != 8)
+                    if (numeroDocumento.Trim().Length != 7 && numeroDocumento.Trim().Length != 8)
                         throw new ArgumentException("Invalid DNI number");
                     return parsedNumeroDocumento;
                 case "cuit":
                 case "cuil":
-                    if (numeroDocumento.Length != 11)
+                    if (numeroDocumento.Trim().Length != 11)
                         throw new ArgumentException("Invalid CUIT/CUIL number");
                     return parsedNumeroDocumento;
                 default:

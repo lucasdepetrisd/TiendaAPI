@@ -1,16 +1,11 @@
-﻿using Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Application.DTOs;
+﻿namespace Application.DTOs;
 
 public record TipoDeComprobanteDTO
 {
     public int IdTipoDeComprobante { get; init; }
     public string Nombre { get; init; } = null!;
-    public virtual ICollection<ViewCondicionTributariaDTO> CondicionesTributarias { get; init; } = new List<ViewCondicionTributariaDTO>();
+    public ViewCondicionTributariaDTO CondicionTributariaEmisor { get; set; } = null!;
+    public ViewCondicionTributariaDTO CondicionTributariaReceptor { get; set; } = null!;
 }
 
 public record CreateTipoDeComprobanteDTO
@@ -22,4 +17,6 @@ public record ViewTipoDeComprobanteDTO
 {
     public int IdTipoDeComprobante { get; init; }
     public string Nombre { get; init; } = null!;
+    public int IdCondicionTributariaEmisor { get; init; }
+    public int IdCondicionTributariaReceptor { get; init; }
 }

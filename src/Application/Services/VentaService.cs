@@ -11,6 +11,7 @@ namespace Application.Services
         private readonly ICrudRepository<Venta> _ventaRepository;
         private readonly ICrudRepository<PuntoDeVenta> _puntoDeVentaRepository;
         private readonly ICrudRepository<Cliente> _clienteRepository;
+        private readonly ICrudRepository<Sesion> _sesionRepository;
         private readonly ITiendaRepository _tiendaRepository;
         private readonly IUsuarioRepository _usuarioRepository;
 
@@ -21,11 +22,11 @@ namespace Application.Services
             ICrudRepository<PuntoDeVenta> puntoDeVentaRepository,
             //IRepository<Inventario> inventarioRepository,
             ICrudRepository<Cliente> clienteRepository,
+            ICrudRepository<Sesion> sesionRepository,
             IUsuarioRepository usuarioRepository,
             ITiendaRepository tiendaRepository,
             IMapper mapper,
-            IPagoService pagoService
-            )
+            IPagoService pagoService)
             : base(ventaRepository, mapper)
         {
             _ventaRepository = ventaRepository ?? throw new ArgumentNullException(nameof(ventaRepository));
@@ -35,23 +36,32 @@ namespace Application.Services
             _pagoService = pagoService;
             _clienteRepository = clienteRepository;
             _tiendaRepository = tiendaRepository;
+            _sesionRepository = sesionRepository;
         }
 
-        public async Task<VentaDTO> IniciarVenta(int usuarioId, int puntoDeVentaId)
+        public async Task<VentaDTO> IniciarVenta(int sesionId)
         {
+            var sesion = await _sesionRepository.GetByIdAsync(sesionId);
+
+            if (sesion == null)
+            {
+                throw new InvalidOperationException($"Sesion con ID {sesionId} no encontrada.");
+            }
+
+            var usuario = await _usuarioRepository.GetByIdAsync(sesion.IdUsuario);
+            var puntoDeVenta = await _puntoDeVentaRepository.GetByIdAsync(sesion.IdPuntoDeVenta);
+
             //Considerar convertir defaultCliente a metodo del repositorio
             var defaultCliente = await _clienteRepository.GetByIdAsync(0);
-            var usuario = await _usuarioRepository.GetByIdAsync(usuarioId);
             var tienda = await _tiendaRepository.GetFirstOrDefault();
-            var puntoDeVenta = await _puntoDeVentaRepository.GetByIdAsync(puntoDeVentaId);
 
             if (usuario == null)
             {
-                throw new InvalidOperationException($"Usuario con ID {usuarioId} no encontrado.");
+                throw new InvalidOperationException($"Usuario con ID {sesion.IdUsuario} no encontrado.");
             }
             else if (puntoDeVenta == null)
             {
-                throw new InvalidOperationException($"Punto de Venta con ID {puntoDeVentaId} no encontrado.");
+                throw new InvalidOperationException($"Punto de Venta con ID {sesion.IdPuntoDeVenta} no encontrado.");
             }
             else if (defaultCliente == null)
             {
@@ -60,6 +70,13 @@ namespace Application.Services
             else if (tienda == null)
             {
                 throw new InvalidOperationException($"Tienda no encontrada.");
+            }
+
+            Empleado empleado = usuario.Empleado;
+
+            if (empleado.Sucursal.IdSucursal != puntoDeVenta.Sucursal.IdSucursal)
+            {
+                throw new InvalidOperationException($"No se puede realizar la operación. Empleado con ID {empleado.IdEmpleado} no asignado a la Sucursal {puntoDeVenta.Sucursal.Nombre}.");
             }
 
             var venta = new Venta(usuario, puntoDeVenta, defaultCliente, tienda.CondicionTributaria);
