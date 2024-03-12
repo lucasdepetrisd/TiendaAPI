@@ -1,5 +1,5 @@
-using Application.DTOs;
 using Application.Contracts;
+using Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -11,7 +11,7 @@ namespace WebAPI.Controllers
         private readonly IInventarioService _inventarioService;
 
         public InventarioController(IInventarioService inventarioService)
-            : base(inventarioService)
+            : base(inventarioService, inventarioService)
         {
             this._inventarioService = inventarioService;
         }

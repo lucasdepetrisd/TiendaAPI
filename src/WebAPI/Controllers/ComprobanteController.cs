@@ -1,19 +1,16 @@
-using Application.DTOs;
 using Application.Contracts;
+using Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ComprobanteController : CrudController<CreateComprobanteDTO, ComprobanteDTO>
+    public class ComprobanteController : ViewController<ComprobanteDTO>
     {
-        private readonly IComprobanteService _comprobanteService;
-
         public ComprobanteController(IComprobanteService comprobanteService)
             : base(comprobanteService)
         {
-            _comprobanteService = comprobanteService;
         }
     }
 }

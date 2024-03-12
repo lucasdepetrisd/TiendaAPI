@@ -1,5 +1,5 @@
-using Application.DTOs;
 using Application.Contracts;
+using Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -11,7 +11,7 @@ namespace WebAPI.Controllers
         private readonly ITalleService _talleService;
 
         public TalleController(ITalleService talleService)
-            : base(talleService)
+            : base(talleService, talleService)
         {
             _talleService = talleService;
         }

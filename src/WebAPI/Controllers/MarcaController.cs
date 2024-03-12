@@ -1,5 +1,5 @@
-using Application.DTOs;
 using Application.Contracts;
+using Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -11,7 +11,7 @@ namespace WebAPI.Controllers
         private readonly IMarcaService _marcaService;
 
         public MarcaController(IMarcaService marcaService)
-            : base(marcaService)
+            : base(marcaService, marcaService)
         {
             _marcaService = marcaService;
         }

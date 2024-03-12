@@ -1,5 +1,5 @@
-using Application.DTOs;
 using Application.Contracts;
+using Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -10,8 +10,8 @@ namespace WebAPI.Controllers
     {
         private readonly IUsuarioService _usuarioService;
 
-        public UsuarioController(IUsuarioService usuarioService)
-            : base(usuarioService)
+        public UsuarioController(IUsuarioService usuarioService)//, IViewService<UsuarioDTO> usuarioViewService)
+            : base(usuarioService, usuarioService)
         {
             _usuarioService = usuarioService;
         }

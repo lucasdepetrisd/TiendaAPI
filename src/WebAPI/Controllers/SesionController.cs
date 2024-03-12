@@ -7,19 +7,17 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SesionController : CrudController<CreateSesionDTO, SesionDTO>
+    public class SesionController : ViewController<SesionDTO>
     {
-        private readonly ISesionService _sesionService;
         private readonly IAutenticacionUsuarioService _authenticationService;
 
         public SesionController(ISesionService sesionService, IAutenticacionUsuarioService authenticationService)
             : base(sesionService)
         {
-            _sesionService = sesionService;
             _authenticationService = authenticationService;
         }
 
-        [HttpPost("IniciarSesion")]
+        [HttpPost("iniciarsesion")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<ActionResult<SesionDTO>> IniciarSesion([FromQuery] LoginRequest request)
         {
@@ -34,7 +32,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpPut("CerrarSesion")]
+        [HttpPut("cerrarsesion")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> CerrarSesion(
             [FromQuery][Range(0, int.MaxValue, ErrorMessage = "sesionId debe ser igual o mayor a cero.")][Required] int sesionId)

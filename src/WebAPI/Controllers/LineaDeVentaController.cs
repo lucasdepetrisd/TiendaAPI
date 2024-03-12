@@ -6,7 +6,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LineaDeVentaController : CrudController<CreateLineaDeVentaDTO, LineaDeVentaDTO>
+    public class LineaDeVentaController : ViewController<LineaDeVentaDTO>
     {
         private readonly ILineaDeVentaService _lineaDeVentaService;
 

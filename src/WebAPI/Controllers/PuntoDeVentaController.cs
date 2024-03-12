@@ -1,5 +1,5 @@
-using Application.DTOs;
 using Application.Contracts;
+using Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -11,7 +11,7 @@ namespace WebAPI.Controllers
         private readonly IPuntoDeVentaService _puntoDeVentaService;
 
         public PuntoDeVentaController(IPuntoDeVentaService puntoDeVentaService)
-            : base(puntoDeVentaService)
+            : base(puntoDeVentaService, puntoDeVentaService)
         {
             _puntoDeVentaService = puntoDeVentaService;
         }

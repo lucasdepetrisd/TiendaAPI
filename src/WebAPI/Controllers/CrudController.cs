@@ -4,45 +4,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebAPI.Controllers
 {
-    public abstract class CrudController<TRequestDTO, TResponseDTO> : BaseController
+    public abstract class CrudController<TRequestDTO, TResponseDTO> : ViewController<TResponseDTO>
         where TRequestDTO : class
         where TResponseDTO : class
     {
-        protected readonly IBaseService<TRequestDTO, TResponseDTO> _entityService;
+        protected readonly ICrudService<TRequestDTO, TResponseDTO> _crudService;
 
-        public CrudController(IBaseService<TRequestDTO, TResponseDTO> service)
+        public CrudController(ICrudService<TRequestDTO, TResponseDTO> crudService, IViewService<TResponseDTO> viewService) : base(viewService)
         {
-            _entityService = service ?? throw new ArgumentNullException(nameof(service));
-        }
-
-        // GET: api/Entity
-        [HttpGet]
-        [ApiExplorerSettings(GroupName = "Crud")]
-        public virtual async Task<ActionResult<IEnumerable<TResponseDTO>>> GetAllAsync()
-        {
-            var listaDTOs = await _entityService.GetAllAsync();
-
-            if (listaDTOs == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(listaDTOs);
-        }
-
-        // GET: api/Entity/5
-        [HttpGet("{id}")]
-        [ApiExplorerSettings(GroupName = "Crud")]
-        public virtual async Task<ActionResult<TResponseDTO>> GetByIdAsync(int id)
-        {
-            var entityDTO = await _entityService.GetByIdAsync(id);
-
-            if (entityDTO == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(entityDTO);
+            _crudService = crudService;
         }
 
         // POST: api/Entity
@@ -53,7 +23,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var responseDTO = await _entityService.AddAsync(entityDTO);
+                var responseDTO = await _crudService.AddAsync(entityDTO);
 
                 if (responseDTO == null)
                 {
@@ -82,7 +52,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var responseDTO = await _entityService.UpdateAsync(id, requestDTO);
+                var responseDTO = await _crudService.UpdateAsync(id, requestDTO);
 
                 if (responseDTO == null)
                 {
@@ -110,7 +80,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                bool success = await _entityService.RemoveAsync(id);
+                bool success = await _crudService.RemoveAsync(id);
 
                 if (!success)
                 {

@@ -1,5 +1,5 @@
-using Application.DTOs;
 using Application.Contracts;
+using Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -8,12 +8,9 @@ namespace WebAPI.Controllers
     [ApiController]
     public class EmpleadoController : CrudController<CreateEmpleadoDTO, EmpleadoDTO>
     {
-        private readonly IEmpleadoService _empleadoService;
-
         public EmpleadoController(IEmpleadoService empleadoService)
-            : base(empleadoService)
+            : base(empleadoService, empleadoService)
         {
-            _empleadoService = empleadoService;
         }
     }
 }

@@ -1,12 +1,12 @@
-using Application.DTOs;
 using Application.Contracts;
+using Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PagoController : CrudController<CreatePagoDTO, PagoDTO>
+    public class PagoController : ViewController<PagoDTO>
     {
         private readonly IPagoService _pagoService;
 

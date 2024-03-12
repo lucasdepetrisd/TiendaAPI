@@ -1,5 +1,5 @@
-using Application.DTOs;
 using Application.Contracts;
+using Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -11,7 +11,7 @@ namespace WebAPI.Controllers
         private readonly IRolService _rolService;
 
         public RolController(IRolService rolService)
-            : base(rolService)
+            : base(rolService, rolService)
         {
             _rolService = rolService;
         }

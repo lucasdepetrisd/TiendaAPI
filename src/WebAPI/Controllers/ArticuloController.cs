@@ -12,7 +12,7 @@ namespace WebAPI.Controllers
         private readonly IArticuloService _articuloService;
 
         public ArticuloController(IArticuloService articuloService)
-            : base(articuloService)
+            : base(articuloService, articuloService)
         {
             _articuloService = articuloService;
         }

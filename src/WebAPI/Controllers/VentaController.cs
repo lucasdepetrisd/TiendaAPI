@@ -8,7 +8,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VentaController : CrudController<CreateVentaDTO, VentaDTO>
+    public class VentaController : ViewController<VentaDTO>
     {
         private readonly IVentaService _ventaService;
         private readonly ILineaDeVentaService _lineaDeVentaService;
@@ -47,7 +47,7 @@ namespace WebAPI.Controllers
         [HttpPost("{ventaId}/lineadeventa/agregar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> AgregarLineaDeVenta(
-            [FromQuery][Required][Range(0, int.MaxValue)] int ventaId,
+            [Range(0, int.MaxValue)] int ventaId,
             [FromBody] AgregarLineaDeVentaRequest request)
         {
             if (ventaId < 0)
@@ -107,6 +107,40 @@ namespace WebAPI.Controllers
             }
         }
 
+        [HttpPut("{ventaId}/cliente/modificar")]
+        [ApiExplorerSettings(GroupName = "UseCases")]
+        public async Task<IActionResult> ModificarCliente(
+            [Range(0, int.MaxValue)] int ventaId,
+            [FromBody] int clienteId)
+        {
+            if (ventaId < 0)
+            {
+                return BadRequest("VentaId debe ser mayor o igual a 0.");
+            }
+            else if (clienteId < 0)
+            {
+                return BadRequest("ClienteId debe ser mayor o igual a 0.");
+            }
+
+            try
+            {
+                var ventaDto = await _ventaService.ModificarCliente(ventaId, clienteId);
+
+                return Ok(ventaDto);
+            }
+            catch (DbException ex)
+            {
+                string? errorMessage = ex.InnerException?.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al añadir una LineaDeVenta a la Venta. Error: {errorMessage}");
+            }
+            catch (Exception ex)
+            {
+                string? errorMessage = ex.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
+            }
+        }
+
+        [NonAction]
         [HttpPost("actualizarmonto/{ventaId}")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> ActualizarMonto(
