@@ -33,6 +33,7 @@ namespace Infraestructure.Repositories
                 .Include(v => v.PuntoDeVenta)
                 .Include(v => v.Usuario)
                 .Include(v => v.LineasDeVentas)
+                    .ThenInclude(c => c.Inventario)
                 .Where(v => v.IdVenta == id);
 
             return await query.SingleOrDefaultAsync();

@@ -24,19 +24,19 @@ namespace Application.Services
         public async Task<SesionDTO?> IniciarSesion(int puntoDeVentaId, string nombreUsuario, string contraseña)
         {
             var usuario = await _usuarioRepository.GetByUsernameAsync(nombreUsuario);
-            var puntoDeVenta = await _puntoDeVentaRepository.GetByIdAsync(puntoDeVentaId);
+            var puntoDeVenta = await _puntoDeVentaRepository.GetByIdAsync(puntoDeVentaId) ?? throw new InvalidOperationException($"Punto de Venta con ID {puntoDeVentaId} no existente.");
 
-            if (puntoDeVenta == null)
-            {
-                throw new InvalidOperationException($"Punto de Venta con ID {puntoDeVentaId} no existente.");
-            }
-            else if (usuario == null || !VerifyPassword(usuario, contraseña))
+            if (usuario == null || !VerifyPassword(usuario, contraseña))
             {
                 throw new UnauthorizedAccessException("Usuario o contraseña incorrectos.");
             }
             else if (usuario.Empleado.Sucursal.IdSucursal != puntoDeVenta.Sucursal.IdSucursal)
             {
                 throw new InvalidOperationException($"Usuario {nombreUsuario} no pertenece a un empleado de la Sucursal {puntoDeVenta.Sucursal.Nombre}.");
+            }
+            else if (!puntoDeVenta.Habilitado)
+            {
+                throw new InvalidOperationException($"Punto de Venta {puntoDeVenta.IdPuntoDeVenta} no habilitado.");
             }
 
             // Chequeo que exista alguna sesion sin fecha de fin

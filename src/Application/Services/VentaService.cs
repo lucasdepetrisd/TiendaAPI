@@ -127,6 +127,21 @@ namespace Application.Services
                 return null;
             }
 
+            //Agregar creacion de comprobante
+
+            foreach (var lineaDeVenta in venta.LineasDeVentas)
+            {
+                var inventario = lineaDeVenta.Inventario;
+                if (inventario != null)
+                {
+                    inventario.Cantidad -= lineaDeVenta.Cantidad;
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Inventario con ID {lineaDeVenta.IdInventario} no encontrado. No se puede finalizar la venta.");
+                }
+            }
+
             venta.Finalizar();
 
             await _ventaRepository.UpdateAsync(venta);
@@ -139,7 +154,7 @@ namespace Application.Services
         public async Task<VentaDTO> ModificarCliente(int ventaId, int clienteId)
         {
             var venta = await _ventaRepository.GetByIdAsync(ventaId) ?? throw new InvalidOperationException($"Venta con ID {ventaId} no encontrada.");
-            var cliente = await _clienteRepository.GetByIdAsync(clienteId) ?? throw new InvalidOperationException($"Cliente con ID {ventaId} no encontrado.");
+            var cliente = await _clienteRepository.GetByIdAsync(clienteId) ?? throw new InvalidOperationException($"Cliente con ID {clienteId} no encontrado.");
             var tienda = await _tiendaRepository.GetFirstOrDefault() ?? throw new InvalidOperationException($"Tienda no encontrada.");
 
             venta.ModificarCliente(cliente, tienda.CondicionTributaria);
