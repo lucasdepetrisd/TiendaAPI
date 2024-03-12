@@ -41,36 +41,19 @@ namespace Application.Services
 
         public async Task<VentaDTO> IniciarVenta(int sesionId)
         {
-            var sesion = await _sesionRepository.GetByIdAsync(sesionId);
+            var sesion = await _sesionRepository.GetByIdAsync(sesionId) ?? throw new InvalidOperationException($"Sesion con ID {sesionId} no encontrada.");
 
-            if (sesion == null)
+            if (sesion.FechaFin != null)
             {
-                throw new InvalidOperationException($"Sesion con ID {sesionId} no encontrada.");
+                throw new InvalidOperationException("Inicie sesión para iniciar una venta.");
             }
 
-            var usuario = await _usuarioRepository.GetByIdAsync(sesion.IdUsuario);
-            var puntoDeVenta = await _puntoDeVentaRepository.GetByIdAsync(sesion.IdPuntoDeVenta);
+            var puntoDeVenta = await _puntoDeVentaRepository.GetByIdAsync(sesion.IdPuntoDeVenta) ?? throw new InvalidOperationException($"Punto de Venta con ID {sesion.IdPuntoDeVenta} no encontrado.");
+            var usuario = await _usuarioRepository.GetByIdAsync(sesion.IdUsuario) ?? throw new InvalidOperationException($"Usuario con ID {sesion.IdUsuario} no encontrado.");
 
             //Considerar convertir defaultCliente a metodo del repositorio
-            var defaultCliente = await _clienteRepository.GetByIdAsync(0);
-            var tienda = await _tiendaRepository.GetFirstOrDefault();
-
-            if (usuario == null)
-            {
-                throw new InvalidOperationException($"Usuario con ID {sesion.IdUsuario} no encontrado.");
-            }
-            else if (puntoDeVenta == null)
-            {
-                throw new InvalidOperationException($"Punto de Venta con ID {sesion.IdPuntoDeVenta} no encontrado.");
-            }
-            else if (defaultCliente == null)
-            {
-                throw new InvalidOperationException($"Cliente predeterminado no encontrado.");
-            }
-            else if (tienda == null)
-            {
-                throw new InvalidOperationException($"Tienda no encontrada.");
-            }
+            var defaultCliente = await _clienteRepository.GetByIdAsync(0) ?? throw new InvalidOperationException($"Cliente predeterminado no encontrado.");
+            var tienda = await _tiendaRepository.GetFirstOrDefault() ?? throw new InvalidOperationException($"Tienda no encontrada.");
 
             Empleado empleado = usuario.Empleado;
 
@@ -114,13 +97,8 @@ namespace Application.Services
 
         public async Task<VentaDTO?> FinalizarVenta(int ventaId, bool esTarjeta, TarjetaDTO? datosTarjeta)
         {
-            var venta = await _ventaRepository.GetByIdAsync(ventaId);
+            var venta = await _ventaRepository.GetByIdAsync(ventaId) ?? throw new InvalidOperationException($"Venta con ID {ventaId} no encontrada.");
             bool pagoAprobado;
-
-            if (venta == null)
-            {
-                throw new InvalidOperationException($"Venta con ID {ventaId} no encontrada.");
-            }
 
             if (venta.Estado.Equals("finalizada", StringComparison.CurrentCultureIgnoreCase)
                 || venta.Estado.Equals("cancelada", StringComparison.CurrentCultureIgnoreCase))

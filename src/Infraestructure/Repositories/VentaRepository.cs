@@ -53,11 +53,11 @@ namespace Infraestructure.Repositories
                     // Si encuentra alguno utiliza ese agregandolo a la venta
                     venta.TipoDeComprobante = existingTipoDeComprobante;
                 }
-                /*                else
-                                {
-                                    // Si no encuentra ninguno utiliza esa combinación existente
-                                    _tiendaContext.TipoDeComprobante.Add(venta.TipoDeComprobante);
-                                }*/
+                /*else
+                {
+                    // Si no encuentra ninguno utiliza esa combinación existente
+                    _tiendaContext.TipoDeComprobante.Add(venta.TipoDeComprobante);
+                }*/
             }
 
             _tiendaContext.Set<Venta>().Add(venta);
