@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ServicioAFIP
+namespace Application.ServicioExternoAfip
 {
     using System.Runtime.Serialization;
     
@@ -15,7 +15,7 @@ namespace ServicioAFIP
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Autorizacion", Namespace="http://schemas.datacontract.org/2004/07/SGE.Service.Contracts.Data")]
-    internal partial class Autorizacion : object
+    public partial class Autorizacion : object
     {
         
         private string ErrorField;
@@ -27,7 +27,7 @@ namespace ServicioAFIP
         private System.DateTime VencimientoField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal string Error
+        public string Error
         {
             get
             {
@@ -40,7 +40,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal int PuntoVenta
+        public int PuntoVenta
         {
             get
             {
@@ -53,7 +53,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal string Token
+        public string Token
         {
             get
             {
@@ -66,7 +66,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal System.DateTime Vencimiento
+        public System.DateTime Vencimiento
         {
             get
             {
@@ -82,15 +82,15 @@ namespace ServicioAFIP
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
     [System.Runtime.Serialization.DataContractAttribute(Name="UltimoComprobante", Namespace="http://schemas.datacontract.org/2004/07/SGE.Service.Contracts.Data")]
-    internal partial class UltimoComprobante : object
+    public partial class UltimoComprobante : object
     {
         
-        private ServicioAFIP.Comprobante[] ComprobantesField;
+        private Application.ServicioExternoAfip.Comprobante[] ComprobantesField;
         
         private string ErrorField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal ServicioAFIP.Comprobante[] Comprobantes
+        public Application.ServicioExternoAfip.Comprobante[] Comprobantes
         {
             get
             {
@@ -103,7 +103,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal string Error
+        public string Error
         {
             get
             {
@@ -119,7 +119,7 @@ namespace ServicioAFIP
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Comprobante", Namespace="http://schemas.datacontract.org/2004/07/SGE.Service.Contracts.Data")]
-    internal partial class Comprobante : object
+    public partial class Comprobante : object
     {
         
         private string DescripcionField;
@@ -129,7 +129,7 @@ namespace ServicioAFIP
         private int NumeroField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal string Descripcion
+        public string Descripcion
         {
             get
             {
@@ -142,7 +142,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal int Id
+        public int Id
         {
             get
             {
@@ -155,7 +155,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal int Numero
+        public int Numero
         {
             get
             {
@@ -171,7 +171,7 @@ namespace ServicioAFIP
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
     [System.Runtime.Serialization.DataContractAttribute(Name="SolicitudAutorizacion", Namespace="http://schemas.datacontract.org/2004/07/SGE.Service.Contracts.Data")]
-    internal partial class SolicitudAutorizacion : object
+    public partial class SolicitudAutorizacion : object
     {
         
         private System.Nullable<System.DateTime> FechaField;
@@ -186,12 +186,12 @@ namespace ServicioAFIP
         
         private long NumeroDocumentoField;
         
-        private ServicioAFIP.TipoComprobante TipoComprobanteField;
+        private Application.ServicioExternoAfip.TipoComprobante TipoComprobanteField;
         
-        private ServicioAFIP.TipoDocumento TipoDocumentoField;
+        private Application.ServicioExternoAfip.TipoDocumento TipoDocumentoField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal System.Nullable<System.DateTime> Fecha
+        public System.Nullable<System.DateTime> Fecha
         {
             get
             {
@@ -204,7 +204,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal double ImporteIva
+        public double ImporteIva
         {
             get
             {
@@ -217,7 +217,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal double ImporteNeto
+        public double ImporteNeto
         {
             get
             {
@@ -230,7 +230,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal double ImporteTotal
+        public double ImporteTotal
         {
             get
             {
@@ -243,7 +243,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal long Numero
+        public long Numero
         {
             get
             {
@@ -256,7 +256,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal long NumeroDocumento
+        public long NumeroDocumento
         {
             get
             {
@@ -269,7 +269,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal ServicioAFIP.TipoComprobante TipoComprobante
+        public Application.ServicioExternoAfip.TipoComprobante TipoComprobante
         {
             get
             {
@@ -282,7 +282,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal ServicioAFIP.TipoDocumento TipoDocumento
+        public Application.ServicioExternoAfip.TipoDocumento TipoDocumento
         {
             get
             {
@@ -297,7 +297,7 @@ namespace ServicioAFIP
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
     [System.Runtime.Serialization.DataContractAttribute(Name="TipoComprobante", Namespace="http://schemas.datacontract.org/2004/07/SGE.Fwk.Domain.Core")]
-    internal enum TipoComprobante : int
+    public enum TipoComprobante : int
     {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
@@ -309,7 +309,7 @@ namespace ServicioAFIP
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
     [System.Runtime.Serialization.DataContractAttribute(Name="TipoDocumento", Namespace="http://schemas.datacontract.org/2004/07/SGE.Fwk.Domain.Core")]
-    internal enum TipoDocumento : int
+    public enum TipoDocumento : int
     {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
@@ -328,23 +328,23 @@ namespace ServicioAFIP
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ResultadoSolicitudAutorizacion", Namespace="http://schemas.datacontract.org/2004/07/SGE.Service.Contracts.Data")]
-    internal partial class ResultadoSolicitudAutorizacion : object
+    public partial class ResultadoSolicitudAutorizacion : object
     {
         
         private string CaeField;
         
         private string ErrorField;
         
-        private System.Nullable<ServicioAFIP.EstadoSolicitud> EstadoField;
+        private System.Nullable<Application.ServicioExternoAfip.EstadoSolicitud> EstadoField;
         
         private string FechaDeVencimientoField;
         
         private string ObservacionField;
         
-        private System.Nullable<ServicioAFIP.TipoComprobante> TipoComprobanteField;
+        private System.Nullable<Application.ServicioExternoAfip.TipoComprobante> TipoComprobanteField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal string Cae
+        public string Cae
         {
             get
             {
@@ -357,7 +357,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal string Error
+        public string Error
         {
             get
             {
@@ -370,7 +370,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal System.Nullable<ServicioAFIP.EstadoSolicitud> Estado
+        public System.Nullable<Application.ServicioExternoAfip.EstadoSolicitud> Estado
         {
             get
             {
@@ -383,7 +383,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal string FechaDeVencimiento
+        public string FechaDeVencimiento
         {
             get
             {
@@ -396,7 +396,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal string Observacion
+        public string Observacion
         {
             get
             {
@@ -409,7 +409,7 @@ namespace ServicioAFIP
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        internal System.Nullable<ServicioAFIP.TipoComprobante> TipoComprobante
+        public System.Nullable<Application.ServicioExternoAfip.TipoComprobante> TipoComprobante
         {
             get
             {
@@ -424,7 +424,7 @@ namespace ServicioAFIP
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EstadoSolicitud", Namespace="http://schemas.datacontract.org/2004/07/SGE.Fwk.Domain.Core")]
-    internal enum EstadoSolicitud : int
+    public enum EstadoSolicitud : int
     {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
@@ -438,31 +438,31 @@ namespace ServicioAFIP
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://ISTP1.Service.Contracts.Service", ConfigurationName="ServicioAFIP.ILoginService")]
-    internal interface ILoginService
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://ISTP1.Service.Contracts.Service", ConfigurationName="Application.ExternalService.ILoginService")]
+    public interface ILoginService
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://ISTP1.Service.Contracts.Service/ILoginService/SolicitarAutorizacion", ReplyAction="http://ISTP1.Service.Contracts.Service/ILoginService/SolicitarAutorizacionRespons" +
             "e")]
-        System.Threading.Tasks.Task<ServicioAFIP.Autorizacion> SolicitarAutorizacionAsync(string codigo);
+        System.Threading.Tasks.Task<Application.ServicioExternoAfip.Autorizacion> SolicitarAutorizacionAsync(string codigo);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://ISTP1.Service.Contracts.Service/ILoginService/SolicitarUltimosComprobantes" +
             "", ReplyAction="http://ISTP1.Service.Contracts.Service/ILoginService/SolicitarUltimosComprobantes" +
             "Response")]
-        System.Threading.Tasks.Task<ServicioAFIP.UltimoComprobante> SolicitarUltimosComprobantesAsync(string token);
+        System.Threading.Tasks.Task<Application.ServicioExternoAfip.UltimoComprobante> SolicitarUltimosComprobantesAsync(string token);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://ISTP1.Service.Contracts.Service/ILoginService/SolicitarCae", ReplyAction="http://ISTP1.Service.Contracts.Service/ILoginService/SolicitarCaeResponse")]
-        System.Threading.Tasks.Task<ServicioAFIP.ResultadoSolicitudAutorizacion> SolicitarCaeAsync(string token, ServicioAFIP.SolicitudAutorizacion solicitud);
+        System.Threading.Tasks.Task<Application.ServicioExternoAfip.ResultadoSolicitudAutorizacion> SolicitarCaeAsync(string token, Application.ServicioExternoAfip.SolicitudAutorizacion solicitud);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    internal interface ILoginServiceChannel : ServicioAFIP.ILoginService, System.ServiceModel.IClientChannel
+    public interface ILoginServiceChannel : Application.ServicioExternoAfip.ILoginService, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    internal partial class LoginServiceClient : System.ServiceModel.ClientBase<ServicioAFIP.ILoginService>, ServicioAFIP.ILoginService
+    public partial class LoginServiceClient : System.ServiceModel.ClientBase<Application.ServicioExternoAfip.ILoginService>, Application.ServicioExternoAfip.ILoginService
     {
         
         /// <summary>
@@ -505,17 +505,17 @@ namespace ServicioAFIP
         {
         }
         
-        public System.Threading.Tasks.Task<ServicioAFIP.Autorizacion> SolicitarAutorizacionAsync(string codigo)
+        public System.Threading.Tasks.Task<Application.ServicioExternoAfip.Autorizacion> SolicitarAutorizacionAsync(string codigo)
         {
             return base.Channel.SolicitarAutorizacionAsync(codigo);
         }
         
-        public System.Threading.Tasks.Task<ServicioAFIP.UltimoComprobante> SolicitarUltimosComprobantesAsync(string token)
+        public System.Threading.Tasks.Task<Application.ServicioExternoAfip.UltimoComprobante> SolicitarUltimosComprobantesAsync(string token)
         {
             return base.Channel.SolicitarUltimosComprobantesAsync(token);
         }
         
-        public System.Threading.Tasks.Task<ServicioAFIP.ResultadoSolicitudAutorizacion> SolicitarCaeAsync(string token, ServicioAFIP.SolicitudAutorizacion solicitud)
+        public System.Threading.Tasks.Task<Application.ServicioExternoAfip.ResultadoSolicitudAutorizacion> SolicitarCaeAsync(string token, Application.ServicioExternoAfip.SolicitudAutorizacion solicitud)
         {
             return base.Channel.SolicitarCaeAsync(token, solicitud);
         }
