@@ -6,21 +6,26 @@ using Domain.Repositories;
 
 namespace Application.Services
 {
-    public class VentaService : BaseService<Venta, CreateVentaDTO, VentaDTO>, IVentaService
+    public class VentaService : ViewService<Venta, VentaDTO>, IVentaService
     {
+        private readonly ICrudRepository<Venta> _ventaRepository;
+        private readonly ICrudRepository<PuntoDeVenta> _puntoDeVentaRepository;
+        private readonly ICrudRepository<Cliente> _clienteRepository;
+        private readonly ITiendaRepository _tiendaRepository;
         private readonly IUsuarioRepository _usuarioRepository;
-        private readonly IRepository<Venta> _ventaRepository;
-        private readonly IRepository<PuntoDeVenta> _puntoDeVentaRepository;
 
         private readonly IPagoService _pagoService;
 
         public VentaService(
-            IRepository<Venta> ventaRepository,
+            ICrudRepository<Venta> ventaRepository,
+            ICrudRepository<PuntoDeVenta> puntoDeVentaRepository,
+            //IRepository<Inventario> inventarioRepository,
+            ICrudRepository<Cliente> clienteRepository,
             IUsuarioRepository usuarioRepository,
-            IRepository<PuntoDeVenta> puntoDeVentaRepository,
-            IRepository<Inventario> inventarioRepository,
+            ITiendaRepository tiendaRepository,
             IMapper mapper,
-            IPagoService pagoService)
+            IPagoService pagoService
+            )
             : base(ventaRepository, mapper)
         {
             _ventaRepository = ventaRepository ?? throw new ArgumentNullException(nameof(ventaRepository));
@@ -28,11 +33,16 @@ namespace Application.Services
             _puntoDeVentaRepository = puntoDeVentaRepository;
 
             _pagoService = pagoService;
+            _clienteRepository = clienteRepository;
+            _tiendaRepository = tiendaRepository;
         }
 
         public async Task<VentaDTO> IniciarVenta(int usuarioId, int puntoDeVentaId)
         {
+            //Considerar convertir defaultCliente a metodo del repositorio
+            var defaultCliente = await _clienteRepository.GetByIdAsync(0);
             var usuario = await _usuarioRepository.GetByIdAsync(usuarioId);
+            var tienda = await _tiendaRepository.GetFirstOrDefault();
             var puntoDeVenta = await _puntoDeVentaRepository.GetByIdAsync(puntoDeVentaId);
 
             if (usuario == null)
@@ -43,8 +53,16 @@ namespace Application.Services
             {
                 throw new InvalidOperationException($"Punto de Venta con ID {puntoDeVentaId} no encontrado.");
             }
+            else if (defaultCliente == null)
+            {
+                throw new InvalidOperationException($"Cliente predeterminado no encontrado.");
+            }
+            else if (tienda == null)
+            {
+                throw new InvalidOperationException($"Tienda no encontrada.");
+            }
 
-            var venta = new Venta(usuario, puntoDeVenta);
+            var venta = new Venta(usuario, puntoDeVenta, defaultCliente, tienda.CondicionTributaria);
 
             await _ventaRepository.AddAsync(venta);
 
@@ -55,13 +73,7 @@ namespace Application.Services
 
         public async Task<VentaDTO> CancelarVenta(int ventaId)
         {
-            var venta = await _ventaRepository.GetByIdAsync(ventaId);
-
-            if (venta == null)
-            {
-                throw new InvalidOperationException($"Venta con ID {ventaId} no encontrado.");
-            }
-
+            var venta = await _ventaRepository.GetByIdAsync(ventaId) ?? throw new InvalidOperationException($"Venta con ID {ventaId} no encontrada.");
             venta.Cancelar();
 
             await _ventaRepository.UpdateAsync(venta);
@@ -73,13 +85,7 @@ namespace Application.Services
 
         public async Task<VentaDTO> ActualizarMonto(int ventaId)
         {
-            var venta = await _ventaRepository.GetByIdAsync(ventaId);
-
-            if (venta == null)
-            {
-                throw new InvalidOperationException($"Venta con ID {ventaId} no encontrado.");
-            }
-
+            var venta = await _ventaRepository.GetByIdAsync(ventaId) ?? throw new InvalidOperationException($"Venta con ID {ventaId} no encontrada.");
             venta.CalcularTotal();
 
             await _ventaRepository.UpdateAsync(venta);
@@ -96,7 +102,13 @@ namespace Application.Services
 
             if (venta == null)
             {
-                throw new InvalidOperationException($"Venta con ID {ventaId} no encontrado.");
+                throw new InvalidOperationException($"Venta con ID {ventaId} no encontrada.");
+            }
+
+            if (venta.Estado.Equals("finalizada", StringComparison.CurrentCultureIgnoreCase)
+                || venta.Estado.Equals("cancelada", StringComparison.CurrentCultureIgnoreCase))
+            {
+                throw new InvalidOperationException($"Venta con ID {ventaId} ya finalizada o cancelada.");
             }
 
             if (esTarjeta)
@@ -115,18 +127,33 @@ namespace Application.Services
                 pagoAprobado = await _pagoService.ProcesarPagoEnEfectivo(venta);
             }
 
-            if (pagoAprobado)
-            {
-                await _ventaRepository.UpdateAsync(venta);
-
-                VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(venta);
-
-                return nuevaVentaDTO;
-            }
-            else
+            if (!pagoAprobado)
             {
                 return null;
             }
+
+            venta.Finalizar();
+
+            await _ventaRepository.UpdateAsync(venta);
+
+            VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(venta);
+
+            return nuevaVentaDTO;
+        }
+
+        public async Task<VentaDTO> ModificarCliente(int ventaId, int clienteId)
+        {
+            var venta = await _ventaRepository.GetByIdAsync(ventaId) ?? throw new InvalidOperationException($"Venta con ID {ventaId} no encontrada.");
+            var cliente = await _clienteRepository.GetByIdAsync(clienteId) ?? throw new InvalidOperationException($"Cliente con ID {ventaId} no encontrado.");
+            var tienda = await _tiendaRepository.GetFirstOrDefault() ?? throw new InvalidOperationException($"Tienda no encontrada.");
+
+            venta.ModificarCliente(cliente, tienda.CondicionTributaria);
+
+            await _ventaRepository.UpdateAsync(venta);
+
+            VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(venta);
+
+            return nuevaVentaDTO;
         }
     }
 }
