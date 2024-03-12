@@ -18,7 +18,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("Crud", new OpenApiInfo { Title = "La Tienda API: CRUD", Version = "v1.4", Description = $"Environment: {builder.Environment.EnvironmentName}" });
-    c.SwaggerDoc("UseCases", new OpenApiInfo { Title = "La Tienda API: Casos de Uso", Version = "v1.6.0", Description = $"Environment: {builder.Environment.EnvironmentName}" });
+    c.SwaggerDoc("UseCases", new OpenApiInfo { Title = "La Tienda API: Casos de Uso", Version = "v1.6.4", Description = $"Environment: {builder.Environment.EnvironmentName}" });
 
     string[] methodsOrder = ["get", "post", "put", "patch", "delete", "options", "trace"];
     c.OrderActionsBy((apiDesc) =>
