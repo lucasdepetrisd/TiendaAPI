@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models;
@@ -17,6 +15,6 @@ public partial class PuntoDeVenta
     [ForeignKey("IdSucursal")]
     public virtual Sucursal Sucursal { get; set; } = null!;
 
-    public virtual ICollection<Sesion> Sesiones { get; set; } = new List<Sesion>();
-    public virtual ICollection<Venta> Ventas { get; set; } = new List<Venta>();
+    public virtual ICollection<Sesion> Sesiones { get; set; } = [];
+    public virtual ICollection<Venta> Ventas { get; set; } = [];
 }

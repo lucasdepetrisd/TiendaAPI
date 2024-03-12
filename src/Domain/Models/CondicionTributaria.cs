@@ -11,9 +11,9 @@ public partial class CondicionTributaria
 
     public virtual Tienda? Tienda { get; set; }
 
-    public virtual ICollection<TipoDeComprobante> TiposDeComprobantesEmisor { get; set; } = new List<TipoDeComprobante>();
-    public virtual ICollection<TipoDeComprobante> TiposDeComprobantesReceptor { get; set; } = new List<TipoDeComprobante>();
-    public virtual ICollection<Cliente> Clientes { get; set; } = new List<Cliente>();
+    /*public virtual ICollection<TipoDeComprobante> TiposDeComprobantesEmisor { get; set; } = new List<TipoDeComprobante>();
+    public virtual ICollection<TipoDeComprobante> TiposDeComprobantesReceptor { get; set; } = new List<TipoDeComprobante>();*/
+    public virtual ICollection<Cliente> Clientes { get; set; } = [];
 }
 
 public enum IdCondicionTributaria : int

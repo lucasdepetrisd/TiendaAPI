@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,10 +12,11 @@ public partial class Pago
     public DateTime Fecha { get; set; }
 
     [Precision(18, 2)]
-    public decimal Monto 
-    { 
-        get{
-            return Venta.Monto;
+    public decimal Monto
+    {
+        get
+        {
+            return Venta.CalcularTotal();
         }
     }
 

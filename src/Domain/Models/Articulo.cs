@@ -31,5 +31,5 @@ public partial class Articulo
     [ForeignKey("IdTipoTalle")]
     public virtual TipoTalle? TipoTalle { get; set; }
 
-    public virtual ICollection<Inventario> Inventarios { get; set; } = new List<Inventario>();
+    public virtual ICollection<Inventario> Inventarios { get; set; } = [];
 }

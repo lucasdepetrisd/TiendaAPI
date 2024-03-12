@@ -7,8 +7,8 @@ public partial class Cliente
 {
     [Key]
     public int IdCliente { get; set; }
-    public string Dni { get; set; } = null!;
-    public string Cuil { get; set; } = null!;
+    public string NroDocumento { get; set; } = null!;
+    public string TipoDocumento { get; set; } = null!;
     public string Nombre { get; set; } = null!;
     public string Apellido { get; set; } = null!;
     public string? Telefono { get; set; }
@@ -19,5 +19,5 @@ public partial class Cliente
     [ForeignKey("IdCondicionTributaria")]
     public virtual CondicionTributaria? CondicionTributaria { get; set; }
 
-    public virtual ICollection<Venta> Ventas { get; set; } = new List<Venta>();
+    public virtual ICollection<Venta> Ventas { get; set; } = [];
 }

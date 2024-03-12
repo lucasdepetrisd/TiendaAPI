@@ -53,9 +53,7 @@ public partial class LineaDeVenta
         }
         else
         {
-            NetoGravado = 0;
-            MontoIVA = 0;
-            Subtotal = 0;
+            throw new Exception($"No articulo on LineaDeVenta with ID {IdLineaDeVenta}");
         }
 
         return Subtotal;

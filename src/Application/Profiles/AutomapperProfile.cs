@@ -78,8 +78,9 @@ namespace Application.Profiles
             CreateMap<Venta, VentaDTO>()
                 .ForMember(vdto => vdto.Monto, opt => opt.MapFrom(v => v.CalcularTotal()))
                 .ReverseMap();
-            CreateMap<Venta, CreateVentaDTO>().ReverseMap();
-            CreateMap<Venta, ViewVentaDTO>().ReverseMap();
+            CreateMap<Venta, ViewVentaDTO>()
+                .ForMember(vdto => vdto.Monto, opt => opt.MapFrom(v => v.CalcularTotal()))
+                .ReverseMap(); ;
 
             CreateMap<LineaDeVenta, LineaDeVentaDTO>().ReverseMap();
             CreateMap<LineaDeVenta, CreateLineaDeVentaDTO>().ReverseMap();

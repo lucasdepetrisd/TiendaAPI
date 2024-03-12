@@ -21,9 +21,9 @@ public partial class Venta
     [ForeignKey("IdCliente")]
     public virtual Cliente? Cliente { get; private set; }
 
-    public int? IdTipoDeComprobante { get; private set; }
+    public int? IdTipoDeComprobante { get; set; }
     [ForeignKey("IdTipoDeComprobante")]
-    public virtual TipoDeComprobante? TipoDeComprobante { get; private set; }
+    public virtual TipoDeComprobante? TipoDeComprobante { get; set; }
 
     public int IdUsuario { get; private set; }
     [ForeignKey("IdUsuario")]
@@ -32,20 +32,22 @@ public partial class Venta
     public int IdPuntoVenta { get; private set; }
     public virtual PuntoDeVenta PuntoDeVenta { get; private set; } = null!;
 
-    public virtual ICollection<LineaDeVenta> LineasDeVentas { get; private set; } = new List<LineaDeVenta>();
+    public virtual ICollection<LineaDeVenta> LineasDeVentas { get; private set; } = [];
 
     private Venta() { }
 
-    public Venta(int usuarioId, int puntoDeVentaId)
-    {
-        IdUsuario = usuarioId;
-        IdPuntoVenta = puntoDeVentaId;
-    }
+    //public Venta(int usuarioId, int puntoDeVentaId)
+    //{
+    //    IdUsuario = usuarioId;
+    //    IdPuntoVenta = puntoDeVentaId;
+    //}
 
-    public Venta(Usuario usuario, PuntoDeVenta puntoDeVenta)
+    public Venta(Usuario usuario, PuntoDeVenta puntoDeVenta, Cliente cliente, CondicionTributaria condicionEmisor)
     {
         Usuario = usuario;
+        Cliente = cliente;
         PuntoDeVenta = puntoDeVenta;
+        TipoDeComprobante = new TipoDeComprobante(condicionEmisor, cliente.CondicionTributaria);
     }
 
     public void Cancelar()
@@ -58,6 +60,16 @@ public partial class Venta
         Estado = "Cancelada";
     }
 
+    public void Finalizar()
+    {
+        if (Estado != "Pendiente")
+        {
+            throw new InvalidOperationException("La venta solo se puede finalizar si esta en estado Pendiente.");
+        }
+
+        Estado = "Finalizada";
+    }
+
     public LineaDeVenta AgregarLineaDeVenta(int cantidad, Inventario inventario)
     {
         if (cantidad > inventario.Cantidad)
@@ -66,6 +78,8 @@ public partial class Venta
         }
 
         LineaDeVenta lineaDeVenta = new LineaDeVenta(cantidad, inventario, this);
+
+        lineaDeVenta.CalcularSubtotal();
 
         LineasDeVentas.Add(lineaDeVenta);
 
@@ -92,9 +106,16 @@ public partial class Venta
 
         foreach (LineaDeVenta lineaDeVenta in LineasDeVentas)
         {
-            monto += lineaDeVenta.CalcularSubtotal();
+            monto += lineaDeVenta.Subtotal;
         }
 
         return monto;
+    }
+
+    public void ModificarCliente(Cliente cliente, CondicionTributaria condicionEmisor)
+    {
+        Cliente = cliente;
+
+        TipoDeComprobante = new TipoDeComprobante(condicionEmisor, cliente.CondicionTributaria);
     }
 }

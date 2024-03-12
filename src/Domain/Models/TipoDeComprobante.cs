@@ -15,7 +15,7 @@ public partial class TipoDeComprobante
     public IdCondicionTributaria IdCondicionTributariaReceptor { get; set; }
     public CondicionTributaria CondicionTributariaReceptor { get; set; } = null!;
 
-    public virtual ICollection<Venta> Ventas { get; set; } = new List<Venta>();
+    public virtual ICollection<Venta> Ventas { get; set; } = [];
 
     public TipoDeComprobante()
     {
@@ -33,7 +33,7 @@ public partial class TipoDeComprobante
     {
         switch (CondicionTributariaEmisor.Nombre)
         {
-            case "Responsable Inscripto":
+            case "ResponsableInscripto":
                 switch (CondicionTributariaReceptor.Nombre)
                 {
                     case "ResponsableInscripto":
