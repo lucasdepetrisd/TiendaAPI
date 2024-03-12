@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class PuntoDeVentaService : BaseService<PuntoDeVenta, CreatePuntoDeVentaDTO, PuntoDeVentaDTO>, IPuntoDeVentaService
+    public class PuntoDeVentaService : CrudService<PuntoDeVenta, CreatePuntoDeVentaDTO, PuntoDeVentaDTO>, IPuntoDeVentaService
     {
-        public PuntoDeVentaService(IRepository<PuntoDeVenta> puntodeventaRepository, IMapper mapper) : base(puntodeventaRepository, mapper)
+        public PuntoDeVentaService(ICrudRepository<PuntoDeVenta> puntodeventaRepository, IMapper mapper) : base(puntodeventaRepository, mapper)
         {
         }
     }

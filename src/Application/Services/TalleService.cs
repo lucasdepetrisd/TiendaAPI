@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class TalleService : BaseService<Talle, CreateTalleDTO, TalleDTO>, ITalleService
+    public class TalleService : CrudService<Talle, CreateTalleDTO, TalleDTO>, ITalleService
     {
-        public TalleService(IRepository<Talle> talleRepository, IMapper mapper) : base(talleRepository, mapper)
+        public TalleService(ICrudRepository<Talle> talleRepository, IMapper mapper) : base(talleRepository, mapper)
         {
         }
     }

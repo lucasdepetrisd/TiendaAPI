@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class InventarioService : BaseService<Inventario, CreateInventarioDTO, InventarioDTO>, IInventarioService
+    public class InventarioService : CrudService<Inventario, CreateInventarioDTO, InventarioDTO>, IInventarioService
     {
-        public InventarioService(IRepository<Inventario> inventarioRepository, IMapper mapper) : base(inventarioRepository, mapper)
+        public InventarioService(ICrudRepository<Inventario> inventarioRepository, IMapper mapper) : base(inventarioRepository, mapper)
         {
         }
     }

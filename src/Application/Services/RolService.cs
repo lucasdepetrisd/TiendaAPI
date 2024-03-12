@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class RolService : BaseService<Rol, CreateRolDTO, RolDTO>, IRolService
+    public class RolService : CrudService<Rol, CreateRolDTO, RolDTO>, IRolService
     {
-        public RolService(IRepository<Rol> rolRepository, IMapper mapper) : base(rolRepository, mapper)
+        public RolService(ICrudRepository<Rol> rolRepository, IMapper mapper) : base(rolRepository, mapper)
         {
         }
     }

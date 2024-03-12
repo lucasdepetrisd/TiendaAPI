@@ -1,20 +1,14 @@
-﻿using AutoMapper;
+﻿using Application.Contracts;
 using Application.DTOs;
+using AutoMapper;
 using Domain.Models;
 using Domain.Repositories;
-using Application.Contracts;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class ClienteService : BaseService<Cliente, CreateClienteDTO, ClienteDTO>, IClienteService
+    public class ClienteService : CrudService<Cliente, CreateClienteDTO, ClienteDTO>, IClienteService
     {
-        public ClienteService(IRepository<Cliente> clienteRepository, IMapper mapper) : base(clienteRepository, mapper)
+        public ClienteService(ICrudRepository<Cliente> clienteRepository, IMapper mapper) : base(clienteRepository, mapper)
         {
         }
     }

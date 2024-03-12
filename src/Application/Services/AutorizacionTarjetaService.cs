@@ -17,12 +17,12 @@ namespace Application.Services
         private readonly string _tokenUri;
         private readonly string _paymentUri;
 
-        private readonly IRepository<Cliente> _clienteRepository;
+        private readonly ICrudRepository<Cliente> _clienteRepository;
 
         public AutorizacionTarjetaService(
             IOptionsSnapshot<AutorizacionTarjetaApisSettings> namedOptionsAccessor,
             HttpClient httpClient,
-            IRepository<Cliente> clienteRepository)
+            ICrudRepository<Cliente> clienteRepository)
         {
             _httpClient = httpClient;
 
@@ -66,9 +66,9 @@ namespace Application.Services
                     throw new InvalidOperationException("Error al solicitar el token de pago");
                 }
 
-                var paymentResponse = await ConfirmarPago(venta.Monto, token);
+                var paymentResponse = await ConfirmarPago(venta.CalcularTotal(), token);
 
-                if (paymentResponse.status.ToLower() != "approved")
+                if (!paymentResponse.status.Equals("approved", StringComparison.CurrentCultureIgnoreCase))
                 {
                     var details = paymentResponse.status_details;
                     string errorMessage;
@@ -134,8 +134,10 @@ namespace Application.Services
                 );
 
                 var jsonRequest = JsonSerializer.Serialize(request);
-                var httpRequest = new HttpRequestMessage(HttpMethod.Post, _tokenUri);
-                httpRequest.Content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, _tokenUri)
+                {
+                    Content = new StringContent(jsonRequest, Encoding.UTF8, "application/json")
+                };
                 httpRequest.Headers.Add("apikey", _tokenApiKey);
 
                 var response = await _httpClient.SendAsync(httpRequest);
@@ -185,20 +187,22 @@ namespace Application.Services
                     description: "",
                     payment_type: "single",
                     establishment_name: "single",
-                    sub_payments: new List<SubPayment>
-                    {
+                    sub_payments:
+                    [
                         new SubPayment
                         (
                             site_id: "",
                             amount: (int)monto,
                             installments: null!
                         )
-                    }
+                    ]
                 );
 
                 var jsonRequest = JsonSerializer.Serialize(request);
-                var httpRequest = new HttpRequestMessage(HttpMethod.Post, _paymentUri);
-                httpRequest.Content = new StringContent(jsonRequest, Encoding.UTF8, "application/json");
+                var httpRequest = new HttpRequestMessage(HttpMethod.Post, _paymentUri)
+                {
+                    Content = new StringContent(jsonRequest, Encoding.UTF8, "application/json")
+                };
                 httpRequest.Headers.Add("apikey", _paymentApiKey);
 
                 var response = await _httpClient.SendAsync(httpRequest);

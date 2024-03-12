@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class EmpleadoService : BaseService<Empleado, CreateEmpleadoDTO, EmpleadoDTO>, IEmpleadoService
+    public class EmpleadoService : CrudService<Empleado, CreateEmpleadoDTO, EmpleadoDTO>, IEmpleadoService
     {
-        public EmpleadoService(IRepository<Empleado> empleadoRepository, IMapper mapper) : base(empleadoRepository, mapper)
+        public EmpleadoService(ICrudRepository<Empleado> empleadoRepository, IMapper mapper) : base(empleadoRepository, mapper)
         {
         }
     }

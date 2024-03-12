@@ -6,7 +6,7 @@ using Domain.Repositories;
 
 namespace Application.Services
 {
-    public class ArticuloService : BaseService<Articulo, CreateArticuloDTO, ArticuloDTO>, IArticuloService
+    public class ArticuloService : CrudService<Articulo, CreateArticuloDTO, ArticuloDTO>, IArticuloService
     {
         private readonly IArticuloRepository _articuloRepository;
 

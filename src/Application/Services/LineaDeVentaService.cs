@@ -6,17 +6,17 @@ using Domain.Repositories;
 
 namespace Application.Services
 {
-    public class LineaDeVentaService : BaseService<LineaDeVenta, CreateLineaDeVentaDTO, LineaDeVentaDTO>, ILineaDeVentaService
+    public class LineaDeVentaService : CrudService<LineaDeVenta, CreateLineaDeVentaDTO, LineaDeVentaDTO>, ILineaDeVentaService
     {
-        private readonly IRepository<LineaDeVenta> _lineaDeVentaRepository;
-        private readonly IRepository<Venta> _ventaRepository;
-        private readonly IRepository<Inventario> _inventarioRepository;
+        private readonly ICrudRepository<LineaDeVenta> _lineaDeVentaRepository;
+        private readonly ICrudRepository<Venta> _ventaRepository;
+        private readonly ICrudRepository<Inventario> _inventarioRepository;
 
         public LineaDeVentaService(
-            IRepository<LineaDeVenta> lineaDeVentaRepository,
+            ICrudRepository<LineaDeVenta> lineaDeVentaRepository,
             IMapper mapper,
-            IRepository<Venta> ventaRepository,
-            IRepository<Inventario> inventarioRepository) : base(lineaDeVentaRepository, mapper)
+            ICrudRepository<Venta> ventaRepository,
+            ICrudRepository<Inventario> inventarioRepository) : base(lineaDeVentaRepository, mapper)
         {
             _lineaDeVentaRepository = lineaDeVentaRepository ?? throw new ArgumentNullException(nameof(lineaDeVentaRepository));
             _ventaRepository = ventaRepository;
@@ -48,17 +48,11 @@ namespace Application.Services
 
         public async Task<VentaDTO> QuitarLineaDeVenta(int idVenta, int idLineaDeVenta)
         {
-            var venta = await _ventaRepository.GetByIdAsync(idVenta);
-
-            if (venta == null)
-            {
-                throw new InvalidOperationException("Venta con ID {ventaId} no encontrado.");
-            }
-
+            var venta = await _ventaRepository.GetByIdAsync(idVenta) ?? throw new InvalidOperationException("Venta con ID {ventaId} no encontrado.");
             venta.QuitarLineaDeVenta(idLineaDeVenta);
 
-            await _lineaDeVentaRepository.RemoveAsync(idLineaDeVenta);
             await _ventaRepository.UpdateAsync(venta);
+            await _lineaDeVentaRepository.RemoveAsync(idLineaDeVenta);
 
             VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(venta);
 

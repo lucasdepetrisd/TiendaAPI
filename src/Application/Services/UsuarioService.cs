@@ -6,7 +6,7 @@ using Application.Contracts;
 
 namespace Application.Services
 {
-    public class UsuarioService : BaseService<Usuario, CreateUsuarioDTO, UsuarioDTO>, IUsuarioService
+    public class UsuarioService : CrudService<Usuario, CreateUsuarioDTO, UsuarioDTO>, IUsuarioService
     {
         public UsuarioService(IUsuarioRepository usuarioRepository, IMapper mapper) : base(usuarioRepository, mapper)
         {

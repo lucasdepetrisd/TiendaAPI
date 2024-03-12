@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class MarcaService : BaseService<Marca, CreateMarcaDTO, MarcaDTO>, IMarcaService
+    public class MarcaService : CrudService<Marca, CreateMarcaDTO, MarcaDTO>, IMarcaService
     {
-        public MarcaService(IRepository<Marca> marcaRepository, IMapper mapper) : base(marcaRepository, mapper)
+        public MarcaService(ICrudRepository<Marca> marcaRepository, IMapper mapper) : base(marcaRepository, mapper)
         {
         }
     }

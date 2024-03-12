@@ -1,20 +1,14 @@
-﻿using AutoMapper;
+﻿using Application.Contracts;
 using Application.DTOs;
+using AutoMapper;
 using Domain.Models;
 using Domain.Repositories;
-using Application.Contracts;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class ColorService : BaseService<Color, CreateColorDTO, ColorDTO>, IColorService
+    public class ColorService : CrudService<Color, CreateColorDTO, ColorDTO>, IColorService
     {
-        public ColorService(IRepository<Color> colorRepository, IMapper mapper) : base(colorRepository, mapper)
+        public ColorService(ICrudRepository<Color> colorRepository, IMapper mapper) : base(colorRepository, mapper)
         {
         }
     }

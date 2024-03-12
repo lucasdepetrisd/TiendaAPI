@@ -1,25 +1,18 @@
 ﻿using Application.Contracts;
-using AutoMapper;
 using Application.DTOs;
+using AutoMapper;
 using Domain.Models;
 using Domain.Repositories;
 
 namespace Application.Services
 {
-    public class CondicionTributariaService : BaseService<CondicionTributaria, CondicionTributariaDTO, CondicionTributariaDTO>, ICondicionTributariaService
+    public class CondicionTributariaService : ViewService<CondicionTributaria, CondicionTributariaDTO>, ICondicionTributariaService
     {
-        public CondicionTributariaService(IRepository<CondicionTributaria> condiciontributariaRepository, IMapper mapper) : base(condiciontributariaRepository, mapper)
+        public CondicionTributariaService(
+            IViewRepository<CondicionTributaria> condiciontributariaRepository,
+            IMapper mapper)
+            : base(condiciontributariaRepository, mapper)
         {
-        }
-
-        public override Task<CondicionTributariaDTO> AddAsync(CondicionTributariaDTO requestDTO)
-        {
-            throw new NotSupportedException("Adding CondicionTributaria entities is not supported.");
-        }
-
-        public override Task<bool> RemoveAsync(int id)
-        {
-            throw new NotSupportedException("Adding CondicionTributaria entities is not supported.");
         }
     }
 }

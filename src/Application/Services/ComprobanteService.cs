@@ -1,20 +1,14 @@
-﻿using AutoMapper;
+﻿using Application.Contracts;
 using Application.DTOs;
+using AutoMapper;
 using Domain.Models;
 using Domain.Repositories;
-using Application.Contracts;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class ComprobanteService : BaseService<Comprobante, CreateComprobanteDTO, ComprobanteDTO>, IComprobanteService
+    public class ComprobanteService : ViewService<Comprobante, ComprobanteDTO>, IComprobanteService
     {
-        public ComprobanteService(IRepository<Comprobante> comprobanteRepository, IMapper mapper) : base(comprobanteRepository, mapper)
+        public ComprobanteService(ICrudRepository<Comprobante> comprobanteRepository, IMapper mapper) : base(comprobanteRepository, mapper)
         {
         }
     }

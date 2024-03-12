@@ -209,11 +209,11 @@
       <FileName>Contracts\IAuthenticationService.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Application.Contracts.IBaseService&lt;TRequestDTO, TResponseDTO&gt;">
+  <Interface Name="Application.Contracts.ICrudService&lt;TRequestDTO, TResponseDTO&gt;">
     <Position X="33.5" Y="9" Width="3.25" />
     <TypeIdentifier>
       <HashCode>AAEAAAAAAAAAAAAAAAgAAAEAAAAAAAgAAAAAAAAAIAA=</HashCode>
-      <FileName>Contracts\IBaseService.cs</FileName>
+      <FileName>Contracts\ICrudService.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Application.Contracts.IVentaService">

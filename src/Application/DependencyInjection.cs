@@ -1,6 +1,7 @@
 ﻿using Application.Contracts;
 using Application.Profiles;
 using Application.Services;
+using Application.ServicioExternoAfip;
 using AutoMapper;
 using FluentValidation;
 using Infraestructure;
@@ -30,6 +31,7 @@ public static class DependencyInjection
             DecidirApiSection.GetSection("paymentEndpoint"));
 
         Services.AddHttpClient<IAutorizacionTarjetaService, AutorizacionTarjetaService>();
+        Services.AddScoped<ILoginService, LoginServiceClient>();
 
         Services.AddScoped<IAutorizacionTarjetaService, AutorizacionTarjetaService>();
         Services.AddScoped<IAutenticacionUsuarioService, AutenticacionUsuarioService>();

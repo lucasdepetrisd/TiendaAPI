@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace Application.Services
 {
-    public class TipoTalleService : BaseService<TipoTalle, CreateTipoTalleDTO, TipoTalleDTO>, ITipoTalleService
+    public class TipoTalleService : CrudService<TipoTalle, CreateTipoTalleDTO, TipoTalleDTO>, ITipoTalleService
     {
-        public TipoTalleService(IRepository<TipoTalle> tipotalleRepository, IMapper mapper) : base(tipotalleRepository, mapper)
+        public TipoTalleService(ICrudRepository<TipoTalle> tipotalleRepository, IMapper mapper) : base(tipotalleRepository, mapper)
         {
         }
     }

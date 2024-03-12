@@ -9,11 +9,11 @@ namespace Application.Services
     public class AutenticacionUsuarioService : IAutenticacionUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository;
-        private readonly IRepository<Sesion> _sesionRepository;
-        private readonly IRepository<PuntoDeVenta> _puntoDeVentaRepository;
+        private readonly ICrudRepository<Sesion> _sesionRepository;
+        private readonly ICrudRepository<PuntoDeVenta> _puntoDeVentaRepository;
         private readonly IMapper _mapper;
 
-        public AutenticacionUsuarioService(IUsuarioRepository usuarioRepository, IRepository<Sesion> sesionRepository, IRepository<PuntoDeVenta> puntoDeVentaRepository, IMapper mapper)
+        public AutenticacionUsuarioService(IUsuarioRepository usuarioRepository, ICrudRepository<Sesion> sesionRepository, ICrudRepository<PuntoDeVenta> puntoDeVentaRepository, IMapper mapper)
         {
             _usuarioRepository = usuarioRepository;
             _sesionRepository = sesionRepository;
