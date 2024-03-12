@@ -1,10 +1,12 @@
 ﻿using Domain.Data;
 using Domain.Models;
+using Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories
 {
-    internal class TiendaRepository : BaseRepository<Tienda>
+    internal class TiendaRepository : ViewRepository<Tienda>, ITiendaRepository
     {
         public TiendaRepository(ITiendaContext context)
             : base(context)
@@ -14,14 +16,14 @@ namespace Infraestructure.Repositories
         protected override Expression<Func<Tienda, object>>[] NavigationPropertiesToLoad
         => [t => t.Sucursales, t => t.CondicionTributaria];
 
-        public override Task AddAsync(Tienda entity)
+        public async Task<Tienda?> GetFirstOrDefault()
         {
-            throw new NotSupportedException("AddAsync method is not supported in TiendaRepository.");
-        }
+            var query = _tiendaContext.Tienda.AsQueryable();
 
-        public override Task RemoveAsync(int id)
-        {
-            throw new NotSupportedException("RemoveAsync method is not supported in TiendaRepository.");
+            foreach (var property in NavigationPropertiesToLoad)
+                query = query.Include(property);
+
+            return await query.FirstOrDefaultAsync();
         }
     }
 }
