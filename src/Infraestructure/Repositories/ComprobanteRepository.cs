@@ -3,7 +3,7 @@ using Domain.Models;
 
 namespace Infraestructure.Repositories
 {
-    internal class ComprobanteRepository : BaseRepository<Comprobante>
+    internal class ComprobanteRepository : CrudRepository<Comprobante>
     {
         public ComprobanteRepository(ITiendaContext context)
             : base(context)

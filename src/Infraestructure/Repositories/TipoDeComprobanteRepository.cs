@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories
 {
-    internal class TipoDeComprobanteRepository : BaseRepository<TipoDeComprobante>
+    internal class TipoDeComprobanteRepository : CrudRepository<TipoDeComprobante>
     {
         public TipoDeComprobanteRepository(ITiendaContext context)
             : base(context)

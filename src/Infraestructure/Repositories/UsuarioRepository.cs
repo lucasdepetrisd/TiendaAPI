@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories
 {
-    internal class UsuarioRepository : BaseRepository<Usuario>, IUsuarioRepository
+    internal class UsuarioRepository : CrudRepository<Usuario>, IUsuarioRepository
     {
         public UsuarioRepository(ITiendaContext context)
             : base(context)

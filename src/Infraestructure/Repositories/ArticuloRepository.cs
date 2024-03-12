@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories
 {
-    internal class ArticuloRepository : BaseRepository<Articulo>, IArticuloRepository
+    internal class ArticuloRepository : CrudRepository<Articulo>, IArticuloRepository
     {
         public ArticuloRepository(ITiendaContext context)
             : base(context)

@@ -3,7 +3,7 @@ using Domain.Models;
 
 namespace Infraestructure.Repositories
 {
-    internal class PagoRepository : BaseRepository<Pago>
+    internal class PagoRepository : CrudRepository<Pago>
     {
         public PagoRepository(ITiendaContext context)
             : base(context)

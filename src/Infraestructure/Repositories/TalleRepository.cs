@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories
 {
-    internal class TalleRepository : BaseRepository<Talle>
+    internal class TalleRepository : CrudRepository<Talle>
     {
         public TalleRepository(ITiendaContext context)
             : base(context)

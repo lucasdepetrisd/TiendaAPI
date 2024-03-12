@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories
 {
-    internal class InventarioRepository : BaseRepository<Inventario>
+    internal class InventarioRepository : CrudRepository<Inventario>
     {
         public InventarioRepository(ITiendaContext context)
             : base(context)
@@ -12,8 +12,8 @@ namespace Infraestructure.Repositories
         }
 
         protected override Expression<Func<Inventario, object>>[] NavigationPropertiesToLoad
-            => new Expression<Func<Inventario, object>>[]
-        {
+            =>
+        [
             a => a.Articulo,
             a => a.Articulo.Marca!,
             a => a.Articulo.TipoTalle!,
@@ -21,6 +21,6 @@ namespace Infraestructure.Repositories
             a => a.Sucursal,
             a => a.Color!,
             a => a.Talle!
-        };
+        ];
     }
 }

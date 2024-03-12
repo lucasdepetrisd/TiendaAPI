@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories
 {
-    internal class MarcaRepository : BaseRepository<Marca>
+    internal class MarcaRepository : CrudRepository<Marca>
     {
         public MarcaRepository(ITiendaContext context)
             : base(context)

@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories
 {
-    internal class SesionRepository : BaseRepository<Sesion>
+    internal class SesionRepository : CrudRepository<Sesion>
     {
         public SesionRepository(ITiendaContext context)
             : base(context)

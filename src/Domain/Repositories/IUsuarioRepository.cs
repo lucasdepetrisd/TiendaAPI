@@ -2,7 +2,7 @@
 
 namespace Domain.Repositories
 {
-    public interface IUsuarioRepository : IRepository<Usuario>
+    public interface IUsuarioRepository : ICrudRepository<Usuario>
     {
         Task<Usuario?> GetByUsernameAsync(string nombreUsuario);
     }

@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories
 {
-    internal class SucursalRepository : BaseRepository<Sucursal>
+    internal class SucursalRepository : ViewRepository<Sucursal>
     {
         public SucursalRepository(ITiendaContext context)
             : base(context)

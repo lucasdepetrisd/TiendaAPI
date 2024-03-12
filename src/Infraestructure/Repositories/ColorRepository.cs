@@ -3,7 +3,7 @@ using Domain.Models;
 
 namespace Infraestructure.Repositories
 {
-    internal class ColorRepository : BaseRepository<Color>
+    internal class ColorRepository : CrudRepository<Color>
     {
         public ColorRepository(ITiendaContext context)
             : base(context)

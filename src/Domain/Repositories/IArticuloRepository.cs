@@ -2,7 +2,7 @@
 
 namespace Domain.Repositories
 {
-    public interface IArticuloRepository : IRepository<Articulo>
+    public interface IArticuloRepository : ICrudRepository<Articulo>
     {
         Task<Articulo?> GetByCodigoAsync(string codigo);
     }

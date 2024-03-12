@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories
 {
-    internal class PuntoDeVentaRepository : BaseRepository<PuntoDeVenta>
+    internal class PuntoDeVentaRepository : CrudRepository<PuntoDeVenta>
     {
         public PuntoDeVentaRepository(ITiendaContext context)
             : base(context)
