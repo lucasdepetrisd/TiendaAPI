@@ -96,7 +96,7 @@ public partial class TiendaContext : DbContext, ITiendaContext
         modelBuilder.Entity<TipoDeComprobante>(tipCompConfig =>
         {
             tipCompConfig.HasOne(t => t.CondicionTributariaEmisor)
-                .WithMany(c => c.TiposDeComprobantesEmisor)
+                .WithMany()
                 .HasForeignKey(t => t.IdCondicionTributariaEmisor)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
@@ -105,7 +105,7 @@ public partial class TiendaContext : DbContext, ITiendaContext
                 .HasConversion<int>();
 
             tipCompConfig.HasOne(t => t.CondicionTributariaReceptor)
-                .WithMany(c => c.TiposDeComprobantesReceptor)
+                .WithMany()
                 .HasForeignKey(t => t.IdCondicionTributariaReceptor)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 

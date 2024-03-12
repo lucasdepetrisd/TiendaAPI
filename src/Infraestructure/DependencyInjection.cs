@@ -26,29 +26,28 @@ public static class DependencyInjection
         }
 
         services.AddScoped<IArticuloRepository, ArticuloRepository>();
-
-        services.AddScoped<IRepository<Categoria>, CategoriaRepository>();
-        services.AddScoped<IRepository<Cliente>, ClienteRepository>();
-        services.AddScoped<IRepository<Color>, ColorRepository>();
-        services.AddScoped<IRepository<Comprobante>, ComprobanteRepository>();
-        services.AddScoped<IRepository<CondicionTributaria>, CondicionTributariaRepository>();
-        services.AddScoped<IRepository<Empleado>, EmpleadoRepository>();
-        services.AddScoped<IRepository<Inventario>, InventarioRepository>();
-        services.AddScoped<IRepository<LineaDeVenta>, LineaDeVentaRepository>();
-        services.AddScoped<IRepository<Marca>, MarcaRepository>();
-        services.AddScoped<IRepository<Pago>, PagoRepository>();
-        services.AddScoped<IRepository<PuntoDeVenta>, PuntoDeVentaRepository>();
-        services.AddScoped<IRepository<Rol>, RolRepository>();
-        services.AddScoped<IRepository<Sesion>, SesionRepository>();
-        services.AddScoped<IRepository<Sucursal>, SucursalRepository>();
-        services.AddScoped<IRepository<Talle>, TalleRepository>();
-        services.AddScoped<IRepository<Tienda>, TiendaRepository>();
-        services.AddScoped<IRepository<TipoDeComprobante>, TipoDeComprobanteRepository>();
-        services.AddScoped<IRepository<TipoTalle>, TipoTalleRepository>();
-
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+        services.AddScoped<ITiendaRepository, TiendaRepository>();
 
-        services.AddScoped<IRepository<Venta>, VentaRepository>();
+        services.AddScoped<IViewRepository<CondicionTributaria>, CondicionTributariaRepository>();
+        services.AddScoped<IViewRepository<Sucursal>, SucursalRepository>();
+
+        services.AddScoped<ICrudRepository<TipoDeComprobante>, TipoDeComprobanteRepository>();
+        services.AddScoped<ICrudRepository<LineaDeVenta>, LineaDeVentaRepository>();
+        services.AddScoped<ICrudRepository<Comprobante>, ComprobanteRepository>();
+        services.AddScoped<ICrudRepository<Categoria>, CategoriaRepository>();
+        services.AddScoped<ICrudRepository<Cliente>, ClienteRepository>();
+        services.AddScoped<ICrudRepository<Color>, ColorRepository>();
+        services.AddScoped<ICrudRepository<Empleado>, EmpleadoRepository>();
+        services.AddScoped<ICrudRepository<Inventario>, InventarioRepository>();
+        services.AddScoped<ICrudRepository<Marca>, MarcaRepository>();
+        services.AddScoped<ICrudRepository<Pago>, PagoRepository>();
+        services.AddScoped<ICrudRepository<PuntoDeVenta>, PuntoDeVentaRepository>();
+        services.AddScoped<ICrudRepository<Rol>, RolRepository>();
+        services.AddScoped<ICrudRepository<Sesion>, SesionRepository>();
+        services.AddScoped<ICrudRepository<Talle>, TalleRepository>();
+        services.AddScoped<ICrudRepository<TipoTalle>, TipoTalleRepository>();
+        services.AddScoped<ICrudRepository<Venta>, VentaRepository>();
 
         return services;
     }
