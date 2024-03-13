@@ -408,10 +408,7 @@ namespace Infraestructure.Migrations.AzureTienda
             modelBuilder.Entity("Domain.Models.Sesion", b =>
                 {
                     b.Property<int>("IdSesion")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdSesion"));
 
                     b.Property<DateTime?>("FechaFin")
                         .HasColumnType("datetime2");
@@ -419,15 +416,13 @@ namespace Infraestructure.Migrations.AzureTienda
                     b.Property<DateTime>("FechaInicio")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("IdPuntoDeVenta")
+                    b.Property<int>("IdPuntoDeVenta")
                         .HasColumnType("int");
 
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
                     b.HasKey("IdSesion");
-
-                    b.HasIndex("IdPuntoDeVenta");
 
                     b.HasIndex("IdUsuario");
 
@@ -767,7 +762,8 @@ namespace Infraestructure.Migrations.AzureTienda
                 {
                     b.HasOne("Domain.Models.PuntoDeVenta", "PuntoDeVenta")
                         .WithMany("Sesiones")
-                        .HasForeignKey("IdPuntoDeVenta");
+                        .HasForeignKey("IdSesion")
+                        .IsRequired();
 
                     b.HasOne("Domain.Models.Usuario", "Usuario")
                         .WithMany("Sesiones")
@@ -814,12 +810,12 @@ namespace Infraestructure.Migrations.AzureTienda
             modelBuilder.Entity("Domain.Models.TipoDeComprobante", b =>
                 {
                     b.HasOne("Domain.Models.CondicionTributaria", "CondicionTributariaEmisor")
-                        .WithMany("TiposDeComprobantesEmisor")
+                        .WithMany()
                         .HasForeignKey("IdCondicionTributariaEmisor")
                         .IsRequired();
 
                     b.HasOne("Domain.Models.CondicionTributaria", "CondicionTributariaReceptor")
-                        .WithMany("TiposDeComprobantesReceptor")
+                        .WithMany()
                         .HasForeignKey("IdCondicionTributariaReceptor")
                         .IsRequired();
 
@@ -899,10 +895,6 @@ namespace Infraestructure.Migrations.AzureTienda
                     b.Navigation("Clientes");
 
                     b.Navigation("Tienda");
-
-                    b.Navigation("TiposDeComprobantesEmisor");
-
-                    b.Navigation("TiposDeComprobantesReceptor");
                 });
 
             modelBuilder.Entity("Domain.Models.Empleado", b =>

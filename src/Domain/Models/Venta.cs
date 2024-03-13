@@ -36,12 +36,6 @@ public partial class Venta
 
     private Venta() { }
 
-    //public Venta(int usuarioId, int puntoDeVentaId)
-    //{
-    //    IdUsuario = usuarioId;
-    //    IdPuntoVenta = puntoDeVentaId;
-    //}
-
     public Venta(Usuario usuario, PuntoDeVenta puntoDeVenta, Cliente cliente, CondicionTributaria condicionEmisor)
     {
         Usuario = usuario;
@@ -50,7 +44,23 @@ public partial class Venta
         TipoDeComprobante = new TipoDeComprobante(condicionEmisor, cliente.CondicionTributaria);
     }
 
+    private void AccionSiVentaEsPendiente(Action action, string actionType)
+    {
+        if (Estado != "Pendiente")
+        {
+            throw new InvalidOperationException($"La venta solo se puede {actionType} si esta en estado \"Pendiente\". Estado actual: \"{Estado}\"");
+        }
+
+        action();
+    }
+
+    // Aquí pruebo el uso de Higher Order Functions. Función de ejemplo:
     public void Cancelar()
+    {
+        AccionSiVentaEsPendiente(() => Estado = "Cancelada", nameof(Cancelar));
+    }
+
+    /*public void Cancelar()
     {
         if (Estado != "Pendiente")
         {
@@ -58,16 +68,11 @@ public partial class Venta
         }
 
         Estado = "Cancelada";
-    }
+    }*/
 
     public void Finalizar()
     {
-        if (Estado != "Pendiente")
-        {
-            throw new InvalidOperationException("La venta solo se puede finalizar si esta en estado Pendiente.");
-        }
-
-        Estado = "Finalizada";
+        AccionSiVentaEsPendiente(() => Estado = "Finalizar", nameof(Finalizar));
     }
 
     public LineaDeVenta AgregarLineaDeVenta(int cantidad, Inventario inventario)
@@ -78,31 +83,39 @@ public partial class Venta
         }
 
         LineaDeVenta lineaDeVenta = new LineaDeVenta(cantidad, inventario, this);
-
         lineaDeVenta.CalcularSubtotal();
 
-        LineasDeVentas.Add(lineaDeVenta);
+        AccionSiVentaEsPendiente(() =>
+        {
+            LineasDeVentas.Add(lineaDeVenta);
+
+        }, nameof(AgregarLineaDeVenta));
 
         return lineaDeVenta;
     }
 
     public void QuitarLineaDeVenta(int idLineaDeVenta)
     {
-        var lineaDeVenta = LineasDeVentas.FirstOrDefault(l => l.IdLineaDeVenta == idLineaDeVenta);
+        AccionSiVentaEsPendiente(() =>
+        {
+            var lineaDeVenta = LineasDeVentas.FirstOrDefault(l => l.IdLineaDeVenta == idLineaDeVenta);
 
-        if (lineaDeVenta != null)
-        {
-            LineasDeVentas.Remove(lineaDeVenta);
-        }
-        else
-        {
-            throw new InvalidOperationException("La línea de venta especificada no pertenece a esta venta.");
-        }
+            if (lineaDeVenta != null)
+            {
+                LineasDeVentas.Remove(lineaDeVenta);
+            }
+            else
+            {
+                throw new InvalidOperationException("La línea de venta indicada no pertenece a esta venta.");
+            }
+
+        }, nameof(Finalizar));
     }
 
     public decimal CalcularTotal()
     {
-        decimal monto = 0;
+        decimal monto;
+        monto = 0;
 
         foreach (LineaDeVenta lineaDeVenta in LineasDeVentas)
         {
@@ -114,8 +127,12 @@ public partial class Venta
 
     public void ModificarCliente(Cliente cliente, CondicionTributaria condicionEmisor)
     {
-        Cliente = cliente;
+        AccionSiVentaEsPendiente(() =>
+        {
+            Cliente = cliente;
 
-        TipoDeComprobante = new TipoDeComprobante(condicionEmisor, cliente.CondicionTributaria);
+            TipoDeComprobante = new TipoDeComprobante(condicionEmisor, cliente.CondicionTributaria);
+
+        }, "Modificar");
     }
 }

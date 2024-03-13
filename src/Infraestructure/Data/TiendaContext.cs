@@ -149,6 +149,20 @@ public partial class TiendaContext : DbContext, ITiendaContext
                 .HasConversion<int>();
         });
 
+        modelBuilder.Entity<Usuario>(usuario =>
+        {
+            usuario
+                .HasIndex(u => u.IdEmpleado)
+                .IsUnique();
+        });
+
+        modelBuilder.Entity<Sesion>(sesion =>
+        {
+            sesion.HasOne(d => d.PuntoDeVenta).WithMany(p => p.Sesiones)
+                .HasForeignKey(d => d.IdSesion)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        });
+
         // Define a list of entity types
         var entityVenta = new List<Type>
         {

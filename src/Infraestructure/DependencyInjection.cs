@@ -1,8 +1,11 @@
 ﻿using Domain.Data;
 using Domain.Models;
 using Domain.Repositories;
+using Domain.Repositories.ViewRepositories;
 using Infraestructure.Data;
 using Infraestructure.Repositories;
+using Infraestructure.Repositories.CrudRepositories;
+using Infraestructure.Repositories.ViewRepositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -1,0 +1,15 @@
+﻿using Application.Contracts.CrudServices;
+using Application.DTOs;
+using AutoMapper;
+using Domain.Models;
+using Domain.Repositories;
+
+namespace Application.Services.CrudServices
+{
+    public class ColorService : CrudService<Color, CreateColorDTO, ColorDTO>, IColorService
+    {
+        public ColorService(ICrudRepository<Color> colorRepository, IMapper mapper) : base(colorRepository, mapper)
+        {
+        }
+    }
+}
