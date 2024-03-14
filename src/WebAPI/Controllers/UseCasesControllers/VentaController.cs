@@ -1,5 +1,6 @@
 using Application.Contracts.UseCasesServices;
 using Application.DTOs;
+using Application.DTOs.Ventas;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
@@ -204,9 +205,16 @@ namespace WebAPI.Controllers.UseCasesControllers
 
             try
             {
-                await _ventaService.FinalizarVenta(ventaId, request.EsTarjeta, request.DatosTarjeta);
+                var respuesta = await _ventaService.FinalizarVenta(ventaId, request.EsTarjeta, request.DatosTarjeta);
 
-                return Ok($"Venta con ID {ventaId} finalizada correctamente.");
+                if (respuesta != null)
+                {
+                    return Ok($"Venta con ID {ventaId} finalizada correctamente.");
+                }
+                else
+                {
+                    return BadRequest("La venta no fue aprobada.");
+                }
             }
             catch (DbException ex)
             {

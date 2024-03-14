@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Application.DTOs;
-using Domain.Models;
 using Domain.Repositories;
 using MediatR;
 using System;
@@ -9,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Contracts.CrudServices;
+using Application.DTOs.Admin.Articulo;
+using Domain.Models.Articulo;
 
 namespace Application.Services.CrudServices
 {

@@ -1,5 +1,5 @@
 using Application.Contracts.ViewServices;
-using Application.DTOs;
+using Application.DTOs.Ventas;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers.ViewControllers

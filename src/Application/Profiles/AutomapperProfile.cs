@@ -1,6 +1,10 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.Admin;
+using Application.DTOs.Admin.Articulo;
+using Application.DTOs.Ventas;
 using AutoMapper;
-using Domain.Models;
+using Domain.Models.Admin;
+using Domain.Models.Articulo;
+using Domain.Models.Ventas;
 
 namespace Application.Profiles
 {
@@ -93,6 +97,7 @@ namespace Application.Profiles
             CreateMap<TipoDeComprobante, ViewTipoDeComprobanteDTO>().ReverseMap();
 
             CreateMap<Comprobante, ComprobanteDTO>().ReverseMap();
+            CreateMap<Comprobante, ViewComprobanteDTO>().ReverseMap();
         }
     }
 }

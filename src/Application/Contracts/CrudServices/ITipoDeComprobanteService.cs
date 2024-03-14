@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.Ventas;
 
 namespace Application.Contracts.CrudServices
 {

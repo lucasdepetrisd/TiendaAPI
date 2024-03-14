@@ -1,5 +1,5 @@
 ﻿using Application.Contracts.UseCasesServices;
-using Application.DTOs;
+using Application.DTOs.Admin.Articulo;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using WebAPI.Controllers.CrudControllers;

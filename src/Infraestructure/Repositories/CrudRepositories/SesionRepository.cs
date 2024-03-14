@@ -1,5 +1,5 @@
 ﻿using Domain.Data;
-using Domain.Models;
+using Domain.Models.Admin;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 

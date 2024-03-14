@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.Admin.Articulo;
 
 namespace Application.Contracts.CrudServices
 {

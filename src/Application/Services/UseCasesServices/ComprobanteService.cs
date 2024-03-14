@@ -1,8 +1,8 @@
 ﻿using Application.Contracts.ViewServices;
-using Application.DTOs;
+using Application.DTOs.Ventas;
 using Application.Services.ViewServices;
 using AutoMapper;
-using Domain.Models;
+using Domain.Models.Ventas;
 using Domain.Repositories;
 
 namespace Application.Services.UseCasesServices

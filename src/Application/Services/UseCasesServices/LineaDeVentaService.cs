@@ -1,8 +1,9 @@
 ﻿using Application.Contracts.UseCasesServices;
-using Application.DTOs;
+using Application.DTOs.Ventas;
 using Application.Services.CrudServices;
 using AutoMapper;
-using Domain.Models;
+using Domain.Models.Articulo;
+using Domain.Models.Ventas;
 using Domain.Repositories;
 
 namespace Application.Services.UseCasesServices

@@ -1,7 +1,7 @@
 ﻿using Application.Contracts.CrudServices;
-using Application.DTOs;
+using Application.DTOs.Admin;
 using AutoMapper;
-using Domain.Models;
+using Domain.Models.Admin;
 using Domain.Repositories;
 
 namespace Application.Services.CrudServices

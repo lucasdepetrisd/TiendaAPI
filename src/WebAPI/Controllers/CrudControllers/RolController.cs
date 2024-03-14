@@ -1,5 +1,5 @@
 using Application.Contracts.CrudServices;
-using Application.DTOs;
+using Application.DTOs.Admin;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers.CrudControllers

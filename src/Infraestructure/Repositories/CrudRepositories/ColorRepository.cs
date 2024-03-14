@@ -1,5 +1,5 @@
 ﻿using Domain.Data;
-using Domain.Models;
+using Domain.Models.Articulo;
 
 namespace Infraestructure.Repositories
 {

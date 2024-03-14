@@ -1,5 +1,5 @@
 ﻿using Domain.Data;
-using Domain.Models;
+using Domain.Models.Admin;
 using Infraestructure.Repositories.ViewRepositories;
 using System.Linq.Expressions;
 

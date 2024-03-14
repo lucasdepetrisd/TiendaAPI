@@ -1,5 +1,5 @@
 ﻿using Domain.Data;
-using Domain.Models;
+using Domain.Models.Ventas;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -37,6 +37,8 @@ namespace Infraestructure.Repositories.CrudRepositories
                 .Include(v => v.Usuario)
                 .Include(v => v.LineasDeVentas)
                     .ThenInclude(c => c.Inventario)
+                .Include(v => v.Pago)
+                .Include(v => v.Comprobante)
                 .Where(v => v.IdVenta == id);
 
             return await query.SingleOrDefaultAsync();

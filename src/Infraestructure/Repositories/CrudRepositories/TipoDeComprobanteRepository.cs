@@ -1,5 +1,5 @@
 ﻿using Domain.Data;
-using Domain.Models;
+using Domain.Models.Ventas;
 using System.Linq.Expressions;
 
 namespace Infraestructure.Repositories.CrudRepositories

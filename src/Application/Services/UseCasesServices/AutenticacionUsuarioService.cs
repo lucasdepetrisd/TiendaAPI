@@ -1,7 +1,7 @@
 ﻿using Application.Contracts.UseCasesServices;
-using Application.DTOs;
+using Application.DTOs.Admin;
 using AutoMapper;
-using Domain.Models;
+using Domain.Models.Admin;
 using Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
