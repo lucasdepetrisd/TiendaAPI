@@ -21,7 +21,7 @@ public partial class TipoDeComprobante
     {
     }
 
-    public TipoDeComprobante(CondicionTributaria emisor, CondicionTributaria receptor)
+    public TipoDeComprobante(CondicionTributaria emisor, CondicionTributaria? receptor)
     {
         CondicionTributariaEmisor = emisor;
         CondicionTributariaReceptor = receptor;
