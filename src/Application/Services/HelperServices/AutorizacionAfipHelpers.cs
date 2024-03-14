@@ -4,29 +4,57 @@ namespace Application.Services.HelperServices
 {
     internal static class AutorizacionAfipHelpers
     {
-        internal static long ObtenerNroDocumento(string? tipoDocumento, string? numeroDocumento)
+        internal static (TipoDocumento tipo, long nro) ObtenerTipoYNumeroDocumento(string tipoDocumento, string numeroDocumento)
         {
-            long parsedNumeroDocumento;
-            if (!long.TryParse(numeroDocumento, out parsedNumeroDocumento))
+            if (tipoDocumento == null)
             {
-                throw new ArgumentException("Invalid numeroDocumento");
+                throw new ArgumentNullException(nameof(tipoDocumento));
             }
 
-            switch (tipoDocumento?.ToLowerInvariant())
+            long parsedNumeroDocumento = 0;
+
+            switch (tipoDocumento.ToLowerInvariant())
             {
-                case "ConsumidorFinal":
-                    return parsedNumeroDocumento;
+                case "consumidorfinal":
+                    return (TipoDocumento.ConsumidorFinal, 0);
+
                 case "dni":
-                    if (numeroDocumento.Trim().Length != 7 && numeroDocumento.Trim().Length != 8)
-                        throw new ArgumentException("Invalid DNI number");
-                    return parsedNumeroDocumento;
+                    if (!string.IsNullOrEmpty(numeroDocumento))
+                    {
+                        if (!long.TryParse(numeroDocumento, out parsedNumeroDocumento))
+                        {
+                            throw new ArgumentException("Número de Documento inválido");
+                        }
+                        if (numeroDocumento.Length != 7 && numeroDocumento.Length != 8)
+                        {
+                            throw new ArgumentException("Número de DNI inválido.");
+                        }
+                    }
+                    return (TipoDocumento.Dni, parsedNumeroDocumento);
+
                 case "cuit":
                 case "cuil":
-                    if (numeroDocumento.Trim().Length != 11)
-                        throw new ArgumentException("Invalid CUIT/CUIL number");
-                    return parsedNumeroDocumento;
+                    if (!string.IsNullOrEmpty(numeroDocumento))
+                    {
+                        numeroDocumento = numeroDocumento.Replace("-", "");
+                        if (!long.TryParse(numeroDocumento, out parsedNumeroDocumento))
+                        {
+                            throw new ArgumentException("Número de Documento inválido");
+                        }
+                        if (numeroDocumento.Length != 11)
+                        {
+                            throw new ArgumentException("Número de CUIT/CUIL inválido.");
+                        }
+                    }
+                    return (tipoDocumento.ToLowerInvariant() switch
+                    {
+                        "cuit" => TipoDocumento.Cuit,
+                        "cuil" => TipoDocumento.Cuil,
+                        _ => throw new ArgumentException("Tipo de Documento inválido."),
+                    }, parsedNumeroDocumento);
+
                 default:
-                    throw new ArgumentException("Invalid tipoDocumento");
+                    throw new ArgumentException("Tipo de Documento inválido.");
             }
         }
 
@@ -40,23 +68,6 @@ namespace Application.Services.HelperServices
                     return TipoComprobante.FacturaB;
                 default:
                     throw new ArgumentException("Invalid tipo de comprobante");
-            }
-        }
-
-        internal static TipoDocumento ObtenerTipoDocumento(string? tipoDocumento)
-        {
-            switch (tipoDocumento.ToLowerInvariant())
-            {
-                case "cuit":
-                    return TipoDocumento.Cuit;
-                case "cuil":
-                    return TipoDocumento.Cuil;
-                case "dni":
-                    return TipoDocumento.Dni;
-                case "consumidorfinal":
-                    return TipoDocumento.ConsumidorFinal;
-                default:
-                    throw new ArgumentException("Invalid tipoDocumento");
             }
         }
     }

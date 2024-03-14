@@ -2,6 +2,7 @@
 using Application.DTOs;
 using Application.Services.HelperServices;
 using Application.ServicioExternoAfip;
+using Domain.Models.Admin;
 using Domain.Models.Ventas;
 using Domain.Repositories;
 using Microsoft.Extensions.Options;
@@ -74,8 +75,12 @@ namespace Application.Services.ExternalServices
             {
                 TipoComprobante.FacturaA => ultimoNroFacA + 1,
                 TipoComprobante.FacturaB => ultimoNroFacB + 1,
-                _ => throw new InvalidOperationException("Invalid tipoComprobante")
+                _ => throw new InvalidOperationException("Tipo de Comprobante inválido")
             };
+
+            Cliente cliente = venta.Cliente;
+
+            var (tipoDocumento, nroDocumento) = AutorizacionAfipHelpers.ObtenerTipoYNumeroDocumento(cliente.TipoDocumento, cliente.NroDocumento);
             
             var solicitud = new SolicitudAutorizacion
             {
@@ -85,8 +90,8 @@ namespace Application.Services.ExternalServices
                 ImporteIva = (double)venta.MontoIVA,
                 Numero = nroComprobante,
 
-                NumeroDocumento = AutorizacionAfipHelpers.ObtenerNroDocumento(venta.Cliente?.TipoDocumento, venta.Cliente?.NroDocumento),
-                TipoDocumento = AutorizacionAfipHelpers.ObtenerTipoDocumento(venta.Cliente?.TipoDocumento),
+                NumeroDocumento = nroDocumento,
+                TipoDocumento = tipoDocumento,
                 TipoComprobante = AutorizacionAfipHelpers.ObtenerTipoComprobante(venta.TipoDeComprobante?.Nombre)
             };
 
