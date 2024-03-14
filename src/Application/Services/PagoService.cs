@@ -54,14 +54,13 @@ namespace Application.Services
 
             decimal totalNeto = 0;
             decimal totalIVA = 0;
-            long nroComprobante = 0;
             TipoComprobante tipoComprobante = ObtenerTipoComprobante(venta.TipoDeComprobante?.Nombre);
 
-            nroComprobante = tipoComprobante switch
+            long nroComprobante = tipoComprobante switch
             {
                 TipoComprobante.FacturaA => ultimoNroFacA + 1,
                 TipoComprobante.FacturaB => ultimoNroFacB + 1,
-                _ => throw new InvalidOperationException("Invalid tipoComprobante")
+                _ => throw new InvalidOperationException("TipoComprobante inválido")
             };
 
             foreach (var lineaDeVenta in venta.LineasDeVentas)
@@ -120,7 +119,7 @@ namespace Application.Services
                 }
                 else
                 {
-                    throw new InvalidOperationException("Failed to obtain AFIP token.");
+                    throw new InvalidOperationException("Fallo al obtener el token de AFIP.");
                 }
             }
         }
@@ -130,7 +129,7 @@ namespace Application.Services
             long parsedNumeroDocumento;
             if (!long.TryParse(numeroDocumento, out parsedNumeroDocumento))
             {
-                throw new ArgumentException("Invalid numeroDocumento");
+                throw new ArgumentException("Número de Documento inválido");
             }
 
             switch (tipoDocumento?.ToLowerInvariant())
@@ -139,15 +138,15 @@ namespace Application.Services
                     return parsedNumeroDocumento;
                 case "dni":
                     if (numeroDocumento.Trim().Length != 7 && numeroDocumento.Trim().Length != 8)
-                        throw new ArgumentException("Invalid DNI number");
+                        throw new ArgumentException("Número de DNI inválido");
                     return parsedNumeroDocumento;
                 case "cuit":
                 case "cuil":
                     if (numeroDocumento.Trim().Length != 11)
-                        throw new ArgumentException("Invalid CUIT/CUIL number");
+                        throw new ArgumentException("Número de CUIT/CUIL inválido");
                     return parsedNumeroDocumento;
                 default:
-                    throw new ArgumentException("Invalid tipoDocumento");
+                    throw new ArgumentException("Tipo de Documento inválido");
             }
         }
 
@@ -164,7 +163,7 @@ namespace Application.Services
                 case "consumidorfinal":
                     return ServicioExternoAfip.TipoDocumento.ConsumidorFinal;
                 default:
-                    throw new ArgumentException("Invalid tipoDocumento");
+                    throw new ArgumentException("Tipo de Documento inválido");
             }
         }
 
@@ -177,7 +176,7 @@ namespace Application.Services
                 case "factura b":
                     return TipoComprobante.FacturaB;
                 default:
-                    throw new ArgumentException("Invalid tipo de comprobante");
+                    throw new ArgumentException("Tipo de comprobante inválido");
             }
         }
     }

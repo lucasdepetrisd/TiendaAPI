@@ -29,14 +29,15 @@ namespace Application.Services
             IPagoService pagoService)
             : base(ventaRepository, mapper)
         {
-            _ventaRepository = ventaRepository ?? throw new ArgumentNullException(nameof(ventaRepository));
-            _usuarioRepository = usuarioRepository;
-            _puntoDeVentaRepository = puntoDeVentaRepository;
+            _pagoService = pagoService ?? throw new ArgumentNullException(nameof(pagoService));
 
-            _pagoService = pagoService;
-            _clienteRepository = clienteRepository;
-            _tiendaRepository = tiendaRepository;
-            _sesionRepository = sesionRepository;
+            _ventaRepository = ventaRepository ?? throw new ArgumentNullException(nameof(ventaRepository));
+            _usuarioRepository = usuarioRepository ?? throw new ArgumentNullException(nameof(usuarioRepository));
+            _puntoDeVentaRepository = puntoDeVentaRepository ?? throw new ArgumentNullException(nameof(puntoDeVentaRepository));
+
+            _clienteRepository = clienteRepository ?? throw new ArgumentNullException(nameof(clienteRepository));
+            _tiendaRepository = tiendaRepository ?? throw new ArgumentNullException(nameof(tiendaRepository));
+            _sesionRepository = sesionRepository ?? throw new ArgumentNullException(nameof(sesionRepository));
         }
 
         public async Task<VentaDTO> IniciarVenta(int sesionId)

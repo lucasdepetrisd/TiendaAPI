@@ -3,6 +3,7 @@ using Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WebAPI.Controllers
 {
@@ -109,7 +110,7 @@ namespace WebAPI.Controllers
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> ModificarCliente(
             [Range(0, int.MaxValue)] int ventaId,
-            [FromBody] int clienteId)
+            int clienteId)
         {
             if (ventaId < 0)
             {
@@ -225,6 +226,7 @@ namespace WebAPI.Controllers
     {
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "SesionId debe ser mayor igual o que cero.")]
+        [NotNull]
         public int SesionId { get; init; }
     }
 

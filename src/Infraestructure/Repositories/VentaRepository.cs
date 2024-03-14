@@ -28,6 +28,9 @@ namespace Infraestructure.Repositories
 
             query = query
                 .Include(v => v.TipoDeComprobante)
+                    .ThenInclude(v => v.CondicionTributariaEmisor)
+                .Include(v => v.TipoDeComprobante)
+                    .ThenInclude(v => v.CondicionTributariaReceptor)
                 .Include(v => v.Cliente)
                     .ThenInclude(c => c.CondicionTributaria)
                 .Include(v => v.PuntoDeVenta)
@@ -41,24 +44,26 @@ namespace Infraestructure.Repositories
 
         public override async Task AddAsync(Venta venta)
         {
-            if (venta.TipoDeComprobante != null)
+            try
             {
-                // Chequeo si existe algun tipo de comprobante con esa misma combinacion Emisor - Receptor
-                var existingTipoDeComprobante = await _tiendaContext.TipoDeComprobante
-                    .FirstOrDefaultAsync(tc =>
-                        tc.IdCondicionTributariaEmisor == venta.TipoDeComprobante.CondicionTributariaEmisor.IdCondicionTributaria &&
-                        tc.IdCondicionTributariaReceptor == venta.TipoDeComprobante.CondicionTributariaReceptor.IdCondicionTributaria);
+                if (venta.TipoDeComprobante != null)
+                {
+                    // Chequeo si existe algun tipo de comprobante con esa misma combinacion Emisor - Receptor
+                    var existingTipoDeComprobante = await _tiendaContext.TipoDeComprobante
+                        .FirstOrDefaultAsync(tc =>
+                            tc.IdCondicionTributariaEmisor == venta.TipoDeComprobante.CondicionTributariaEmisor.IdCondicionTributaria &&
+                            tc.IdCondicionTributariaReceptor == venta.TipoDeComprobante.CondicionTributariaReceptor.IdCondicionTributaria);
 
-                if (existingTipoDeComprobante != null)
-                {
-                    // Si encuentra alguno utiliza ese agregandolo a la venta
-                    venta.TipoDeComprobante = existingTipoDeComprobante;
+                    if (existingTipoDeComprobante != null)
+                    {
+                        // Si encuentra alguno utiliza ese agregandolo a la venta
+                        venta.TipoDeComprobante = existingTipoDeComprobante;
+                    }
                 }
-                /*else
-                {
-                    // Si no encuentra ninguno utiliza esa combinación existente
-                    _tiendaContext.TipoDeComprobante.Add(venta.TipoDeComprobante);
-                }*/
+            }
+            catch (Exception ex)
+            {
+                throw new DbUpdateException("No se pudo identificar el emisor/receptor de la venta.");
             }
 
             _tiendaContext.Set<Venta>().Add(venta);
@@ -67,6 +72,28 @@ namespace Infraestructure.Repositories
 
         public override async Task UpdateAsync(Venta venta)
         {
+            try
+            {
+                if (venta.TipoDeComprobante != null)
+                {
+                    // Chequeo si existe algun tipo de comprobante con esa misma combinacion Emisor - Receptor
+                    var existingTipoDeComprobante = await _tiendaContext.TipoDeComprobante
+                        .FirstOrDefaultAsync(tc =>
+                            tc.IdCondicionTributariaEmisor == venta.TipoDeComprobante.CondicionTributariaEmisor.IdCondicionTributaria &&
+                            tc.IdCondicionTributariaReceptor == venta.TipoDeComprobante.CondicionTributariaReceptor.IdCondicionTributaria);
+
+                    if (existingTipoDeComprobante != null)
+                    {
+                        // Si encuentra alguno utiliza ese agregandolo a la venta
+                        venta.TipoDeComprobante = existingTipoDeComprobante;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new DbUpdateException("No se pudo identificar el emisor/receptor de la venta.");
+            }
+
             _tiendaContext.Set<Venta>().Update(venta);
             await _tiendaContext.SaveChangesAsync();
         }

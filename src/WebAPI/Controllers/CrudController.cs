@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
 
                 if (responseDTO == null)
                 {
-                    return BadRequest($"The entity was not created.");
+                    return BadRequest($"The {typeof(TResponseDTO).Name} was not created.");
                 }
 
                 return Ok(responseDTO);

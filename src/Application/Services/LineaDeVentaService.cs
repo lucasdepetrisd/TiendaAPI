@@ -25,17 +25,8 @@ namespace Application.Services
 
         public async Task<LineaDeVentaDTO> AgregarLineaDeVenta(int ventaId, int cantidad, int inventarioId)
         {
-            var venta = await _ventaRepository.GetByIdAsync(ventaId);
-            var inventario = await _inventarioRepository.GetByIdAsync(inventarioId);
-
-            if (venta == null)
-            {
-                throw new InvalidOperationException($"Venta con ID {ventaId} no encontrado.");
-            }
-            else if (inventario == null)
-            {
-                throw new InvalidOperationException($"Inventario con ID {inventarioId} no encontrado.");
-            }
+            var venta = await _ventaRepository.GetByIdAsync(ventaId) ?? throw new InvalidOperationException($"Venta con ID {ventaId} no encontrado.");
+            var inventario = await _inventarioRepository.GetByIdAsync(inventarioId) ?? throw new InvalidOperationException($"Inventario con ID {inventarioId} no encontrado.");
 
             var lineaDeVenta = venta.AgregarLineaDeVenta(cantidad, inventario);
 
@@ -46,13 +37,13 @@ namespace Application.Services
             return lineaDeVentaDTO;
         }
 
-        public async Task<VentaDTO> QuitarLineaDeVenta(int idVenta, int idLineaDeVenta)
+        public async Task<VentaDTO> QuitarLineaDeVenta(int ventaId, int lineaDeVentaId)
         {
-            var venta = await _ventaRepository.GetByIdAsync(idVenta) ?? throw new InvalidOperationException("Venta con ID {ventaId} no encontrado.");
-            venta.QuitarLineaDeVenta(idLineaDeVenta);
+            var venta = await _ventaRepository.GetByIdAsync(ventaId) ?? throw new InvalidOperationException($"Venta con ID {ventaId} no encontrado.");
+            venta.QuitarLineaDeVenta(lineaDeVentaId);
 
             await _ventaRepository.UpdateAsync(venta);
-            await _lineaDeVentaRepository.RemoveAsync(idLineaDeVenta);
+            await _lineaDeVentaRepository.RemoveAsync(lineaDeVentaId);
 
             VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(venta);
 
