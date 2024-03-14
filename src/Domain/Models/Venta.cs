@@ -44,36 +44,9 @@ public partial class Venta
         TipoDeComprobante = new TipoDeComprobante(condicionEmisor, cliente.CondicionTributaria);
     }
 
-    private void AccionSiVentaEsPendiente(Action action, string actionType)
-    {
-        if (Estado != "Pendiente")
-        {
-            throw new InvalidOperationException($"La venta solo se puede {actionType} si esta en estado \"Pendiente\". Estado actual: \"{Estado}\"");
-        }
+    public void Cancelar() => AccionSiVentaEsPendiente(() => Estado = "Cancelada", nameof(Cancelar));
 
-        action();
-    }
-
-    // Aquí pruebo el uso de Higher Order Functions. Función de ejemplo:
-    public void Cancelar()
-    {
-        AccionSiVentaEsPendiente(() => Estado = "Cancelada", nameof(Cancelar));
-    }
-
-    /*public void Cancelar()
-    {
-        if (Estado != "Pendiente")
-        {
-            throw new InvalidOperationException("La venta solo se puede cancelar si esta en estado Pendiente.");
-        }
-
-        Estado = "Cancelada";
-    }*/
-
-    public void Finalizar()
-    {
-        AccionSiVentaEsPendiente(() => Estado = "Finalizar", nameof(Finalizar));
-    }
+    public void Finalizar() => AccionSiVentaEsPendiente(() => Estado = "Finalizada", nameof(Finalizar));
 
     public LineaDeVenta AgregarLineaDeVenta(int cantidad, Inventario inventario)
     {
@@ -134,5 +107,16 @@ public partial class Venta
             TipoDeComprobante = new TipoDeComprobante(condicionEmisor, cliente.CondicionTributaria);
 
         }, "Modificar");
+    }
+
+    // Función lambda
+    private void AccionSiVentaEsPendiente(Action action, string actionType)
+    {
+        if (Estado != "Pendiente")
+        {
+            throw new InvalidOperationException($"La venta solo se puede {actionType} si esta en estado \"Pendiente\". Estado actual: \"{Estado}\"");
+        }
+
+        action();
     }
 }

@@ -47,7 +47,7 @@ namespace WebAPI.Controllers.UseCasesControllers
         [HttpPost("{ventaId}/lineadeventa/agregar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> AgregarLineaDeVenta(
-            [Range(0, int.MaxValue)] int ventaId,
+            int ventaId,
             [FromBody] AgregarLineaDeVentaRequest request)
         {
             if (ventaId < 0)
@@ -79,8 +79,8 @@ namespace WebAPI.Controllers.UseCasesControllers
         [HttpDelete("{ventaId}/lineadeventa/quitar/{lineaDeVentaId}")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> QuitarLineaDeVenta(
-            [Required][Range(0, int.MaxValue)] int ventaId,
-            [Required][Range(0, int.MaxValue)] int lineaDeVentaId)
+            int ventaId,
+            int lineaDeVentaId)
         {
             if (ventaId < 0 || lineaDeVentaId < 0)
             {
@@ -110,7 +110,7 @@ namespace WebAPI.Controllers.UseCasesControllers
         [HttpPut("{ventaId}/cliente/modificar")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> ModificarCliente(
-            [Range(0, int.MaxValue)] int ventaId,
+            int ventaId,
             int clienteId)
         {
             if (ventaId < 0)
@@ -144,8 +144,13 @@ namespace WebAPI.Controllers.UseCasesControllers
         [HttpPost("actualizarmonto/{ventaId}")]
         [ApiExplorerSettings(GroupName = "UseCases")]
         public async Task<IActionResult> ActualizarMonto(
-           [FromQuery][Required][Range(0, int.MaxValue)] int ventaId)
+           [FromQuery] int ventaId)
         {
+            if (ventaId < 0)
+            {
+                return BadRequest("VentaId debe ser mayor o igual a 0.");
+            }
+
             try
             {
                 var ventaDTO = await _ventaService.ActualizarMonto(ventaId);
