@@ -60,16 +60,6 @@ public partial class Venta
         AccionSiVentaEsPendiente(() => Estado = "Cancelada", nameof(Cancelar));
     }
 
-    /*public void Cancelar()
-    {
-        if (Estado != "Pendiente")
-        {
-            throw new InvalidOperationException("La venta solo se puede cancelar si esta en estado Pendiente.");
-        }
-
-        Estado = "Cancelada";
-    }*/
-
     public void Finalizar()
     {
         AccionSiVentaEsPendiente(() => Estado = "Finalizar", nameof(Finalizar));

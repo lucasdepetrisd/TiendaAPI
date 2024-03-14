@@ -10,6 +10,8 @@ public partial class Comprobante
     [Key]
     public int IdComprobante { get; set; }
 
+    public int NroComprobante { get; set; }
+
     public int IdVenta { get; set; }
     [ForeignKey("IdVenta")]
     public virtual Venta Venta { get; set; } = null!;
