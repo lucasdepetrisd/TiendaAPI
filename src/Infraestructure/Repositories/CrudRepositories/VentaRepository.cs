@@ -61,7 +61,7 @@ namespace Infraestructure.Repositories.CrudRepositories
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new DbUpdateException("No se pudo identificar el emisor/receptor de la venta.");
             }

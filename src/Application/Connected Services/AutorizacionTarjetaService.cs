@@ -1,6 +1,7 @@
 ﻿using Application.Contracts.ExternalServices;
 using Application.DTOs;
 using Domain.Models;
+using Domain.Repositories;
 using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
@@ -50,56 +51,45 @@ namespace Application.Services.ExternalServices
             _paymentUri = _paymentEndpoint.Uri;
         }
 
-        public async Task<bool> Autorizar(Venta venta, TarjetaDTO datosTarjeta)
+        public async Task<bool> AutorizarTarjeta(Venta venta, TarjetaDTO datosTarjeta)
         {
-            string token;
-
-            PaymentResponse paymentResponse = null;
-
             try
             {
-                token = await SolicitarTokenPago(datosTarjeta);
+                var token = await SolicitarTokenPago(datosTarjeta);
 
                 if (string.IsNullOrEmpty(token))
                 {
-                    throw new InvalidOperationException("Token null o vacío.");
+                    throw new InvalidOperationException("Error al solicitar el token de pago");
                 }
+
+                var paymentResponse = await ConfirmarPago(venta.CalcularTotal(), token);
+
+                if (!paymentResponse.status.Equals("approved", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    var details = paymentResponse.status_details;
+                    string errorMessage;
+
+                    if (details.error != null && details.error is string error)
+                    {
+                        errorMessage = $"Error al confirmar el pago. Detalles: {error}";
+                    }
+                    else
+                    {
+                        errorMessage = $"Error al confirmar el pago. Detalles: " +
+                               $"Ticket: {details.ticket}, " +
+                               $"Authorization Code: {details.card_authorization_code}, " +
+                               $"Address Validation Code: {details.address_validation_code}";
+                    }
+
+                    throw new InvalidOperationException(errorMessage);
+                }
+
+                return true;
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException($"Error al solicitar el token de pago: {ex.Message}");
+                throw new InvalidOperationException($"Error al autorizar el pago: {ex.Message}");
             }
-
-            try
-            {
-                paymentResponse = await AutorizarTarjeta(venta.CalcularTotal(), token);
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException($"Error al autorizar la tarjeta: {ex.Message}");
-            }
-
-            if (!string.Equals(paymentResponse.status, "approved", StringComparison.OrdinalIgnoreCase))
-            {
-                var details = paymentResponse.status_details;
-                string errorMessage;
-
-                if (details.error != null && details.error is string error)
-                {
-                    errorMessage = $"Error al autorizar la tarjeta. Detalles: {error}";
-                }
-                else
-                {
-                    errorMessage = $"Error al confirmar el pago. Detalles: " +
-                           $"Ticket: {details.ticket}, " +
-                           $"Authorization Code: {details.card_authorization_code}, " +
-                           $"Address Validation Code: {details.address_validation_code}";
-                }
-
-                throw new InvalidOperationException(errorMessage);
-            }
-
-            return true;
         }
 
         private async Task<string> SolicitarTokenPago(TarjetaDTO datosTarjeta)
@@ -164,7 +154,7 @@ namespace Application.Services.ExternalServices
             }
         }
 
-        public async Task<PaymentResponse> AutorizarTarjeta(decimal monto, string token)
+        public async Task<PaymentResponse> ConfirmarPago(decimal monto, string token)
         {
             try
             {

@@ -41,7 +41,6 @@ namespace Application.Profiles
             CreateMap<Tienda, ViewTiendaDTO>().ReverseMap();
 
             CreateMap<Sucursal, SucursalDTO>().ReverseMap();
-            CreateMap<Sucursal, CreateSucursalDTO>().ReverseMap();
             CreateMap<Sucursal, ViewSucursalDTO>().ReverseMap();
 
             CreateMap<CondicionTributaria, CondicionTributariaDTO>()
@@ -87,7 +86,6 @@ namespace Application.Profiles
             CreateMap<LineaDeVenta, ViewLineaDeVentaDTO>().ReverseMap();
 
             CreateMap<Pago, PagoDTO>().ReverseMap();
-            CreateMap<Pago, CreatePagoDTO>().ReverseMap();
             CreateMap<Pago, ViewPagoDTO>().ReverseMap();
 
             CreateMap<TipoDeComprobante, TipoDeComprobanteDTO>().ReverseMap();
@@ -95,7 +93,6 @@ namespace Application.Profiles
             CreateMap<TipoDeComprobante, ViewTipoDeComprobanteDTO>().ReverseMap();
 
             CreateMap<Comprobante, ComprobanteDTO>().ReverseMap();
-            CreateMap<Comprobante, CreateComprobanteDTO>().ReverseMap();
         }
     }
 }

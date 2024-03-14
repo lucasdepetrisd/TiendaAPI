@@ -3,6 +3,7 @@ using Application.DTOs;
 using AutoMapper;
 using Domain.Models;
 using Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Services.UseCasesServices
 {

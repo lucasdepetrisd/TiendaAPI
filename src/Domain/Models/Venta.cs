@@ -14,8 +14,8 @@ public partial class Venta
 
     public string? Observaciones { get; private set; } = "Ninguna";
 
-    public virtual Pago? Pago { get; private set; }
-    public virtual Comprobante? Comprobante { get; private set; }
+    public virtual Pago? Pago { get; set; }
+    public virtual Comprobante? Comprobante { get; set; }
 
     public int? IdCliente { get; private set; }
     [ForeignKey("IdCliente")]

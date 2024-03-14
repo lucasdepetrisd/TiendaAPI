@@ -4,6 +4,6 @@ namespace Application.Contracts.ExternalServices
 {
     public interface IAutorizacionAfipService
     {
-        Task<bool> AutorizarAfip(Venta venta);
+        Task<(bool, long?)> AutorizarAfip(Venta venta);
     }
 }

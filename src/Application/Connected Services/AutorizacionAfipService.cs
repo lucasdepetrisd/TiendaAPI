@@ -46,7 +46,7 @@ namespace Application.Services.ExternalServices
             _tokenExpiration = DateTime.MinValue;
         }
 
-        public async Task<bool> AutorizarAfip(Venta venta)
+        public async Task<(bool, long?)> AutorizarAfip(Venta venta)
         {
             if (venta.CalcularTotal() > _afipLimiteNominal)
             {
@@ -63,10 +63,9 @@ namespace Application.Services.ExternalServices
 
             decimal totalNeto = 0;
             decimal totalIVA = 0;
-            long nroComprobante = 0;
             TipoComprobante tipoComprobante = AutorizacionAfipHelpers.ObtenerTipoComprobante(venta.TipoDeComprobante?.Nombre);
 
-            nroComprobante = tipoComprobante switch
+            long nroComprobante = tipoComprobante switch
             {
                 TipoComprobante.FacturaA => ultimoNroFacA + 1,
                 TipoComprobante.FacturaB => ultimoNroFacB + 1,
@@ -96,11 +95,11 @@ namespace Application.Services.ExternalServices
 
             if (!string.IsNullOrEmpty(result.Error) && result.Estado != EstadoSolicitud.Aprobada)
             {
-                return false;
+                return (false, null);
             }
             else
             {
-                return true;
+                return (true, nroComprobante);
             }
         }
 

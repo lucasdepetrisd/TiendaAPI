@@ -5,6 +5,6 @@ namespace Application.Contracts.ExternalServices
 {
     public interface IAutorizacionTarjetaService
     {
-        Task<bool> Autorizar(Venta venta, TarjetaDTO datosTarjeta);
+        Task<bool> AutorizarTarjeta(Venta venta, TarjetaDTO datosTarjeta);
     }
 }

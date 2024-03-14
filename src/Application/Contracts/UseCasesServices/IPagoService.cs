@@ -6,7 +6,7 @@ namespace Application.Contracts.UseCasesServices
 {
     public interface IPagoService : IViewService<PagoDTO>
     {
-        Task<bool> ProcesarPagoConTarjeta(Venta venta, TarjetaDTO datosTarjeta);
-        Task<bool> ProcesarPagoEnEfectivo(Venta venta);
+        Task<Venta> ProcesarPagoConTarjeta(Venta venta, TarjetaDTO datosTarjeta);
+        Task<Venta> ProcesarPagoEnEfectivo(Venta venta);
     }
 }

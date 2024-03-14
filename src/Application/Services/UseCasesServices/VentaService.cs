@@ -106,19 +106,32 @@ namespace Application.Services.UseCasesServices
         public async Task<VentaDTO?> FinalizarVenta(int ventaId, bool esTarjeta, TarjetaDTO? datosTarjeta)
         {
             var venta = await _ventaRepository.GetByIdAsync(ventaId) ?? throw new InvalidOperationException($"Venta con ID {ventaId} no encontrada.");
-            bool pagoAprobado;
+            Venta ventaPagada;
 
             if (venta.Estado.Equals("finalizada", StringComparison.CurrentCultureIgnoreCase)
                 || venta.Estado.Equals("cancelada", StringComparison.CurrentCultureIgnoreCase))
             {
                 throw new InvalidOperationException($"Venta con ID {ventaId} ya finalizada o cancelada.");
             }
+            
+            // Antes de finalizar reviso que las lineas de ventas tengan inventarios válidos
+            foreach (var lineaDeVenta in venta.LineasDeVentas)
+            {
+                if (lineaDeVenta.Inventario == null)
+                {
+                    throw new InvalidOperationException($"Inventario con ID {lineaDeVenta.IdInventario} no encontrado. No se puede finalizar la venta.");
+                } 
+                else if (lineaDeVenta.Cantidad > lineaDeVenta.Inventario.Cantidad) 
+                {
+                    throw new InvalidOperationException($"Inventario con ID {lineaDeVenta.IdInventario} no posee cantidad suficiente. No se puede finalizar la venta.");
+                }
+            }
 
             if (esTarjeta)
             {
                 if (datosTarjeta != null)
                 {
-                    pagoAprobado = await _pagoService.ProcesarPagoConTarjeta(venta, datosTarjeta);
+                    ventaPagada = await _pagoService.ProcesarPagoConTarjeta(venta, datosTarjeta);
                 }
                 else
                 {
@@ -127,34 +140,25 @@ namespace Application.Services.UseCasesServices
             }
             else
             {
-                pagoAprobado = await _pagoService.ProcesarPagoEnEfectivo(venta);
+                ventaPagada = await _pagoService.ProcesarPagoEnEfectivo(venta);
             }
 
-            if (!pagoAprobado)
+            if (ventaPagada.Pago != null && !ventaPagada.Pago.Estado.Equals("aprobado", StringComparison.CurrentCultureIgnoreCase))
             {
                 return null;
             }
 
-            //Agregar creacion de comprobante
-
-            foreach (var lineaDeVenta in venta.LineasDeVentas)
+            foreach (var lineaDeVenta in ventaPagada.LineasDeVentas)
             {
                 var inventario = lineaDeVenta.Inventario;
-                if (inventario != null)
-                {
-                    inventario.Cantidad -= lineaDeVenta.Cantidad;
-                }
-                else
-                {
-                    throw new InvalidOperationException($"Inventario con ID {lineaDeVenta.IdInventario} no encontrado. No se puede finalizar la venta.");
-                }
+                inventario.Cantidad -= lineaDeVenta.Cantidad;
             }
 
-            venta.Finalizar();
+            ventaPagada.Finalizar();
 
-            await _ventaRepository.UpdateAsync(venta);
+            await _ventaRepository.UpdateAsync(ventaPagada);
 
-            VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(venta);
+            VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(ventaPagada);
 
             return nuevaVentaDTO;
         }

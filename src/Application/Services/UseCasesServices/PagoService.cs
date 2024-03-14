@@ -6,6 +6,7 @@ using Application.ServicioExternoAfip;
 using AutoMapper;
 using Domain.Models;
 using Domain.Repositories;
+using Comprobante = Domain.Models.Comprobante;
 
 namespace Application.Services.UseCasesServices
 {
@@ -18,41 +19,66 @@ namespace Application.Services.UseCasesServices
             ICrudRepository<Pago> pagoRepository,
             IMapper mapper,
             IAutorizacionTarjetaService autorizacionTarjetaService,
-            ILoginService afipAuthService,
             IAutorizacionAfipService autorizacionAfipService) : base(pagoRepository, mapper)
         {
             _autorizacionTarjetaService = autorizacionTarjetaService;
             _autorizacionAfipService = autorizacionAfipService;
         }
 
-        public async Task<bool> ProcesarPagoConTarjeta(Venta venta, TarjetaDTO datosTarjeta)
+        public async Task<Venta> ProcesarPagoConTarjeta(Venta venta, TarjetaDTO datosTarjeta)
         {
-            bool statusTarjeta = await _autorizacionTarjetaService.Autorizar(venta, datosTarjeta);
+            bool statusTarjeta = await _autorizacionTarjetaService.AutorizarTarjeta(venta, datosTarjeta);
             if (statusTarjeta == false)
             {
                 throw new Exception("No se pudo autorizar la tarjeta.");
             }
 
-            bool statusAfip = await _autorizacionAfipService.AutorizarAfip(venta);
+            var (statusAfip, nroCompobante) = await _autorizacionAfipService.AutorizarAfip(venta);
             if (statusAfip == false)
             {
                 throw new Exception("No se pudo autorizar en AFIP.");
-
+            }
+            
+            if (nroCompobante == null)
+            {
+                throw new Exception("No se pudo obtener el último Nro de Comprobante de AFIP.");
             }
 
-            return statusAfip;
+            var comprobante = new Comprobante(nroCompobante.Value, venta);
+
+            var pago = new Pago("Aprobado", venta);
+
+            venta.Pago = pago;
+            venta.Comprobante = comprobante;
+
+            // Save the Pago entity
+
+            return venta;
         }
 
-        public async Task<bool> ProcesarPagoEnEfectivo(Venta venta)
+        public async Task<Venta> ProcesarPagoEnEfectivo(Venta venta)
         {
-            bool statusAfip = await _autorizacionAfipService.AutorizarAfip(venta);
-
+            var (statusAfip, nroCompobante) = await _autorizacionAfipService.AutorizarAfip(venta);
             if (statusAfip == false)
             {
                 throw new Exception("No se pudo autorizar en AFIP.");
             }
 
-            return statusAfip;
+            if (nroCompobante == null)
+            {
+                throw new Exception("No se pudo obtener el último Nro de Comprobante de AFIP.");
+            }
+
+            var comprobante = new Comprobante(nroCompobante.Value, venta);
+
+            var pago = new Pago("Aprobado", venta);
+
+            venta.Pago = pago;
+            venta.Comprobante = comprobante;
+
+            // Save the Pago entity
+
+            return venta;
         }
     }
 }
