@@ -9,6 +9,14 @@ on:
       - Release
   workflow_dispatch:
 
+env:
+  AZURE_WEBAPP_NAME: WebAPI-Tienda
+  AZURE_WEBAPP_PACKAGE_PATH: ./src/publish
+  DOTNET_VERSION: 8.x
+  APP_PROJECT_PATH: ./src/WebAPI/WebAPI.csproj
+  AZURE_WEBAPP_SLOT_NAME: Production
+  AZURE_WEBAPP_JOB_ARTIFACT: .net-app
+
 jobs:
   build:
     runs-on: windows-latest
@@ -17,22 +25,24 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '3.1'
-          include-prerelease: true
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install dependencies
+        run: dotnet restore ${{ env.APP_PROJECT_PATH }}
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build ${{ env.APP_PROJECT_PATH }} --configuration Release --no-restore
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish ${{ env.APP_PROJECT_PATH }} --configuration Release --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          name: ${{ env.AZURE_WEBAPP_JOB_ARTIFACT }}
+          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
   deploy:
     runs-on: windows-latest
@@ -45,13 +55,14 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: .net-app
+          name: ${{ env.AZURE_WEBAPP_JOB_ARTIFACT }}
+          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
       
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'WebAPI-Tienda'
-          slot-name: 'Production'
-          package: .
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          slot-name: ${{ env.AZURE_WEBAPP_SLOT_NAME }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D0EE4EE1E5364EA290224CB7943183EF }}
