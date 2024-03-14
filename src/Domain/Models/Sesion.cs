@@ -6,6 +6,7 @@ namespace Domain.Models;
 public partial class Sesion
 {
     [Key]
+    //[DatabaseGenerated(DatabaseGeneratedOption.None)]
     public int IdSesion { get; set; }
     public DateTime FechaInicio { get; set; }
     public DateTime? FechaFin { get; set; }

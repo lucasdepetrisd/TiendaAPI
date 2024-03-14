@@ -386,7 +386,7 @@ namespace Infraestructure.Migrations
                         principalColumn: "IdRol");
                 });
 
-            migrationBuilder.CreateTable(
+            /*migrationBuilder.CreateTable(
                 name: "Sesion",
                 schema: "Admin",
                 columns: table => new
@@ -414,7 +414,7 @@ namespace Infraestructure.Migrations
                         principalTable: "Usuario",
                         principalColumn: "IdUsuario",
                         onDelete: ReferentialAction.Cascade);
-                });
+                });*/
 
             migrationBuilder.CreateTable(
                 name: "Venta",

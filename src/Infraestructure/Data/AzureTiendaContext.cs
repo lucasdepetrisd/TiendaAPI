@@ -158,9 +158,13 @@ public partial class AzureTiendaContext : DbContext, ITiendaContext
 
         modelBuilder.Entity<Sesion>(sesion =>
         {
-            sesion.HasOne(d => d.PuntoDeVenta).WithMany(p => p.Sesiones)
-                .HasForeignKey(d => d.IdSesion)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            sesion
+                .HasOne(d => d.PuntoDeVenta)
+                .WithMany(p => p.Sesiones)
+                .HasForeignKey(d => d.IdPuntoDeVenta);
+                //.OnDelete(DeleteBehavior.ClientSetNull);
+
+            //sesion.Property(s => s.IdSesion).ValueGeneratedNever();//.UseIdentityColumn();
         });
 
         // Define a list of entity types
