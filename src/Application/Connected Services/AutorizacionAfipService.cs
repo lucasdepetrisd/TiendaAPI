@@ -2,7 +2,7 @@
 using Application.DTOs;
 using Application.Services.HelperServices;
 using Application.ServicioExternoAfip;
-using Domain.Models;
+using Domain.Models.Ventas;
 using Domain.Repositories;
 using Microsoft.Extensions.Options;
 using System.Text;
@@ -46,9 +46,16 @@ namespace Application.Services.ExternalServices
             _tokenExpiration = DateTime.MinValue;
         }
 
-        public async Task<(bool, long?)> AutorizarAfip(Venta venta)
+        public async Task<(bool, long?, string?)> AutorizarAfip(Pago pago)
         {
-            if (venta.CalcularTotal() > _afipLimiteNominal)
+            if(pago.Venta == null || pago.Venta.Cliente == null)
+            {
+                throw new ArgumentException("Pago debe tener una venta asociada con sus propiedades cargadas.");
+            }
+
+            Venta venta = pago.Venta;
+
+            if (pago.MontoTotal > _afipLimiteNominal)
             {
                 // Si supera el limite de la compra y es el cliente por defecto entonces deberá agregar un cliente
                 if (venta.Cliente != null && venta.Cliente.IdCliente == 0)
@@ -60,9 +67,7 @@ namespace Application.Services.ExternalServices
             await ActualizarTokenAfip();
 
             var (ultimoNroFacA, ultimoNroFacB) = await ObtenerUltimoNumeroComprobante();
-
-            decimal totalNeto = 0;
-            decimal totalIVA = 0;
+            
             TipoComprobante tipoComprobante = AutorizacionAfipHelpers.ObtenerTipoComprobante(venta.TipoDeComprobante?.Nombre);
 
             long nroComprobante = tipoComprobante switch
@@ -71,19 +76,13 @@ namespace Application.Services.ExternalServices
                 TipoComprobante.FacturaB => ultimoNroFacB + 1,
                 _ => throw new InvalidOperationException("Invalid tipoComprobante")
             };
-
-            foreach (var lineaDeVenta in venta.LineasDeVentas)
-            {
-                totalNeto += lineaDeVenta.NetoGravado;
-                totalIVA += lineaDeVenta.MontoIVA;
-            }
-
+            
             var solicitud = new SolicitudAutorizacion
             {
-                Fecha = venta.Fecha,
-                ImporteTotal = (double)venta.CalcularTotal(),
-                ImporteNeto = (double)totalNeto,
-                ImporteIva = (double)totalIVA,
+                Fecha = pago.Fecha,
+                ImporteTotal = (double)venta.Monto,
+                ImporteNeto = (double)venta.MontoNetoGravado,
+                ImporteIva = (double)venta.MontoIVA,
                 Numero = nroComprobante,
 
                 NumeroDocumento = AutorizacionAfipHelpers.ObtenerNroDocumento(venta.Cliente?.TipoDocumento, venta.Cliente?.NroDocumento),
@@ -95,11 +94,11 @@ namespace Application.Services.ExternalServices
 
             if (!string.IsNullOrEmpty(result.Error) && result.Estado != EstadoSolicitud.Aprobada)
             {
-                return (false, null);
+                return (false, null, null);
             }
             else
             {
-                return (true, nroComprobante);
+                return (true, nroComprobante, result.Cae);
             }
         }
 

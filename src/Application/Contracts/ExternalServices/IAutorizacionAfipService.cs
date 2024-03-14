@@ -1,9 +1,9 @@
-﻿using Domain.Models;
+﻿using Domain.Models.Ventas;
 
 namespace Application.Contracts.ExternalServices
 {
     public interface IAutorizacionAfipService
     {
-        Task<(bool, long?)> AutorizarAfip(Venta venta);
+        Task<(bool, long?, string?)> AutorizarAfip(Pago pago);
     }
 }

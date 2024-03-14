@@ -1,6 +1,7 @@
 ﻿using Application.Contracts.ViewServices;
 using Application.DTOs;
-using Domain.Models;
+using Application.DTOs.Ventas;
+using Domain.Models.Ventas;
 
 namespace Application.Contracts.UseCasesServices
 {

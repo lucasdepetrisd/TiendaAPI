@@ -1,8 +1,10 @@
 ﻿using Application.Contracts.UseCasesServices;
 using Application.DTOs;
+using Application.DTOs.Ventas;
 using Application.Services.ViewServices;
 using AutoMapper;
-using Domain.Models;
+using Domain.Models.Admin;
+using Domain.Models.Ventas;
 using Domain.Repositories;
 using Domain.Repositories.ViewRepositories;
 
@@ -112,6 +114,11 @@ namespace Application.Services.UseCasesServices
                 || venta.Estado.Equals("cancelada", StringComparison.CurrentCultureIgnoreCase))
             {
                 throw new InvalidOperationException($"Venta con ID {ventaId} ya finalizada o cancelada.");
+            }
+
+            if (venta.CalcularTotal() == 0)
+            {
+                throw new InvalidDataException("La venta debe tener un Total mayor a 0.");
             }
             
             // Antes de finalizar reviso que las lineas de ventas tengan inventarios válidos

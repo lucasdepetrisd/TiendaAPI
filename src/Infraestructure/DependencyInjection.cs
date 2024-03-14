@@ -1,5 +1,7 @@
 ﻿using Domain.Data;
-using Domain.Models;
+using Domain.Models.Admin;
+using Domain.Models.Articulo;
+using Domain.Models.Ventas;
 using Domain.Repositories;
 using Domain.Repositories.ViewRepositories;
 using Infraestructure.Data;

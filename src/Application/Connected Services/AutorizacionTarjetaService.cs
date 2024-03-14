@@ -1,6 +1,6 @@
 ﻿using Application.Contracts.ExternalServices;
 using Application.DTOs;
-using Domain.Models;
+using Domain.Models.Ventas;
 using Domain.Repositories;
 using Microsoft.Extensions.Options;
 using System.Text;
