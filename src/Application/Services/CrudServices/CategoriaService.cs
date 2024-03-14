@@ -1,0 +1,15 @@
+﻿using Application.Contracts.CrudServices;
+using Application.DTOs;
+using AutoMapper;
+using Domain.Models;
+using Domain.Repositories;
+
+namespace Application.Services.CrudServices
+{
+    public class CategoriaService : CrudService<Categoria, CreateCategoriaDTO, CategoriaDTO>, ICategoriaService
+    {
+        public CategoriaService(ICrudRepository<Categoria> categoriaRepository, IMapper mapper) : base(categoriaRepository, mapper)
+        {
+        }
+    }
+}

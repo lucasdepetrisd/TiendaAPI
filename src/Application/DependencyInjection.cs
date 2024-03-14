@@ -1,6 +1,11 @@
-﻿using Application.Contracts;
+﻿using Application.Contracts.CrudServices;
+using Application.Contracts.UseCasesServices;
+using Application.Contracts.ViewServices;
 using Application.Profiles;
 using Application.Services;
+using Application.Services.CrudServices;
+using Application.Services.UseCasesServices;
+using Application.Services.ViewServices;
 using Application.ServicioExternoAfip;
 using AutoMapper;
 using FluentValidation;
@@ -30,9 +35,13 @@ public static class DependencyInjection
             AutorizacionTarjetaApisSettings.PaymentEndpoint,
             DecidirApiSection.GetSection("paymentEndpoint"));
 
+        Services.Configure<AutorizacionAfipSettings>(
+            Configuration.GetSection(AutorizacionAfipSettings.AutorizacionAfip));
+
         Services.AddHttpClient<IAutorizacionTarjetaService, AutorizacionTarjetaService>();
         Services.AddScoped<ILoginService, LoginServiceClient>();
 
+        Services.AddScoped<IAutorizacionAfipService, AutorizacionAfipService>();
         Services.AddScoped<IAutorizacionTarjetaService, AutorizacionTarjetaService>();
         Services.AddScoped<IAutenticacionUsuarioService, AutenticacionUsuarioService>();
 

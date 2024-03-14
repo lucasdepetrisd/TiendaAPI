@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
 
-namespace Application.Services
+namespace Application.Services.UseCasesServices
 {
     public class AutorizacionTarjetaService : IAutorizacionTarjetaService
     {
@@ -18,12 +18,9 @@ namespace Application.Services
         private readonly string _tokenUri;
         private readonly string _paymentUri;
 
-        private readonly ICrudRepository<Cliente> _clienteRepository;
-
         public AutorizacionTarjetaService(
             IOptionsSnapshot<AutorizacionTarjetaApisSettings> namedOptionsAccessor,
-            HttpClient httpClient,
-            ICrudRepository<Cliente> clienteRepository)
+            HttpClient httpClient)
         {
             _httpClient = httpClient;
 
@@ -52,8 +49,6 @@ namespace Application.Services
             _tokenUri = _tokenEndpoint.Uri;
             _paymentApiKey = _paymentEndpoint.ApiKey;
             _paymentUri = _paymentEndpoint.Uri;
-
-            _clienteRepository = clienteRepository;
         }
 
         public async Task<bool> Autorizar(Venta venta, TarjetaDTO datosTarjeta)
