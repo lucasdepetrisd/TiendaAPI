@@ -1,4 +1,4 @@
-﻿using Application.Contracts.UseCasesServices;
+﻿using Application.Contracts.ExternalServices;
 using Application.DTOs;
 using Application.Services.HelperServices;
 using Application.ServicioExternoAfip;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
 
-namespace Application.Services.UseCasesServices
+namespace Application.Services.ExternalServices
 {
     public class AutorizacionAfipService : IAutorizacionAfipService
     {

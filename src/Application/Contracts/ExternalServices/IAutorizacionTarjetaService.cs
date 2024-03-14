@@ -1,7 +1,7 @@
 ﻿using Application.DTOs;
 using Domain.Models;
 
-namespace Application.Contracts.UseCasesServices
+namespace Application.Contracts.ExternalServices
 {
     public interface IAutorizacionTarjetaService
     {
