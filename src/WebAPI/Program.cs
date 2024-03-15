@@ -5,10 +5,6 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/*
-var keyVaultEndpoint = new Uri(Environment.GetEnvironmentVariable("https://webapi-vault.vault.azure.net/"));
-builder.Configuration.AddAzureKeyVault(keyVaultEndpoint, new DefaultAzureCredential());*/
-
 // Add services to the container.
 builder.Services.AddControllers();
 
