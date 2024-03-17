@@ -4,16 +4,19 @@ using Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infraestructure.Migrations.AzureTienda
+namespace Infraestructure.Migrations
 {
-    [DbContext(typeof(AzureTiendaContext))]
-    partial class AzureTiendaContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(TiendaContext))]
+    [Migration("20240317224131_Modifico-Estados-Venta-Pago-Comp")]
+    partial class ModificoEstadosVentaPagoComp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,10 +188,7 @@ namespace Infraestructure.Migrations.AzureTienda
             modelBuilder.Entity("Domain.Models.Admin.Sesion", b =>
                 {
                     b.Property<int>("IdSesion")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdSesion"));
 
                     b.Property<DateTime?>("FechaFin")
                         .HasColumnType("datetime2");
@@ -203,8 +203,6 @@ namespace Infraestructure.Migrations.AzureTienda
                         .HasColumnType("int");
 
                     b.HasKey("IdSesion");
-
-                    b.HasIndex("IdPuntoDeVenta");
 
                     b.HasIndex("IdUsuario");
 
@@ -681,8 +679,7 @@ namespace Infraestructure.Migrations.AzureTienda
                 {
                     b.HasOne("Domain.Models.Admin.PuntoDeVenta", "PuntoDeVenta")
                         .WithMany("Sesiones")
-                        .HasForeignKey("IdPuntoDeVenta")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("IdSesion")
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Admin.Usuario", "Usuario")
