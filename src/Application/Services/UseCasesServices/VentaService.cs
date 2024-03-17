@@ -106,66 +106,42 @@ namespace Application.Services.UseCasesServices
         public async Task<VentaDTO?> FinalizarVenta(int ventaId, bool esTarjeta, TarjetaDTO? datosTarjeta)
         {
             var venta = await _ventaRepository.GetByIdAsync(ventaId) ?? throw new InvalidOperationException($"Venta con ID {ventaId} no encontrada.");
-            Venta ventaPagada;
+            Pago pago;
+            long nroComprobante;
 
-            if (venta.Estado.Equals("finalizada", StringComparison.CurrentCultureIgnoreCase)
-                || venta.Estado.Equals("cancelada", StringComparison.CurrentCultureIgnoreCase))
+            if (!venta.PuedeFinalizar(out string errorMessage))
             {
-                throw new InvalidOperationException($"Venta con ID {ventaId} ya finalizada o cancelada.");
-            }
-
-            if (venta.CalcularTotal() == 0)
-            {
-                throw new InvalidDataException("La venta debe tener un Total mayor a 0.");
-            }
-
-            // Antes de finalizar reviso que las lineas de ventas tengan inventarios válidos
-            foreach (var lineaDeVenta in venta.LineasDeVentas)
-            {
-                if (lineaDeVenta.Inventario == null)
-                {
-                    throw new InvalidOperationException($"Inventario con ID {lineaDeVenta.IdInventario} no encontrado. No se puede finalizar la venta.");
-                }
-                else if (lineaDeVenta.Cantidad > lineaDeVenta.Inventario.Cantidad)
-                {
-                    throw new InvalidOperationException($"Inventario con ID {lineaDeVenta.IdInventario} no posee cantidad suficiente. No se puede finalizar la venta.");
-                }
+                throw new InvalidOperationException(errorMessage);
             }
 
             if (esTarjeta)
             {
-                if (datosTarjeta != null)
+                if (datosTarjeta == null)
                 {
-                    ventaPagada = await _pagoService.ProcesarPagoConTarjeta(venta, datosTarjeta);
+                    throw new InvalidOperationException("datosTarjeta no debe ser null");
                 }
-                else
-                {
-                    throw new InvalidOperationException($"datosTarjeta no debe ser null");
-                }
+
+                (pago, nroComprobante) = await _pagoService.ProcesarPagoConTarjeta(venta, datosTarjeta);
             }
             else
             {
-                ventaPagada = await _pagoService.ProcesarPagoEnEfectivo(venta);
+                (pago, nroComprobante) = await _pagoService.ProcesarPagoEnEfectivo(venta);
             }
 
-            if (ventaPagada.Pago != null && !ventaPagada.Pago.Estado.Equals("aprobado", StringComparison.CurrentCultureIgnoreCase))
+            if (pago == null || pago.Estado != EstadoPago.Aprobado)
             {
                 return null;
             }
 
-            foreach (var lineaDeVenta in ventaPagada.LineasDeVentas)
-            {
-                var inventario = lineaDeVenta.Inventario;
-                inventario.Cantidad -= lineaDeVenta.Cantidad;
-            }
+            venta.AgregarPago(pago);
 
-            ventaPagada.Finalizar();
+            venta.Finalizar(nroComprobante);
 
-            await _ventaRepository.UpdateAsync(ventaPagada);
+            await _ventaRepository.UpdateAsync(venta);
 
-            VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(ventaPagada);
+            VentaDTO ventaFinalizadaDTO = _mapper.Map<VentaDTO>(venta);
 
-            return nuevaVentaDTO;
+            return ventaFinalizadaDTO;
         }
 
         public async Task<VentaDTO> ModificarCliente(int ventaId, int clienteId)
@@ -178,9 +154,9 @@ namespace Application.Services.UseCasesServices
 
             await _ventaRepository.UpdateAsync(venta);
 
-            VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(venta);
+            VentaDTO ventaModificadaDTO = _mapper.Map<VentaDTO>(venta);
 
-            return nuevaVentaDTO;
+            return ventaModificadaDTO;
         }
 
         public async Task<LineaDeVentaDTO> AgregarLineaDeVenta(int ventaId, int cantidad, int inventarioId)
@@ -205,9 +181,9 @@ namespace Application.Services.UseCasesServices
             await _ventaRepository.UpdateAsync(venta);
             await _lineaDeVentaRepository.RemoveAsync(lineaDeVentaId);
 
-            VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(venta);
+            VentaDTO ventaModificadaDTO = _mapper.Map<VentaDTO>(venta);
 
-            return nuevaVentaDTO;
+            return ventaModificadaDTO;
         }
     }
 }
