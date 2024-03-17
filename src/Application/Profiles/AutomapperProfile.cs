@@ -79,10 +79,10 @@ namespace Application.Profiles
 
             //*---------------------Venta------------------------*
             CreateMap<Venta, VentaDTO>()
-                .ForMember(vdto => vdto.Monto, opt => opt.MapFrom(v => v.CalcularTotal()))
+                .ForMember(vdto => vdto.Monto, opt => opt.MapFrom(v => v.Monto))
                 .ReverseMap();
             CreateMap<Venta, ViewVentaDTO>()
-                .ForMember(vdto => vdto.Monto, opt => opt.MapFrom(v => v.CalcularTotal()))
+                .ForMember(vdto => vdto.Monto, opt => opt.MapFrom(v => v.Monto))
                 .ReverseMap(); ;
 
             CreateMap<LineaDeVenta, LineaDeVentaDTO>().ReverseMap();

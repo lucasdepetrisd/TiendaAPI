@@ -130,7 +130,7 @@ public partial class Venta
         }, nameof(Finalizar));
     }
 
-    public decimal CalcularTotal()
+    private decimal CalcularTotal()
     {
         decimal monto;
         monto = 0;
