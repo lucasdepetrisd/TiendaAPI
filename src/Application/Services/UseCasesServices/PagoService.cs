@@ -3,12 +3,10 @@ using Application.Contracts.UseCasesServices;
 using Application.DTOs;
 using Application.DTOs.Ventas;
 using Application.Services.ViewServices;
-using Application.ServicioExternoAfip;
 using AutoMapper;
 using Domain.Models.Ventas;
 using Domain.Repositories;
 using Microsoft.IdentityModel.Tokens;
-using Comprobante = Domain.Models.Ventas.Comprobante;
 
 namespace Application.Services.UseCasesServices
 {
@@ -27,7 +25,7 @@ namespace Application.Services.UseCasesServices
             _autorizacionAfipService = autorizacionAfipService;
         }
 
-        public async Task<Venta> ProcesarPagoConTarjeta(Venta venta, TarjetaDTO datosTarjeta)
+        public async Task<(Pago pago, long nroComprobante)> ProcesarPagoConTarjeta(Venta venta, TarjetaDTO datosTarjeta)
         {
             bool statusTarjeta = await _autorizacionTarjetaService.AutorizarTarjeta(venta, datosTarjeta);
             if (statusTarjeta == false)
@@ -35,18 +33,18 @@ namespace Application.Services.UseCasesServices
                 throw new Exception("No se pudo autorizar la tarjeta.");
             }
 
-            var pago = new Pago("Pendiente", venta, "Pago en Tarjeta");
+            var pago = new Pago(venta, "Pago en Tarjeta");
 
-            var (statusAfip, nroCompobante, nroCae) = await _autorizacionAfipService.AutorizarAfip(pago);
+            var (statusAfip, nroComprobante, nroCae) = await _autorizacionAfipService.AutorizarAfip(pago);
 
-            if (statusAfip == false)
+            if (!statusAfip)
             {
                 throw new Exception("No se pudo autorizar en AFIP.");
             }
 
-            if (nroCompobante == null)
+            if (nroComprobante == null)
             {
-                nroCompobante = 0;
+                nroComprobante = 0;
             }
 
             if (nroCae.IsNullOrEmpty())
@@ -54,30 +52,25 @@ namespace Application.Services.UseCasesServices
                 nroCae = "";
             }
 
-            venta.Comprobante = new Comprobante(nroCompobante.Value, venta.IdVenta);
+            pago.Finalizar(nroCae!);
 
-            venta.Pago = pago;
-            pago.Finalizar(venta, nroCae!);
-
-            venta.Pago = pago;
-
-            return venta;
+            return (pago, nroComprobante.Value);
         }
 
-        public async Task<Venta> ProcesarPagoEnEfectivo(Venta venta)
+        public async Task<(Pago pago, long nroComprobante)> ProcesarPagoEnEfectivo(Venta venta)
         {
-            var pago = new Pago("Pendiente", venta, "Pago en Efectivo");
+            var pago = new Pago(venta, "Pago en Efectivo");
 
-            var (statusAfip, nroCompobante, nroCae) = await _autorizacionAfipService.AutorizarAfip(pago);
+            var (statusAfip, nroComprobante, nroCae) = await _autorizacionAfipService.AutorizarAfip(pago);
 
-            if (statusAfip == false)
+            if (!statusAfip)
             {
                 throw new Exception("No se pudo autorizar en AFIP.");
             }
 
-            if (nroCompobante == null)
+            if (nroComprobante == null)
             {
-                nroCompobante = 0;
+                nroComprobante = 0;
             }
 
             if (nroCae.IsNullOrEmpty())
@@ -85,14 +78,9 @@ namespace Application.Services.UseCasesServices
                 nroCae = "";
             }
 
-            venta.Comprobante = new Comprobante(nroCompobante.Value, venta.IdVenta);
+            pago.Finalizar(nroCae!);
 
-            venta.Pago = pago;
-            pago.Finalizar(venta, nroCae!);
-
-            venta.Pago = pago;
-
-            return venta;
+            return (pago, nroComprobante.Value);
         }
     }
 }

@@ -51,7 +51,9 @@ namespace Application.Profiles
                 .ForMember(dest => dest.IdCondicionTributaria, opt => opt.MapFrom(src => (int)src.IdCondicionTributaria))
                 .ReverseMap();
 
-            CreateMap<CondicionTributaria, ViewCondicionTributariaDTO>().ReverseMap();
+            CreateMap<CondicionTributaria, ViewCondicionTributariaDTO>()
+                .ForMember(dest => dest.IdCondicionTributaria, opt => opt.MapFrom(src => (int)src.IdCondicionTributaria))
+                .ReverseMap();
 
             CreateMap<Empleado, EmpleadoDTO>().ReverseMap();
             CreateMap<Empleado, CreateEmpleadoDTO>().ReverseMap();
@@ -79,18 +81,24 @@ namespace Application.Profiles
 
             //*---------------------Venta------------------------*
             CreateMap<Venta, VentaDTO>()
-                .ForMember(vdto => vdto.Monto, opt => opt.MapFrom(v => v.CalcularTotal()))
+                .ForMember(vdto => vdto.Monto, opt => opt.MapFrom(v => v.Monto))
+                .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Estado.ToString()))
                 .ReverseMap();
             CreateMap<Venta, ViewVentaDTO>()
-                .ForMember(vdto => vdto.Monto, opt => opt.MapFrom(v => v.CalcularTotal()))
+                .ForMember(vdto => vdto.Monto, opt => opt.MapFrom(v => v.Monto))
+                .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Estado.ToString()))
                 .ReverseMap(); ;
 
             CreateMap<LineaDeVenta, LineaDeVentaDTO>().ReverseMap();
             CreateMap<LineaDeVenta, CreateLineaDeVentaDTO>().ReverseMap();
             CreateMap<LineaDeVenta, ViewLineaDeVentaDTO>().ReverseMap();
 
-            CreateMap<Pago, PagoDTO>().ReverseMap();
-            CreateMap<Pago, ViewPagoDTO>().ReverseMap();
+            CreateMap<Pago, PagoDTO>()
+                .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Estado.ToString()))
+                .ReverseMap();
+            CreateMap<Pago, ViewPagoDTO>()
+                .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Estado.ToString()))
+                .ReverseMap();
 
             CreateMap<TipoDeComprobante, TipoDeComprobanteDTO>().ReverseMap();
             CreateMap<TipoDeComprobante, CreateTipoDeComprobanteDTO>().ReverseMap();

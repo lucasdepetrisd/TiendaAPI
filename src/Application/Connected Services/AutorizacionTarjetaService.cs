@@ -1,7 +1,6 @@
 ﻿using Application.Contracts.ExternalServices;
 using Application.DTOs;
 using Domain.Models.Ventas;
-using Domain.Repositories;
 using Microsoft.Extensions.Options;
 using System.Text;
 using System.Text.Json;
@@ -62,7 +61,7 @@ namespace Application.Services.ExternalServices
                     throw new InvalidOperationException("Error al solicitar el token de pago");
                 }
 
-                var paymentResponse = await ConfirmarPago(venta.CalcularTotal(), token);
+                var paymentResponse = await ConfirmarPago(venta.Monto, token);
 
                 if (!paymentResponse.status.Equals("approved", StringComparison.CurrentCultureIgnoreCase))
                 {
