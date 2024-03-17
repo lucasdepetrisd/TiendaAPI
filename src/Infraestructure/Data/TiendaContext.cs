@@ -88,12 +88,12 @@ public partial class TiendaContext : DbContext, ITiendaContext
                 );
         });
 
-        /*modelBuilder.Entity<CondicionTributaria>(condTribConfig =>
+        modelBuilder.Entity<Pago>(pago =>
         {
-            condTribConfig
-                .Property(e => e.Nombre)
+            pago
+                .Property(e => e.Estado)
                 .HasConversion<string>();
-        });*/
+        });
 
         modelBuilder.Entity<TipoDeComprobante>(tipCompConfig =>
         {
@@ -129,6 +129,10 @@ public partial class TiendaContext : DbContext, ITiendaContext
             venta.HasOne(d => d.PuntoDeVenta).WithMany(p => p.Ventas)
                 .HasForeignKey(d => d.IdPuntoVenta)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
+            venta
+                .Property(e => e.Estado)
+                .HasConversion<string>();
         });
 
         modelBuilder.Entity<LineaDeVenta>(lineaDeVenta =>

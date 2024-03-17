@@ -88,12 +88,12 @@ public partial class AzureTiendaContext : DbContext, ITiendaContext
                 );
         });
 
-        /*var condTribConfig = modelBuilder.Entity<CondicionTributaria>(condTrib =>
-         {
-             condTrib
-                 .Property(e => e.Nombre)
-                 .HasConversion<string>();
-         });*/
+        modelBuilder.Entity<Pago>(pago =>
+        {
+            pago
+                .Property(e => e.Estado)
+                .HasConversion<string>();
+        });
 
         modelBuilder.Entity<TipoDeComprobante>(tipCompConfig =>
         {
@@ -129,6 +129,10 @@ public partial class AzureTiendaContext : DbContext, ITiendaContext
             venta.HasOne(d => d.PuntoDeVenta).WithMany(p => p.Ventas)
                 .HasForeignKey(d => d.IdPuntoVenta)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+
+            venta
+                .Property(e => e.Estado)
+                .HasConversion<string>();
         });
 
         modelBuilder.Entity<LineaDeVenta>(lineaDeVenta =>
@@ -164,7 +168,7 @@ public partial class AzureTiendaContext : DbContext, ITiendaContext
                 .HasOne(d => d.PuntoDeVenta)
                 .WithMany(p => p.Sesiones)
                 .HasForeignKey(d => d.IdPuntoDeVenta);
-                //.OnDelete(DeleteBehavior.ClientSetNull);
+            //.OnDelete(DeleteBehavior.ClientSetNull);
 
             //sesion.Property(s => s.IdSesion).ValueGeneratedNever();//.UseIdentityColumn();
         });
