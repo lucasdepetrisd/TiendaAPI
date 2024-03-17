@@ -14,7 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("Crud", new OpenApiInfo { Title = "La Tienda API: CRUD", Version = "v1.5", Description = $"Environment: {builder.Environment.EnvironmentName}" });
-    c.SwaggerDoc("UseCases", new OpenApiInfo { Title = "La Tienda API: Casos de Uso", Version = "v1.7.2", Description = $"Environment: {builder.Environment.EnvironmentName}" });
+    c.SwaggerDoc("UseCases", new OpenApiInfo { Title = "La Tienda API: Casos de Uso", Version = "v1.8.0", Description = $"Environment: {builder.Environment.EnvironmentName}" });
 
     string[] methodsOrder = ["get", "post", "put", "patch", "delete", "options", "trace"];
     c.OrderActionsBy((apiDesc) =>
@@ -88,23 +88,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-/*
-var cliente = context.Cliente.FirstOrDefault(c => c.IdCliente == 4);
-var usuario = context.Usuario.FirstOrDefault(u => u.IdUsuario == 1);
-var tipoDeComprobante = context.TipoDeComprobante.FirstOrDefault(tc => tc.IdTipoDeComprobante == 1);
-var puntoDeVenta = context.PuntoDeVenta.FirstOrDefault(pv => pv.IdPuntoDeVenta == 1);
-var inventario = context.Inventario.Include(i => i.Articulo).FirstOrDefault(i => i.IdInventario == 6);
-
-var venta = new Venta(usuario, puntoDeVenta);
-
-//context.Venta.Add(venta);
-//await context.SaveChangesAsync();
-
-venta.AgregarLineaDeVenta(4, inventario);
-
-//context.Venta.Entry(venta).State = EntityState.Modified;
-//await context.SaveChangesAsync();
-
-Console.WriteLine($"Nueva Venta creada: IdVenta={venta.IdVenta}, Fecha={venta.Fecha}, Monto={venta.Monto}, Estado={venta.Estado}, Cliente={venta.Cliente.Nombre}");
-*/

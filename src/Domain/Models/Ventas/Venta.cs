@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Domain.Models.Admin;
+﻿using Domain.Models.Admin;
 using Domain.Models.Articulo;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models.Ventas;
 
@@ -12,7 +12,7 @@ public partial class Venta
 
     public DateTime Fecha { get; private set; } = DateTime.UtcNow;
 
-    public string Estado { get; private set; } = "Pendiente"; //TODO: Convertir a enum. Leer values objects
+    public EstadoVenta Estado { get; private set; }
 
     public string? Observaciones { get; private set; } = "Ninguna";
 
@@ -80,9 +80,27 @@ public partial class Venta
         TipoDeComprobante = new TipoDeComprobante(condicionEmisor, cliente.CondicionTributaria);
     }
 
-    public void Cancelar() => AccionSiVentaEsPendiente(() => Estado = "Cancelada", nameof(Cancelar));
+    public void Cancelar() => AccionSiVentaEsPendiente(() => Estado = EstadoVenta.Cancelada, nameof(Cancelar));
 
-    public void Finalizar() => AccionSiVentaEsPendiente(() => Estado = "Finalizada", nameof(Finalizar));
+    public void Finalizar(long nroComprobante)
+    {
+        AccionSiVentaEsPendiente(() =>
+        {
+            Estado = EstadoVenta.Finalizada;
+
+            Comprobante = new Comprobante(nroComprobante, this);
+
+        }, nameof(Finalizar));
+    }
+
+    public void AgregarPago(Pago pago)
+    {
+        AccionSiVentaEsPendiente(() =>
+        {
+            Pago = pago;
+
+        }, "Agregar Pago");
+    }
 
     public LineaDeVenta AgregarLineaDeVenta(int cantidad, Inventario inventario)
     {
@@ -93,6 +111,11 @@ public partial class Venta
         else if (cantidad == 0)
         {
             throw new InvalidOperationException($"Cantidad solicitada ({cantidad}) inválida. Solicite una cantidad mayor a cero.");
+        }
+
+        if (PuntoDeVenta.IdSucursal != inventario.IdSucursal)
+        {
+            throw new InvalidOperationException($"No se puede agregar un inventario procedente de otra sucursal.");
         }
 
         LineaDeVenta lineaDeVenta = new LineaDeVenta(cantidad, inventario, this);
@@ -125,7 +148,7 @@ public partial class Venta
         }, nameof(Finalizar));
     }
 
-    public decimal CalcularTotal()
+    private decimal CalcularTotal()
     {
         decimal monto;
         monto = 0;
@@ -152,11 +175,60 @@ public partial class Venta
     // Función lambda
     private void AccionSiVentaEsPendiente(Action action, string actionType)
     {
-        if (Estado != "Pendiente")
+        if (Estado != EstadoVenta.Pendiente)
         {
             throw new InvalidOperationException($"La venta solo se puede {actionType} si esta en estado \"Pendiente\". Estado actual: \"{Estado}\"");
         }
 
         action();
     }
+
+    public bool PuedeFinalizar(out string errorMessage)
+    {
+        errorMessage = string.Empty;
+
+        // Verificar si la venta está en estado "Pendiente"
+        if (Estado != EstadoVenta.Pendiente)
+        {
+            errorMessage = "La venta no está en estado pendiente.";
+            return false;
+        }
+
+        if (Monto <= 0)
+        {
+            errorMessage = "El monto total debe ser mayor a 0";
+            return false;
+        }
+
+        // Verificar si la venta tiene al menos una línea de venta
+        if (!LineasDeVentas.Any())
+        {
+            errorMessage = "La venta no tiene ninguna línea de venta.";
+            return false;
+        }
+
+        // Verificar si todas las líneas de venta tienen inventarios válidos
+        foreach (var lineaDeVenta in LineasDeVentas)
+        {
+            if (lineaDeVenta.Inventario == null)
+            {
+                errorMessage = $"El inventario con ID {lineaDeVenta.IdInventario} no fue encontrado.";
+                return false;
+            }
+            else if (lineaDeVenta.Cantidad > lineaDeVenta.Inventario.Cantidad)
+            {
+                errorMessage = $"El inventario con ID {lineaDeVenta.IdInventario} no tiene suficiente cantidad.";
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+
+public enum EstadoVenta
+{
+    Pendiente = 0,
+    Finalizada = 1,
+    Cancelada = 2
 }
