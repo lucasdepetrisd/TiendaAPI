@@ -15,11 +15,10 @@ namespace WebAPI.Controllers.UseCasesControllers
     {
         private readonly IVentaService _ventaService;
 
-        public VentaController(IVentaService ventaService, ILineaDeVentaService lineaDeVentaService)
+        public VentaController(IVentaService ventaService)
             : base(ventaService)
         {
             _ventaService = ventaService;
-            _lineaDeVentaService = lineaDeVentaService;
         }
 
         [HttpPost("iniciar")]
