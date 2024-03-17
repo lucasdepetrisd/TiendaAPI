@@ -95,6 +95,11 @@ public partial class Venta
             throw new InvalidOperationException($"Cantidad solicitada ({cantidad}) inválida. Solicite una cantidad mayor a cero.");
         }
 
+        if (PuntoDeVenta.IdSucursal != inventario.IdSucursal)
+        {
+            throw new InvalidOperationException($"No se puede agregar un inventario procedente de otra sucursal.");
+        }
+
         LineaDeVenta lineaDeVenta = new LineaDeVenta(cantidad, inventario, this);
         lineaDeVenta.CalcularSubtotal();
 
