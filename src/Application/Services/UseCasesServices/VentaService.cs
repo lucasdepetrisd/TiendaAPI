@@ -4,6 +4,7 @@ using Application.DTOs.Ventas;
 using Application.Services.ViewServices;
 using AutoMapper;
 using Domain.Models.Admin;
+using Domain.Models.Articulo;
 using Domain.Models.Ventas;
 using Domain.Repositories;
 using Domain.Repositories.ViewRepositories;
@@ -18,35 +19,44 @@ namespace Application.Services.UseCasesServices
     public class VentaService : ViewService<Venta, VentaDTO>, IVentaService
     {
         private readonly ICrudRepository<Venta> _ventaRepository;
+        private readonly ICrudRepository<LineaDeVenta> _lineaDeVentaRepository;
         private readonly ICrudRepository<PuntoDeVenta> _puntoDeVentaRepository;
         private readonly ICrudRepository<Cliente> _clienteRepository;
         private readonly ICrudRepository<Sesion> _sesionRepository;
+        private readonly ICrudRepository<Inventario> _inventarioRepository;
         private readonly ITiendaRepository _tiendaRepository;
         private readonly IUsuarioRepository _usuarioRepository;
 
+        private readonly ILineaDeVentaService _lineaDeVentaService;
         private readonly IPagoService _pagoService;
 
         public VentaService(
             ICrudRepository<Venta> ventaRepository,
+            ICrudRepository<LineaDeVenta> lineaDeVentaRepository,
             ICrudRepository<PuntoDeVenta> puntoDeVentaRepository,
-            //IRepository<Inventario> inventarioRepository,
             ICrudRepository<Cliente> clienteRepository,
             ICrudRepository<Sesion> sesionRepository,
+            ICrudRepository<Inventario> inventarioRepository,
             IUsuarioRepository usuarioRepository,
             ITiendaRepository tiendaRepository,
             IMapper mapper,
-            IPagoService pagoService)
+            ILineaDeVentaService lineaDeVentaService,
+            IPagoService pagoService
+            )
             : base(ventaRepository, mapper)
         {
-            _pagoService = pagoService ?? throw new ArgumentNullException(nameof(pagoService));
-
             _ventaRepository = ventaRepository ?? throw new ArgumentNullException(nameof(ventaRepository));
+            _lineaDeVentaRepository = lineaDeVentaRepository ?? throw new ArgumentNullException(nameof(lineaDeVentaRepository));
             _usuarioRepository = usuarioRepository ?? throw new ArgumentNullException(nameof(usuarioRepository));
             _puntoDeVentaRepository = puntoDeVentaRepository ?? throw new ArgumentNullException(nameof(puntoDeVentaRepository));
 
             _clienteRepository = clienteRepository ?? throw new ArgumentNullException(nameof(clienteRepository));
             _tiendaRepository = tiendaRepository ?? throw new ArgumentNullException(nameof(tiendaRepository));
             _sesionRepository = sesionRepository ?? throw new ArgumentNullException(nameof(sesionRepository));
+            _inventarioRepository = inventarioRepository ?? throw new ArgumentNullException(nameof(inventarioRepository));
+
+            _pagoService = pagoService ?? throw new ArgumentNullException(nameof(pagoService));
+            _lineaDeVentaService = lineaDeVentaService ?? throw new ArgumentNullException(nameof(lineaDeVentaService));
         }
 
         public async Task<VentaDTO> IniciarVenta(int sesionId)
@@ -93,18 +103,6 @@ namespace Application.Services.UseCasesServices
             return nuevaVentaDTO;
         }
 
-        public async Task<VentaDTO> ActualizarMonto(int ventaId)
-        {
-            var venta = await _ventaRepository.GetByIdAsync(ventaId) ?? throw new InvalidOperationException($"Venta con ID {ventaId} no encontrada.");
-            venta.CalcularTotal();
-
-            await _ventaRepository.UpdateAsync(venta);
-
-            VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(venta);
-
-            return nuevaVentaDTO;
-        }
-
         public async Task<VentaDTO?> FinalizarVenta(int ventaId, bool esTarjeta, TarjetaDTO? datosTarjeta)
         {
             var venta = await _ventaRepository.GetByIdAsync(ventaId) ?? throw new InvalidOperationException($"Venta con ID {ventaId} no encontrada.");
@@ -120,15 +118,15 @@ namespace Application.Services.UseCasesServices
             {
                 throw new InvalidDataException("La venta debe tener un Total mayor a 0.");
             }
-            
+
             // Antes de finalizar reviso que las lineas de ventas tengan inventarios válidos
             foreach (var lineaDeVenta in venta.LineasDeVentas)
             {
                 if (lineaDeVenta.Inventario == null)
                 {
                     throw new InvalidOperationException($"Inventario con ID {lineaDeVenta.IdInventario} no encontrado. No se puede finalizar la venta.");
-                } 
-                else if (lineaDeVenta.Cantidad > lineaDeVenta.Inventario.Cantidad) 
+                }
+                else if (lineaDeVenta.Cantidad > lineaDeVenta.Inventario.Cantidad)
                 {
                     throw new InvalidOperationException($"Inventario con ID {lineaDeVenta.IdInventario} no posee cantidad suficiente. No se puede finalizar la venta.");
                 }
@@ -179,6 +177,33 @@ namespace Application.Services.UseCasesServices
             venta.ModificarCliente(cliente, tienda.CondicionTributaria);
 
             await _ventaRepository.UpdateAsync(venta);
+
+            VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(venta);
+
+            return nuevaVentaDTO;
+        }
+
+        public async Task<LineaDeVentaDTO> AgregarLineaDeVenta(int ventaId, int cantidad, int inventarioId)
+        {
+            var venta = await _ventaRepository.GetByIdAsync(ventaId) ?? throw new InvalidOperationException($"Venta con ID {ventaId} no encontrado.");
+            var inventario = await _inventarioRepository.GetByIdAsync(inventarioId) ?? throw new InvalidOperationException($"Inventario con ID {inventarioId} no encontrado.");
+
+            var lineaDeVenta = venta.AgregarLineaDeVenta(cantidad, inventario);
+
+            await _ventaRepository.UpdateAsync(venta);
+
+            LineaDeVentaDTO lineaDeVentaDTO = _mapper.Map<LineaDeVentaDTO>(lineaDeVenta);
+
+            return lineaDeVentaDTO;
+        }
+
+        public async Task<VentaDTO> QuitarLineaDeVenta(int ventaId, int lineaDeVentaId)
+        {
+            var venta = await _ventaRepository.GetByIdAsync(ventaId) ?? throw new InvalidOperationException($"Venta con ID {ventaId} no encontrado.");
+            venta.QuitarLineaDeVenta(lineaDeVentaId);
+
+            await _ventaRepository.UpdateAsync(venta);
+            await _lineaDeVentaRepository.RemoveAsync(lineaDeVentaId);
 
             VentaDTO nuevaVentaDTO = _mapper.Map<VentaDTO>(venta);
 

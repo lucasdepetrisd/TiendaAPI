@@ -14,7 +14,6 @@ namespace WebAPI.Controllers.UseCasesControllers
     public class VentaController : ViewController<VentaDTO>
     {
         private readonly IVentaService _ventaService;
-        private readonly ILineaDeVentaService _lineaDeVentaService;
 
         public VentaController(IVentaService ventaService, ILineaDeVentaService lineaDeVentaService)
             : base(ventaService)
@@ -58,7 +57,7 @@ namespace WebAPI.Controllers.UseCasesControllers
 
             try
             {
-                var lineaDeVentaDTO = await _lineaDeVentaService.AgregarLineaDeVenta(
+                var lineaDeVentaDTO = await _ventaService.AgregarLineaDeVenta(
                     ventaId,
                     request.Cantidad,
                     request.InventarioId);
@@ -90,7 +89,7 @@ namespace WebAPI.Controllers.UseCasesControllers
 
             try
             {
-                var ventaDTO = await _lineaDeVentaService.QuitarLineaDeVenta(
+                var ventaDTO = await _ventaService.QuitarLineaDeVenta(
                     ventaId,
                     lineaDeVentaId);
 
@@ -128,35 +127,6 @@ namespace WebAPI.Controllers.UseCasesControllers
                 var ventaDto = await _ventaService.ModificarCliente(ventaId, clienteId);
 
                 return Ok(ventaDto);
-            }
-            catch (DbException ex)
-            {
-                string? errorMessage = ex.InnerException?.Message;
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Error al añadir una LineaDeVenta a la Venta. Error: {errorMessage}");
-            }
-            catch (Exception ex)
-            {
-                string? errorMessage = ex.Message;
-                return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request: {errorMessage}");
-            }
-        }
-
-        [NonAction]
-        [HttpPost("actualizarmonto/{ventaId}")]
-        [ApiExplorerSettings(GroupName = "UseCases")]
-        public async Task<IActionResult> ActualizarMonto(
-           [FromQuery] int ventaId)
-        {
-            if (ventaId < 0)
-            {
-                return BadRequest("VentaId debe ser mayor o igual a 0.");
-            }
-
-            try
-            {
-                var ventaDTO = await _ventaService.ActualizarMonto(ventaId);
-
-                return Ok(ventaDTO.Monto);
             }
             catch (DbException ex)
             {
