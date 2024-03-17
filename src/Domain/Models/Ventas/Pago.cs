@@ -58,12 +58,15 @@ public partial class Pago
             return string.Empty;
         }
 
-        // Obtengo el id de sucursal
+        // Obtengo el ID de la sucursal
         string sucursalId = Venta.PuntoDeVenta.IdSucursal.ToString().PadLeft(3, '0');
 
-        // Obtengo NroComprobante
+        // Obtengo el ID del pto de venta
+        string ptoVentaNumber = Venta.PuntoDeVenta.IdPuntoDeVenta.ToString().PadLeft(3, '0');
+
+        // Obtengo el NroComprobante obtenido de la AFIP
         string comprobanteNumber = Venta.Comprobante.NroComprobante.ToString().PadLeft(7, '0');
 
-        return $"{sucursalId}-{comprobanteNumber}";
+        return $"{sucursalId}-{ptoVentaNumber}-{comprobanteNumber}";
     }
 }
