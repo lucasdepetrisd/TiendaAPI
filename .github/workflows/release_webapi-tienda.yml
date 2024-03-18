@@ -71,7 +71,7 @@ jobs:
           test-assembly-path: test/SpecFlowTests/bin/Release/net8.0
           test-assembly-dll: SpecFlowTests.dll
           test-execution-json: TestExecution.json
-          output-html: ./docs/LivingDoc.html
+          output-html: LivingDoc.html
           upload-artifact: true
   
   deploy:
