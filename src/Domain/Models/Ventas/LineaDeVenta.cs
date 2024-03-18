@@ -38,6 +38,12 @@ public partial class LineaDeVenta
         Venta = venta;
     }
 
+    public LineaDeVenta(int cantidad, Inventario inventario)
+    {
+        Cantidad = cantidad;
+        Inventario = inventario;
+    }
+
     public decimal CalcularSubtotal()
     {
         if (Inventario.Articulo != null)
