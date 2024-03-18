@@ -37,7 +37,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: LivingDoc
+          name: Specflow Test Results
           path: './docs'
       - name: Setup Pages
         uses: actions/configure-pages@v4
