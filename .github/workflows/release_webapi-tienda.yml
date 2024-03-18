@@ -35,15 +35,6 @@ jobs:
       - name: Build with dotnet
         run: dotnet build ${{ env.APP_PROJECT_PATH }} --configuration main --no-restore
 
-      - name: Run SpecFlow Tests
-        uses: cryptic-wizard/run-specflow-tests@v1.3.3
-        with:
-            test-assembly-path: test/SpecFlowTests/bin/Release/net8.0
-            test-assembly-dll: SpecFlowTests.dll
-            test-execution-json: TestExecution.json
-
-        
-
       - name: dotnet publish
         run: dotnet publish ${{ env.APP_PROJECT_PATH }} --configuration main --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
@@ -53,9 +44,21 @@ jobs:
           name: ${{ env.AZURE_WEBAPP_JOB_ARTIFACT }}
           path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
-  deploy:
+  test:
     runs-on: windows-latest
     needs: build
+
+    steps:
+      - name: Run SpecFlow Tests
+        uses: cryptic-wizard/run-specflow-tests@v1.3.3
+        with:
+            test-assembly-path: test/SpecFlowTests/bin/Release/net8.0
+            test-assembly-dll: SpecFlowTests.dll
+            test-execution-json: TestExecution.json
+
+  deploy:
+    runs-on: windows-latest
+    needs: test
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
