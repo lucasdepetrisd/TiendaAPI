@@ -40,6 +40,12 @@ jobs:
       #   uses: actions/upload-pages-artifact@v3
       #   with:
       #     path: ./docs
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v3.1.4
+        with:
+          name: Specflow Test Results
+          # workflow: ${{ github.event.workflow_run.workflow_id }}
+          workflow_conclusion: success
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
