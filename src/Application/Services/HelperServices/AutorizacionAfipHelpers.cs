@@ -49,7 +49,7 @@ namespace Application.Services.HelperServices
                     return (tipoDocumento.ToLowerInvariant() switch
                     {
                         "cuit" => TipoDocumento.Cuit,
-                        "cuil" => TipoDocumento.Cuil,
+                        "cuil" => TipoDocumento.Cuit,
                         _ => throw new ArgumentException("Tipo de Documento inválido."),
                     }, parsedNumeroDocumento);
 
