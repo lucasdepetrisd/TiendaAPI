@@ -7,7 +7,13 @@ public partial class CondicionTributaria
     [Key]
     public IdCondicionTributaria IdCondicionTributaria { get; set; }
 
-    public string Nombre { get; set; } = null!;
+    public string Nombre
+    {
+        get
+        {
+            return IdCondicionTributaria.ToString();
+        }
+    }
 
     public virtual Tienda? Tienda { get; set; }
 

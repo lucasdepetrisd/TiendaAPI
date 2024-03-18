@@ -12,7 +12,7 @@ public partial class Articulo
     public string Descripcion { get; set; } = null!;
 
     [Precision(18, 2)]
-    public decimal PorcentajeIVA { get; private set; } = 21;
+    public decimal PorcentajeIVA { get; set; } = 21;
 
     [Precision(18, 2)]
     public decimal Costo { get; set; }

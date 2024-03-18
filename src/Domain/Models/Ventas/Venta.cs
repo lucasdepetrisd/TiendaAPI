@@ -12,7 +12,7 @@ public partial class Venta
 
     public DateTime Fecha { get; private set; } = DateTime.UtcNow;
 
-    public EstadoVenta Estado { get; private set; }
+    public EstadoVenta Estado { get; private set; } = EstadoVenta.Pendiente;
 
     public string? Observaciones { get; private set; } = "Ninguna";
 
@@ -113,7 +113,7 @@ public partial class Venta
             throw new InvalidOperationException($"Cantidad solicitada ({cantidad}) inválida. Solicite una cantidad mayor a cero.");
         }
 
-        if (PuntoDeVenta.IdSucursal != inventario.IdSucursal)
+        if (PuntoDeVenta.Sucursal.Nombre.ToLower() != inventario.Sucursal.Nombre.ToLower())
         {
             throw new InvalidOperationException($"No se puede agregar un inventario procedente de otra sucursal.");
         }

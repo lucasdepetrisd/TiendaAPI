@@ -82,8 +82,7 @@ public partial class TiendaContext : DbContext, ITiendaContext
                     .Cast<IdCondicionTributaria>()
                     .Select(c => new CondicionTributaria()
                     {
-                        IdCondicionTributaria = c,
-                        Nombre = c.ToString()
+                        IdCondicionTributaria = c
                     })
                 );
         });
