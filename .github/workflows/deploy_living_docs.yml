@@ -44,7 +44,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v3.1.4
         with:
           name: Specflow Test Results
-          workflow-search: release_webapi-tienda.yml
+          workflow: release_webapi-tienda.yml
           workflow_conclusion: success
       - name: Deploy to GitHub Pages
         id: deployment
