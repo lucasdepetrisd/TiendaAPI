@@ -38,8 +38,11 @@ jobs:
       - name: Run SpecFlow Tests
         uses: cryptic-wizard/run-specflow-tests@v1.3.3
         with:
-            test-assembly-path: test/SpecFlowTests/bin/Release/net8.0/SpecFlowTests.dll
-            test-execution-json: test/SpecFlowTests/bin/Release/net8.0/TestExecution.json
+            test-assembly-path: test/SpecFlowTests/bin/Release/net8.0
+            test-assembly-dll: SpecFlowTests.dll
+            test-execution-json: TestExecution.json
+
+        
 
       - name: dotnet publish
         run: dotnet publish ${{ env.APP_PROJECT_PATH }} --configuration main --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
