@@ -38,13 +38,13 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: 'Specflow Test Results'
-          path: './docs/LivingDoc.html'
+          path: ./docs
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './docs'
+          path: ./docs
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
