@@ -66,7 +66,7 @@ namespace SpecFlowTests.StepDefinitions
             _defaultCliente = new Cliente
             {
                 Nombre = nombre,
-                CondicionTributaria = new CondicionTributaria { IdCondicionTributaria = condTributariaEnum }
+                CondicionTributaria = new CondicionTributaria { IdCondicionTributaria = condTributariaEnum, Nombre = condTributariaEnum.ToString() }
             };
 
             _clienteRepositoryMock.Setup(repo => repo.GetByIdAsync(0)).ReturnsAsync(_defaultCliente);

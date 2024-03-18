@@ -4,11 +4,11 @@
   Para registrar las compras de los clientes y conocer el total de la venta
 
 Scenario: Agregar articulo a la venta con exito
-    Given una venta en proceso en un punto de venta de la sucursal "Centro"
+    Given una venta en proceso en un punto de venta de la sucursal de id 1
     And un articulo con codigo "1234" con los siguientes datos:
       | Descripcion      | Marca  | Categoria  | Precio | PorcentajeIVA | MargenGanancia |
       | Zapatillas altas | Adidas | Zapatillas | 1000   |      21       |      30        |
-    And el inventario disponible para una combinacion de talles y colores para la sucursal "Centro" es la siguiente:
+    And el inventario disponible para una combinacion de talles y colores para la sucursal de id 1 es la siguiente:
       | idInventario  | Color  | Talle   | Cantidad |
       |       1       | Blanco | 38      | 10       |
       |       2       | Negro  | 40      | 5        |

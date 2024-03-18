@@ -43,10 +43,11 @@ namespace SpecFlowTests.StepDefinitions
             _mapperMock.Setup(m => m.Map<LineaDeVentaDTO>(It.IsAny<LineaDeVenta>())).Returns((LineaDeVenta ldv) => mapper.Map<LineaDeVentaDTO>(ldv));
         }
 
-        [Given(@"una venta en proceso en un punto de venta de la sucursal ""([^""]*)""")]
-        public void GivenUnaVentaEnProcesoEnUnPuntoDeVentaDeLaSucursal(string nombreSucursalPtoVenta)
+
+        [Given(@"una venta en proceso en un punto de venta de la sucursal de id (.*)")]
+        public void GivenUnaVentaEnProcesoEnUnPuntoDeVentaDeLaSucursalDeId(int idSucursal)
         {
-            PuntoDeVenta puntoDeVenta = new PuntoDeVenta { IdPuntoDeVenta = 1, Sucursal = new Sucursal { Nombre = nombreSucursalPtoVenta } };
+            PuntoDeVenta puntoDeVenta = new PuntoDeVenta { IdPuntoDeVenta = 1, Sucursal = new Sucursal { IdSucursal = idSucursal } };
             Usuario usuario = new Usuario { IdUsuario = 1, Empleado = new Empleado { IdEmpleado = 1, Sucursal = puntoDeVenta.Sucursal } };
             Cliente defaultCliente = new Cliente { IdCliente = 0, Nombre = "Consumidor Final", CondicionTributaria = new CondicionTributaria { IdCondicionTributaria = IdCondicionTributaria.ConsumidorFinal } };
             CondicionTributaria condicionTributaria = new CondicionTributaria { IdCondicionTributaria = IdCondicionTributaria.ResponsableInscripto };
@@ -78,10 +79,10 @@ namespace SpecFlowTests.StepDefinitions
             };
         }
 
-        [Given(@"el inventario disponible para una combinacion de talles y colores para la sucursal ""([^""]*)"" es la siguiente:")]
-        public void GivenElInventarioDisponibleParaUnaCombinacionDeTallesYColoresParaLaSucursalEsLaSiguiente(string nombreSucursal, Table table)
+        [Given(@"el inventario disponible para una combinacion de talles y colores para la sucursal de id (.*) es la siguiente:")]
+        public void GivenElInventarioDisponibleParaUnaCombinacionDeTallesYColoresParaLaSucursalDeIdEsLaSiguiente(int idSucursal, Table table)
         {
-            var sucursal = new Sucursal { Nombre = nombreSucursal };
+            var sucursal = new Sucursal { IdSucursal = idSucursal };
 
             foreach (var row in table.Rows)
             {
