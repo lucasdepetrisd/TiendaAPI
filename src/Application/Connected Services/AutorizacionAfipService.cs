@@ -1,13 +1,9 @@
 ﻿using Application.Contracts.ExternalServices;
-using Application.DTOs;
 using Application.Services.HelperServices;
 using Application.ServicioExternoAfip;
 using Domain.Models.Admin;
 using Domain.Models.Ventas;
-using Domain.Repositories;
 using Microsoft.Extensions.Options;
-using System.Text;
-using System.Text.Json;
 
 namespace Application.Services.ExternalServices
 {
@@ -49,7 +45,7 @@ namespace Application.Services.ExternalServices
 
         public async Task<(bool, long?, string?)> AutorizarAfip(Pago pago)
         {
-            if(pago.Venta == null || pago.Venta.Cliente == null)
+            if (pago.Venta == null || pago.Venta.Cliente == null)
             {
                 throw new ArgumentException("Pago debe tener una venta asociada con sus propiedades cargadas.");
             }
@@ -68,7 +64,7 @@ namespace Application.Services.ExternalServices
             await ActualizarTokenAfip();
 
             var (ultimoNroFacA, ultimoNroFacB) = await ObtenerUltimoNumeroComprobante();
-            
+
             TipoComprobante tipoComprobante = AutorizacionAfipHelpers.ObtenerTipoComprobante(venta.TipoDeComprobante?.Nombre);
 
             long nroComprobante = tipoComprobante switch
@@ -81,7 +77,7 @@ namespace Application.Services.ExternalServices
             Cliente cliente = venta.Cliente;
 
             var (tipoDocumento, nroDocumento) = AutorizacionAfipHelpers.ObtenerTipoYNumeroDocumento(cliente.TipoDocumento, cliente.NroDocumento);
-            
+
             var solicitud = new SolicitudAutorizacion
             {
                 Fecha = pago.Fecha,
@@ -92,7 +88,7 @@ namespace Application.Services.ExternalServices
 
                 NumeroDocumento = nroDocumento,
                 TipoDocumento = tipoDocumento,
-                TipoComprobante = AutorizacionAfipHelpers.ObtenerTipoComprobante(venta.TipoDeComprobante?.Nombre)
+                TipoComprobante = tipoComprobante
             };
 
             var result = await _afipAuthService.SolicitarCaeAsync(_afipToken, solicitud);

@@ -90,7 +90,7 @@ namespace SpecFlowTests.Features
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Agregar articulo a la venta con exito", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
 #line 6
-  this.ScenarioInitialize(scenarioInfo);
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
             bool isFeatureIgnored = default(bool);
@@ -110,7 +110,7 @@ namespace SpecFlowTests.Features
             {
                 this.ScenarioStart();
 #line 7
-    testRunner.Given("una venta en proceso en un punto de venta de la sucursal \"Centro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("una venta en proceso en un punto de venta de la sucursal de id 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                             "Descripcion",
@@ -151,7 +151,7 @@ namespace SpecFlowTests.Features
                             "8"});
 #line 11
     testRunner.And("el inventario disponible para una combinacion de talles y colores para la sucursa" +
-                        "l \"Centro\" es la siguiente:", ((string)(null)), table2, "And ");
+                        "l de id 1 es la siguiente:", ((string)(null)), table2, "And ");
 #line hidden
 #line 16
     testRunner.When("agrego a la venta con cantidad 1 el inventario de id 3:", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");

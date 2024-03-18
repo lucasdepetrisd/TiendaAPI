@@ -7,19 +7,18 @@ public partial class CondicionTributaria
     [Key]
     public IdCondicionTributaria IdCondicionTributaria { get; set; }
 
-    public string Nombre
-    {
-        get
-        {
-            return IdCondicionTributaria.ToString();
-        }
-    }
+    public string Nombre { get; set; } = string.Empty;
 
     public virtual Tienda? Tienda { get; set; }
 
     /*public virtual ICollection<TipoDeComprobante> TiposDeComprobantesEmisor { get; set; } = new List<TipoDeComprobante>();
     public virtual ICollection<TipoDeComprobante> TiposDeComprobantesReceptor { get; set; } = new List<TipoDeComprobante>();*/
     public virtual ICollection<Cliente> Clientes { get; set; } = [];
+
+    public string ObtenerNombre()
+    {
+        return IdCondicionTributaria.ToString();
+    }
 }
 
 public enum IdCondicionTributaria : int

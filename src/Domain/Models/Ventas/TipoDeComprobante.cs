@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Domain.Models.Admin;
+﻿using Domain.Models.Admin;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Models.Ventas;
 
@@ -32,10 +32,10 @@ public partial class TipoDeComprobante
 
     private string ObtenerNombre()
     {
-        switch (CondicionTributariaEmisor.Nombre)
+        switch (CondicionTributariaEmisor.ObtenerNombre())
         {
             case "ResponsableInscripto":
-                switch (CondicionTributariaReceptor.Nombre)
+                switch (CondicionTributariaReceptor.ObtenerNombre())
                 {
                     case "ResponsableInscripto":
                     case "Monotributista":
@@ -52,7 +52,7 @@ public partial class TipoDeComprobante
                 break;
             case "Monotributista":
             case "Exento":
-                switch (CondicionTributariaReceptor.Nombre)
+                switch (CondicionTributariaReceptor.ObtenerNombre())
                 {
                     case "ResponsableInscripto":
                     case "Monotributista":
