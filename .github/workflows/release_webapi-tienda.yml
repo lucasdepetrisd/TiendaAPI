@@ -11,6 +11,10 @@ on:
       - src/**
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 env:
   AZURE_WEBAPP_NAME: WebAPI-Tienda
   AZURE_WEBAPP_PACKAGE_PATH: ./src/publish
