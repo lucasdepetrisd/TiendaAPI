@@ -18,6 +18,7 @@ namespace Application.Services.UseCasesServices
     */
     public class VentaService : ViewService<Venta, VentaDTO>, IVentaService
     {
+        //TODO: Mover DI de repositorios a Unit of Work
         private readonly ICrudRepository<Venta> _ventaRepository;
         private readonly ICrudRepository<LineaDeVenta> _lineaDeVentaRepository;
         private readonly ICrudRepository<PuntoDeVenta> _puntoDeVentaRepository;

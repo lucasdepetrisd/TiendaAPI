@@ -82,8 +82,7 @@ public partial class AzureTiendaContext : DbContext, ITiendaContext
                     .Cast<IdCondicionTributaria>()
                     .Select(c => new CondicionTributaria()
                     {
-                        IdCondicionTributaria = c,
-                        Nombre = c.ToString()
+                        IdCondicionTributaria = c
                     })
                 );
         });
