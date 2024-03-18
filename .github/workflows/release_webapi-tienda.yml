@@ -35,13 +35,7 @@ jobs:
       - name: Build with dotnet
         run: dotnet build ${{ env.APP_PROJECT_PATH }} --configuration main --no-restore
 
-      - name: Run SpecFlow Tests
-        uses: cryptic-wizard/run-specflow-tests@v1.3.3
-        with:
-            test-assembly-path: test/SpecFlowTests/bin/Release/net8.0/SpecFlowTests.dll
-            test-execution-json: test/SpecFlowTests/bin/Release/net8.0/TestExecution.json
-
-      - name: dotnet publish
+      - name: Publish with dotnet
         run: dotnet publish ${{ env.APP_PROJECT_PATH }} --configuration main --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
       - name: Upload artifact for deployment job
@@ -49,10 +43,32 @@ jobs:
         with:
           name: ${{ env.AZURE_WEBAPP_JOB_ARTIFACT }}
           path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+  
+  test:
+    runs-on: windows-latest
 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install dependencies
+        run: dotnet restore ${{ env.APP_PROJECT_PATH }}
+
+      - name: Run SpecFlow Tests
+        uses: cryptic-wizard/run-specflow-tests@v1.3.3
+        with:
+          test-assembly-path: test/SpecFlowTests/bin/Release/net8.0
+          test-assembly-dll: SpecFlowTests.dll
+          test-execution-json: TestExecution.json
+  
   deploy:
     runs-on: windows-latest
-    needs: build
+    needs: [build, test]
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
